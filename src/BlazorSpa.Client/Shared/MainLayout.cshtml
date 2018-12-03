@@ -1,12 +1,15 @@
 ﻿@inherits MainLayoutComponent
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu 
+        IsAuthenticated=@AppState.IsAuthenticated />
 </div>
 
 <div class="main">
     <div class="top-row px-4">
-        <NavBar />
+        <NavBar 
+            IsAuthenticated=@AppState.IsAuthenticated 
+            UserName=@AppState.Username />
     </div>
 
     <div class="content px-4">

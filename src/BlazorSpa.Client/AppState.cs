@@ -13,15 +13,6 @@ namespace BlazorSpa.Client {
 
 		public event EventHandler OnStateChanged;
 
-		public string Session {
-			get {
-				return _storage[ "Session" ];
-			}
-			set {
-				_storage[ "Session" ] = value;
-			}
-		}
-
 		public string Username {
 			get {
 				return _storage[ "Username" ];
