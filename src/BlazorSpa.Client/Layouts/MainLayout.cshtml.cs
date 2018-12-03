@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.AspNetCore.Blazor.Layouts;
 
-namespace BlazorSpa.Client.Shared {
+namespace BlazorSpa.Client.Layouts {
 	public class MainLayoutComponent : BlazorLayoutComponent, IDisposable {
 
 		[Inject] protected AppState AppState { get; set; }

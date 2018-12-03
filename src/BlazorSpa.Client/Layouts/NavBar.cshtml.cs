@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using BlazorSpa.Client.Pages.Auth;
 using Microsoft.AspNetCore.Blazor.Components;
 
-namespace BlazorSpa.Client.Shared
-{
+namespace BlazorSpa.Client.Layouts {
     public class NavBarComponent : BlazorComponent
     {
 		[Parameter] protected string Username { get; set; }
