@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using BlazorSpa.Model;
 
 namespace BlazorSpa.Repository {
 	public interface IUserRepository {
-		Task<AuthenticationResult> Authenticate( string username, string password );
 
-		Task<CreateUserStatus> CreateUser( string username, string email );
+		Task<User> GetByAuthenticationId( string authenticationId );
 
-		Task<bool> DeleteUser( string username );
+		Task AddUser( Id<User> userId, string authenticationId );
 
-		Task<bool> ForceChangePassword( string username, string newPassword, string session );
-
-		Task<UserInformationResult> GetUserInformation( string username );
+		Task<User> GetUser( Id<User> userId );
 	}
 }

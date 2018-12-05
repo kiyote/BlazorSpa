@@ -7,7 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorSpa.Logging.CloudWatch {
 	public static class CloudWatchExtensions {
-		public static IApplicationBuilder UseCloudWatchLogging( this IApplicationBuilder services, ILoggerFactory loggerFactory, CloudWatchOptions options ) {
+		public static IApplicationBuilder UseCloudWatchLogging( 
+			this IApplicationBuilder services, 
+			ILoggerFactory loggerFactory, 
+			CloudWatchOptions options 
+		) {
 			RegisterCloudWatchLogging( loggerFactory, options );
 
 			return services;

@@ -79,8 +79,10 @@ namespace BlazorSpa.Server {
 			services.AddDynamoDb( Configuration.GetSection( "DynamoDb" ).Get<DynamoDbOptions>() );
 			services.AddCognito( Configuration.GetSection( "Cognito" ).Get<CognitoOptions>() );
 
+			services.AddHttpContextAccessor();
+			services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
-			services.AddSingleton<AuthenticationManager>();
+			services.AddSingleton<IContextInformation, ContextInformation>();
 			services.AddSingleton<UserManager>();
 		}
 

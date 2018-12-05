@@ -4,6 +4,6 @@ using BlazorSpa.Model.Api;
 
 namespace BlazorSpa.Client.Services {
 	public interface IUserApiService {
-		Task<UserInformationResponse> GetUserInformation( UserInformationRequest request );
+		Task<UserInformationResponse> GetUserInformation( UserInformationRequest username );
 	}
 }

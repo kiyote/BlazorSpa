@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BlazorSpa.Model.Api;
 using BlazorSpa.Server.Managers;
 using Microsoft.AspNetCore.Authorization;
@@ -10,21 +11,24 @@ namespace BlazorSpa.Server.Controllers {
 	public class UserController : Controller {
 
 		private readonly UserManager _userManager;
+		private readonly IContextInformation _contextInformation;
 
 		public UserController(
-			UserManager userManager
+			UserManager userManager,
+			IContextInformation contextInformation
 		) {
 			_userManager = userManager;
+			_contextInformation = contextInformation;
 		}
 
-		[HttpGet()]
+		[HttpGet]
 		public async Task<ActionResult<UserInformationResponse>> GetUserInformation() {
 			return await GetUserInformation( string.Empty );
 		}
 
 		[HttpGet("{username}")]
 		public async Task<ActionResult<UserInformationResponse>> GetUserInformation(string username) {
-			string loggedInUsername = HttpContext.Items[ "User" ] as string;
+			string loggedInUsername = _contextInformation.Username;
 
 			if (string.IsNullOrWhiteSpace(username)) {
 				username = loggedInUsername;

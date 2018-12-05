@@ -1,19 +1,32 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using BlazorSpa.Model;
 using BlazorSpa.Repository;
 
 namespace BlazorSpa.Server.Managers {
 	public class UserManager {
 
+		private readonly IAuthenticationRepository _authenticationRepository;
 		private readonly IUserRepository _userRepository;
 
 		public UserManager(
+			IAuthenticationRepository authenticationRepository,
 			IUserRepository userRepository
 		) {
+			_authenticationRepository = authenticationRepository;
 			_userRepository = userRepository;
 		}
 
 		public async Task<UserInformationResult> GetUserInformation(string username) {
-			return await _userRepository.GetUserInformation( username );
+			var userInformation = await _authenticationRepository.GetUserInformation( username );
+			var user = await _userRepository.GetByAuthenticationId( userInformation.UserId );
+
+			// If they don't have a local record, create one
+			if (user == default) {
+				await _userRepository.AddUser( new Id<User>(), userInformation.UserId );
+			}
+
+			return userInformation;
 		}
 	}
 }
