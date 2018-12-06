@@ -28,9 +28,12 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return result.FirstOrDefault()?.ToUser();
 		}
 
-		async Task IUserRepository.AddUser( Id<User> userId, string authenticationId ) {
-			var dynamoUser = new DynamoUser( userId, authenticationId );
+		async Task<User> IUserRepository.AddUser( Id<User> userId, string authenticationId ) {
+			var user = new User( userId, authenticationId );
+			var dynamoUser = new DynamoUser( user );
 			await _context.SaveAsync( dynamoUser );
+
+			return user;
 		}
 
 		async Task<User> IUserRepository.GetUser( Id<User> userId ) {
