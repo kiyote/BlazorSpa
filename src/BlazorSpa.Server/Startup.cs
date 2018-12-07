@@ -8,6 +8,7 @@ using BlazorSpa.Logging.CloudWatch;
 using BlazorSpa.Repository;
 using BlazorSpa.Repository.Cognito;
 using BlazorSpa.Repository.DynamoDb;
+using BlazorSpa.Repository.S3;
 using BlazorSpa.Server.Hubs;
 using BlazorSpa.Server.Managers;
 using BlazorSpa.Server.Middleware;
@@ -78,6 +79,7 @@ namespace BlazorSpa.Server {
 
 			services.AddDynamoDb( Configuration.GetSection( "DynamoDb" ).Get<DynamoDbOptions>() );
 			services.AddCognito( Configuration.GetSection( "Cognito" ).Get<CognitoOptions>() );
+			services.AddS3( Configuration.GetSection( "S3" ).Get<S3Options>() );
 
 			services.AddHttpContextAccessor();
 			services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
