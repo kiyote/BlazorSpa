@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Services;
-using BlazorSpa.Model.Api;
 using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorSpa.Client.Pages.User {
@@ -17,13 +16,13 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public string Username { get; set; }
 
-		public string Email { get; set; }
+		public DateTimeOffset LastLogin { get; set; }
 
 		protected override async Task OnInitAsync() {
-			var response = await UserApiService.GetUserInformation( new UserInformationRequest() { Username = State.Username } );
-			UserId = response.UserId;
-			Username = response.Username;
-			Email = response.Email;
+			var response = await UserApiService.GetUserInformation();
+			UserId = response.Id.Value;
+			Username = response.Name;
+			LastLogin = response.LastLogin;
 		}
 	}
 }

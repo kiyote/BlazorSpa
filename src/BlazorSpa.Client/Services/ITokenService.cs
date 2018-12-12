@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using BlazorSpa.Model.Api;
+using BlazorSpa.Model;
 
 namespace BlazorSpa.Client.Services {
 	public interface ITokenService {

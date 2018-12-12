@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
+using BlazorSpa.Model;
 
 namespace BlazorSpa.Repository.Cognito {
 	public class AuthenticationRepository : IAuthenticationRepository {
@@ -17,8 +18,8 @@ namespace BlazorSpa.Repository.Cognito {
 			_cognitoOptions = cognitoOptions;
 		}
 
-		async Task<UserInformationResult> IAuthenticationRepository.GetUserInformation(string username) {
-			var response = await _client.AdminGetUserAsync( new AdminGetUserRequest() {
+		async Task<AuthenticationUserInformation> IAuthenticationRepository.GetUserInformation(string username) {
+			var response = await _client.AdminGetUserAsync( new AdminGetUserRequest() {				
 				Username = username,
 				UserPoolId = _cognitoOptions.UserPoolId
 			} );
@@ -27,11 +28,11 @@ namespace BlazorSpa.Repository.Cognito {
 			var email = response.UserAttributes.First( ua => ua.Name == "email" );
 			var name = response.UserAttributes.FirstOrDefault( ua => ua.Name == "name" );
 
-			return new UserInformationResult() {
-				Username = name?.Value ?? username,
-				UserId = new Guid(sub.Value).ToString("N"),
-				Email = email.Value
-			};
+			return new AuthenticationUserInformation(
+				new Guid( sub.Value ).ToString( "N" ),
+				name?.Value ?? username,
+				email.Value
+			);
 		}
 	}
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Pages.Auth;
-using BlazorSpa.Model.Api;
-using Microsoft.JSInterop;
+using BlazorSpa.Model;
+using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Services {
 	public class TokenService : ITokenService {
@@ -32,7 +32,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostAsync( _config.TokenUrl, content );
 			if( response.IsSuccessStatusCode ) {
 				var payload = await response.Content.ReadAsStringAsync();
-				var tokens = Json.Deserialize<AuthorizationToken>( payload );
+				var tokens = JsonConvert.DeserializeObject<AuthorizationToken>( payload );
 
 				return tokens;
 			}
@@ -49,7 +49,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostAsync( _config.TokenUrl, content );
 			if( response.IsSuccessStatusCode ) {
 				var payload = await response.Content.ReadAsStringAsync();
-				var tokens = Json.Deserialize<AuthorizationToken>( payload );
+				var tokens = JsonConvert.DeserializeObject<AuthorizationToken>( payload );
 
 				return tokens;
 			}

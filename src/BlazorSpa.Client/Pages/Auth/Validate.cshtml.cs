@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Services;
-using BlazorSpa.Model.Api;
 using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.AspNetCore.Blazor.Services;
 
@@ -25,8 +24,8 @@ namespace BlazorSpa.Client.Pages.Auth {
 
 			var tokens = await _tokenService.GetToken( code );
 			_accessTokenProvider.SetTokens( tokens.access_token, tokens.refresh_token, DateTimeOffset.Now.AddSeconds( tokens.expires_in ) );
-			var userInfo = await _userApiService.GetUserInformation( new UserInformationRequest() );
-			_state.Username = userInfo.Username;
+			var userInfo = await _userApiService.GetUserInformation();
+			_state.Username = userInfo.Name;
 			_uriHelper.NavigateTo( "/" );
 		}
 	}

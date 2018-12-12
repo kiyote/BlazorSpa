@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.DynamoDBv2.DocumentModel;
 using BlazorSpa.Model;
 using BlazorSpa.Repository.DynamoDb.Model;
 
@@ -18,27 +20,77 @@ namespace BlazorSpa.Repository.DynamoDb {
 		}
 
 		async Task<User> IUserRepository.GetByAuthenticationId( string authenticationId ) {
-			var results = _context.QueryAsync<DynamoUser>(
-				authenticationId,
-				new DynamoDBOperationConfig {
-					IndexName = "AuthenticationId-index"
-				} );
-			var result = await results.GetRemainingAsync();
+			var authentication = new AuthenticationRecord {
+				AuthenticationId = authenticationId,
+				Status = UserRecord.Active
+			};
+			authentication = await _context.LoadAsync( authentication );
 
-			return result.FirstOrDefault()?.ToUser();
+			if (authentication == default) {
+				return default;
+			}
+
+			var search = _context.QueryAsync<UserRecord>( 
+				authentication.UserId, 
+				QueryOperator.BeginsWith, 
+				new List<object>() { $"{UserRecord.Active}/" } 
+			);
+
+			var userRecords = await search.GetRemainingAsync();
+			var userRecord = userRecords.FirstOrDefault();
+
+			if (userRecord == default) {
+				return default;
+			}
+
+			return new User(
+				new Id<User>( userRecord.UserId ),
+				userRecord.Name,
+				userRecord.AuthenticationId,
+				new DateTimeOffset( userRecord.LastLogin ) 
+			);
 		}
 
-		async Task<User> IUserRepository.AddUser( Id<User> userId, string authenticationId ) {
-			var user = new User( userId, authenticationId );
-			var dynamoUser = new DynamoUser( user );
-			await _context.SaveAsync( dynamoUser );
+		async Task<User> IUserRepository.AddUser( Id<User> userId, string authenticationId, string username ) {
+			var authentication = new AuthenticationRecord {
+				AuthenticationId = authenticationId,
+				Status = UserRecord.Active,
+				UserId = userId.Value
+			};
+			await _context.SaveAsync( authentication );
 
-			return user;
+			var lastLogin = DateTimeOffset.Now;
+			var user = new UserRecord {
+				UserId = authentication.UserId,
+				Status = UserRecord.Active,
+				Name = username,
+				LastLogin = lastLogin.UtcDateTime
+			};
+			await _context.SaveAsync( user );
+
+			return new User( 
+				userId, 
+				username,
+				authenticationId, 
+				lastLogin );
 		}
 
 		async Task<User> IUserRepository.GetUser( Id<User> userId ) {
-			var dynamoUser = new DynamoUser() { UserId = userId.Value };
-			return ( await _context.LoadAsync( dynamoUser ) )?.ToUser();
+			var search = _context.QueryAsync<UserRecord>(
+				userId.Value,
+				QueryOperator.BeginsWith,
+				new List<object>() { $"{UserRecord.Active}/" }
+			);
+
+			var userRecords = await search.GetRemainingAsync();
+			var userRecord = userRecords.FirstOrDefault();
+
+			return new User(
+				new Id<User>( userRecord.UserId ),
+				userRecord.Name,
+				userRecord.AuthenticationId,
+				new DateTimeOffset(userRecord.LastLogin)
+			);
 		}
 	}
 }

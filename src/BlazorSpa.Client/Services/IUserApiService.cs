@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorSpa.Model.Api;
+using BlazorSpa.Model;
 
 namespace BlazorSpa.Client.Services {
 	public interface IUserApiService {
-		Task<UserInformationResponse> GetUserInformation( UserInformationRequest username );
+		Task<User> GetUserInformation();
 	}
 }

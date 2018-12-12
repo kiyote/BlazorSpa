@@ -2,8 +2,8 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using BlazorSpa.Model.Api;
-using Microsoft.AspNetCore.Blazor;
+using BlazorSpa.Model;
+using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Services {
 	internal sealed class UserApiService : IUserApiService {
@@ -22,9 +22,10 @@ namespace BlazorSpa.Client.Services {
 			_config = config;
 		}
 
-		async Task<UserInformationResponse> IUserApiService.GetUserInformation(UserInformationRequest request) {
+		async Task<User> IUserApiService.GetUserInformation() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
-			var response = await _http.GetJsonAsync<UserInformationResponse>( $@"{_config.Host}/api/user/{request.Username}" );
+			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user",
+				( s ) => { return JsonConvert.DeserializeObject<User>( s ); } );
 
 			return response;
 		}
