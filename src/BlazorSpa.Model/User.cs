@@ -20,5 +20,9 @@ namespace BlazorSpa.Model {
 		public string Name { get; }
 
 		public string AuthenticationId { get; }
+
+		public static string CreateId() {
+			return Guid.NewGuid().ToString( "N" );
+		}
 	}
 }

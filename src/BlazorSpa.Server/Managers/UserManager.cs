@@ -24,7 +24,7 @@ namespace BlazorSpa.Server.Managers {
 			// If they don't have a local record, create one
 			if( user == default ) {
 				user = await _userRepository.AddUser(
-					Guid.NewGuid().ToString( "N" ),
+					User.CreateId(),
 					authenticationInformation.AuthenticationId,
 					authenticationInformation.Username
 				);

@@ -24,13 +24,17 @@ namespace BlazorSpa.Repository.S3 {
 				var profiles = chain.ListProfiles();
 				throw new InvalidOperationException( profiles.Select( p => p.Name ).Aggregate( ( c, n ) => c + ", " + n ) );
 			}
+			var roleCredentials = new AssumeRoleAWSCredentials(
+				credentials,
+				options.Role,
+				Guid.NewGuid().ToString( "N" ) );
 
 			AmazonS3Config config = new AmazonS3Config();
 			config.RegionEndpoint = RegionEndpoint.GetBySystemName( options.RegionEndpoint );
 			config.ServiceURL = options.ServiceUrl;
 			config.LogMetrics = true;
 			config.DisableLogging = false;
-			return new AmazonS3Client( credentials, config );
+			return new AmazonS3Client( roleCredentials, config );
 		}
 	}
 }

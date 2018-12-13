@@ -23,12 +23,18 @@ namespace BlazorSpa.Logging.CloudWatch {
 			if( !chain.TryGetAWSCredentials( options.CredentialsProfile, out credentials ) ) {
 				throw new InvalidOperationException();
 			}
+
+			var roleCredentials = new AssumeRoleAWSCredentials(
+				credentials,
+				options.Role,
+				Guid.NewGuid().ToString( "N" ) );
+
 			loggerFactory.AddAWSProvider( new AWSLoggerConfig() {
 				Region = options.Region,
 				LogGroup = options.LogGroup,
-				Credentials = credentials,
+				Credentials = roleCredentials,
 				LogStreamNameSuffix = options.StreamName
-			}, LogLevel.Debug );
+			}, options.LogLevel );
 		}
 	}
 }

@@ -3,8 +3,6 @@ using Amazon;
 using Amazon.DynamoDBv2;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
-using Amazon.SecurityToken;
-using Amazon.SecurityToken.Model;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorSpa.Repository.DynamoDb {

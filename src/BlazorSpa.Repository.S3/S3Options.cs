@@ -9,5 +9,7 @@ namespace BlazorSpa.Repository.S3 {
 		public string RegionEndpoint { get; set; }
 
 		public string ServiceUrl { get; set; }
+
+		public string Role { get; set; }
 	}
 }
