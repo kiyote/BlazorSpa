@@ -9,8 +9,8 @@ namespace BlazorSpa.Repository {
 
 		Task<User> GetByAuthenticationId( string authenticationId );
 
-		Task<User> AddUser( Id<User> userId, string authenticationId, string username );
+		Task<User> AddUser( string userId, string authenticationId, string username );
 
-		Task<User> GetUser( Id<User> userId );
+		Task<User> GetUser( string userId );
 	}
 }

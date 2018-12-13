@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Services;
 using Microsoft.AspNetCore.Blazor.Components;
+using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Pages.User {
 	public class ProfileComponent : BlazorComponent {
@@ -16,13 +17,11 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public string Username { get; set; }
 
-		public DateTimeOffset LastLogin { get; set; }
-
 		protected override async Task OnInitAsync() {
 			var response = await UserApiService.GetUserInformation();
-			UserId = response.Id.Value;
+			Console.WriteLine( JsonConvert.SerializeObject(response) );
+			UserId = response.Id;
 			Username = response.Name;
-			LastLogin = response.LastLogin;
 		}
 	}
 }

@@ -12,5 +12,6 @@
 
 		public string CredentialsFile { get; set; }
 
+		public string Role { get; set; }
 	}
 }

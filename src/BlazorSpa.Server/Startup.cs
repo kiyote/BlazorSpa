@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BlazorSpa.Logging.CloudWatch;
+using BlazorSpa.Model;
 using BlazorSpa.Repository;
 using BlazorSpa.Repository.Cognito;
 using BlazorSpa.Repository.DynamoDb;

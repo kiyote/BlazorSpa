@@ -44,18 +44,16 @@ namespace BlazorSpa.Repository.DynamoDb {
 			}
 
 			return new User(
-				new Id<User>( userRecord.UserId ),
+				userRecord.UserId,
 				userRecord.Name,
-				userRecord.AuthenticationId,
-				new DateTimeOffset( userRecord.LastLogin ) 
-			);
+				userRecord.AuthenticationId);
 		}
 
-		async Task<User> IUserRepository.AddUser( Id<User> userId, string authenticationId, string username ) {
+		async Task<User> IUserRepository.AddUser( string userId, string authenticationId, string username ) {
 			var authentication = new AuthenticationRecord {
 				AuthenticationId = authenticationId,
 				Status = UserRecord.Active,
-				UserId = userId.Value
+				UserId = userId
 			};
 			await _context.SaveAsync( authentication );
 
@@ -64,20 +62,19 @@ namespace BlazorSpa.Repository.DynamoDb {
 				UserId = authentication.UserId,
 				Status = UserRecord.Active,
 				Name = username,
-				LastLogin = lastLogin.UtcDateTime
+				AuthenticationId = authentication.AuthenticationId
 			};
 			await _context.SaveAsync( user );
 
 			return new User( 
 				userId, 
 				username,
-				authenticationId, 
-				lastLogin );
+				authenticationId);
 		}
 
-		async Task<User> IUserRepository.GetUser( Id<User> userId ) {
+		async Task<User> IUserRepository.GetUser( string userId ) {
 			var search = _context.QueryAsync<UserRecord>(
-				userId.Value,
+				userId,
 				QueryOperator.BeginsWith,
 				new List<object>() { $"{UserRecord.Active}/" }
 			);
@@ -86,10 +83,9 @@ namespace BlazorSpa.Repository.DynamoDb {
 			var userRecord = userRecords.FirstOrDefault();
 
 			return new User(
-				new Id<User>( userRecord.UserId ),
+				userRecord.UserId,
 				userRecord.Name,
-				userRecord.AuthenticationId,
-				new DateTimeOffset(userRecord.LastLogin)
+				userRecord.AuthenticationId
 			);
 		}
 	}

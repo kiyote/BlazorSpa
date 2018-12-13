@@ -23,12 +23,17 @@ namespace BlazorSpa.Repository.Cognito {
 				throw new InvalidOperationException();
 			}
 
+			var roleCredentials = new AssumeRoleAWSCredentials(
+				credentials,
+				options.Role,
+				Guid.NewGuid().ToString( "N" ) );
+
 			AmazonCognitoIdentityProviderConfig config = new AmazonCognitoIdentityProviderConfig();
 			config.RegionEndpoint = RegionEndpoint.GetBySystemName( options.RegionEndpoint );
 			config.ServiceURL = options.ServiceUrl;
 			config.LogMetrics = true;
 			config.DisableLogging = false;
-			var client = new AmazonCognitoIdentityProviderClient( credentials, config );
+			var client = new AmazonCognitoIdentityProviderClient( roleCredentials, config );
 
 			return client;
 		}

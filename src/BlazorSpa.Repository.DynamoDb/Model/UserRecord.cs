@@ -22,16 +22,13 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 			}
 		}
 
-		[DynamoDBIgnore]
-		public string Status { get; set; }
-
-		[DynamoDBProperty("LastLogin")]
-		public DateTime LastLogin { get; set; }
-
 		[DynamoDBProperty("AuthenticationId")]
 		public string AuthenticationId { get; set; }
 
 		[DynamoDBIgnore]
 		public string Name { get; set; }
+
+		[DynamoDBIgnore]
+		public string Status { get; set; }
 	}
 }
