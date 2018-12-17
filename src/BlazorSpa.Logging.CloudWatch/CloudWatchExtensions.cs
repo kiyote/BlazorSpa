@@ -29,12 +29,16 @@ namespace BlazorSpa.Logging.CloudWatch {
 				options.Role,
 				Guid.NewGuid().ToString( "N" ) );
 
+			if (!Enum.TryParse(options.LogLevel, out LogLevel logLevel)) {
+				logLevel = LogLevel.Debug;
+			}
+			
 			loggerFactory.AddAWSProvider( new AWSLoggerConfig() {
 				Region = options.Region,
 				LogGroup = options.LogGroup,
 				Credentials = roleCredentials,
 				LogStreamNameSuffix = options.StreamName
-			}, options.LogLevel );
+			}, logLevel );
 		}
 	}
 }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Logging;
 
 namespace BlazorSpa.Logging.CloudWatch {
 	public sealed class CloudWatchOptions {
@@ -17,7 +14,7 @@ namespace BlazorSpa.Logging.CloudWatch {
 
 		public string Role { get; set; }
 
-		public LogLevel LogLevel { get; set; }
+		public string LogLevel { get; set; }
 
 	}
 }
