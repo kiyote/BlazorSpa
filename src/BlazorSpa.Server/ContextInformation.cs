@@ -16,5 +16,12 @@ namespace BlazorSpa.Server {
 				return context.Items[ "User" ] as string;
 			}
 		}
+
+		public string UserId {
+			get {
+				var context = _httpContextAccessor.HttpContext;
+				return context.Items[ "UserId" ] as string;
+			}
+		}
 	}
 }

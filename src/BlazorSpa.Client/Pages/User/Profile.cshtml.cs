@@ -21,10 +21,15 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public ElementRef FileUploadRef { get; set; }
 
+		public bool Uploading { get; set; }
+
+		public string Avatar { get; set; }
+
 		protected override async Task OnInitAsync() {
 			var response = await UserApiService.GetUserInformation();
 			UserId = response.Id;
 			Username = response.Name;
+			Avatar = response.AvatarUrl;
 		}
 
 		public async Task UploadFile() {
@@ -39,8 +44,13 @@ namespace BlazorSpa.Client.Pages.User {
 			var mimeType = descriptor[ 0 ];
 			var encoding = descriptor[ 1 ];
 			var content = parts[ 1 ];
-			Console.WriteLine( mimeType );
-			Console.WriteLine( encoding );
+			if (mimeType.StartsWith("image")) {
+				Uploading = true;
+				StateHasChanged();
+				Avatar = await UserApiService.SetAvatar( mimeType, content );
+				Uploading = false;
+				StateHasChanged();
+			}
 		}
 	}
 }

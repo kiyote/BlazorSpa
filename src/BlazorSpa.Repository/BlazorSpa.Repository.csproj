@@ -8,8 +8,4 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Model.csproj" />
-  </ItemGroup>
-
 </Project>

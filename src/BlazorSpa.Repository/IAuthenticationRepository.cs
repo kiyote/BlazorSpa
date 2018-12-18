@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorSpa.Model;
+using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository {
 	public interface IAuthenticationRepository {

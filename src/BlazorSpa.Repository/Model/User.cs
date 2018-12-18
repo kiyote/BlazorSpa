@@ -1,25 +1,23 @@
 ﻿using System;
-using Newtonsoft.Json;
 
-namespace BlazorSpa.Model {
+namespace BlazorSpa.Repository.Model {
 	public class User {
 
-		[JsonConstructor]
 		public User(
 			string id,
 			string name,
-			string avatarUrl
+			bool hasAvatar
 		) {
 			Id = id;
 			Name = name;
-			AvatarUrl = avatarUrl;
+			HasAvatar = hasAvatar;
 		}
 
 		public string Id { get; }
 
 		public string Name { get; }
 
-		public string AvatarUrl { get; }
+		public bool HasAvatar { get; }
 
 		public static string CreateId() {
 			return Guid.NewGuid().ToString( "N" );

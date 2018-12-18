@@ -11,5 +11,7 @@ namespace BlazorSpa.Repository.S3 {
 		public string ServiceUrl { get; set; }
 
 		public string Role { get; set; }
+
+		public string Bucket { get; set; }
 	}
 }

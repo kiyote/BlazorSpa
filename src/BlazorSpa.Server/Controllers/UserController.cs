@@ -21,9 +21,16 @@ namespace BlazorSpa.Server.Controllers {
 			_contextInformation = contextInformation;
 		}
 
+		[HttpGet("login")]
+		public async Task<ActionResult> RecordLogin() {
+			var user = await _userManager.RecordLogin( _contextInformation.Username );
+
+			return Ok(user);
+		}
+
 		[HttpGet]
 		public async Task<ActionResult<User>> GetUserInformation() {
-			var result = await _userManager.GetUserInformation( _contextInformation.Username );
+			var result = await _userManager.GetUser( _contextInformation.UserId );
 
 			if( result != default ) {
 				return Ok( result );
@@ -31,6 +38,12 @@ namespace BlazorSpa.Server.Controllers {
 			} else {
 				return NotFound();
 			}
+		}
+
+		[HttpPost("avatar")]
+		public async Task<ActionResult<string>> SetAvatar([FromBody] SetAvatarRequest request) {
+			var url = await _userManager.SetAvatar( _contextInformation.UserId, request.ContentType, request.Content );
+			return Ok(new SetAvatarResponse() { Url = url });
 		}
 	}
 }

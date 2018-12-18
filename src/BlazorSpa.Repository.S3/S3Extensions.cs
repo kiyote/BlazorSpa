@@ -13,6 +13,7 @@ namespace BlazorSpa.Repository.S3 {
 
 			var provider = CreateProvider( options );
 			services.AddSingleton( provider );
+			services.AddSingleton( options );
 
 			return services;
 		}
@@ -34,7 +35,7 @@ namespace BlazorSpa.Repository.S3 {
 			config.ServiceURL = options.ServiceUrl;
 			config.LogMetrics = true;
 			config.DisableLogging = false;
-			return new AmazonS3Client( roleCredentials, config );
+			return new AmazonS3Client( roleCredentials, RegionEndpoint.GetBySystemName( options.RegionEndpoint ) );
 		}
 	}
 }

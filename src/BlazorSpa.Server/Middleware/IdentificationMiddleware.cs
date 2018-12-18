@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using BlazorSpa.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -8,11 +9,14 @@ namespace BlazorSpa.Server.Middleware {
 	public class IdentificationMiddleware {
 
 		private readonly RequestDelegate _next;
+		private readonly IUserRepository _userRepository;
 
 		public IdentificationMiddleware(
-			RequestDelegate next
+			RequestDelegate next,
+			IUserRepository userRepository
 		) {
 			_next = next;
+			_userRepository = userRepository;
 		}
 
 		public async Task InvokeAsync( HttpContext httpContext ) {
@@ -23,6 +27,11 @@ namespace BlazorSpa.Server.Middleware {
 				var username = principal.Claims.FirstOrDefault( c => c.Type == "username" ).Value;
 
 				httpContext.Items[ "User" ] = username;
+
+				var user = await _userRepository.GetByUsername( username );
+				if (user != default) {
+					httpContext.Items[ "UserId" ] = user.Id;
+				}
 			}
 
 			await _next( httpContext );

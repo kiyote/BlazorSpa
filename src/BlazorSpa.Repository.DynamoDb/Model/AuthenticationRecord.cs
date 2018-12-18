@@ -5,7 +5,7 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
 	internal sealed class AuthenticationRecord {
 		[DynamoDBHashKey( "PK" )]
-		public string AuthenticationId { get; set; }
+		public string Username { get; set; }
 
 		[DynamoDBRangeKey( "SK" )]
 		public string Status { get; set; }

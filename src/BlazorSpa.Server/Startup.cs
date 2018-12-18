@@ -82,6 +82,7 @@ namespace BlazorSpa.Server {
 			services.AddS3( Configuration.GetSection( "S3" ).Get<S3Options>() );
 
 			services.AddHttpContextAccessor();
+			services.AddSingleton<IAvatarRepository, AvatarRepository>();
 			services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
 			services.AddSingleton<IContextInformation, ContextInformation>();

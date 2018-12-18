@@ -4,8 +4,16 @@
 
 <div class="row">
     <div class="col-sm-1">
-        <i class="fa fa-user" style="font-size:4em"></i>
-        <input type="file" onchange="@UploadFile" ref="FileUploadRef" />
+        @if( string.IsNullOrWhiteSpace( Avatar ) ) {
+            <i class="fa fa-user" style="font-size:4em"></i>
+        } else {
+            <img src="@Avatar" />
+        }
+        @if( Uploading ) {
+            <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        } else {
+            <input type="file" onchange="@UploadFile" ref="FileUploadRef" />
+        }
     </div>
     <div class="col-sm-11">
         <div>UserId: @UserId</div>

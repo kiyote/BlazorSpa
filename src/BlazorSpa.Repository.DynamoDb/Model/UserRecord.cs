@@ -10,25 +10,13 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		[DynamoDBHashKey("PK")]
 		public string UserId { get; set; }
 
-		[DynamoDBRangeKey("SK")]
-		public string SK {
-			get {
-				return $"{Status}/{Name}";
-			}
-			set {
-				var values = value.Split( '/' );
-				Status = values[ 0 ];
-				Name = values[ 1 ];
-			}
-		}
+		[DynamoDBRangeKey( "SK" )]
+		public string Status { get; set; }
 
-		[DynamoDBProperty("AuthenticationId")]
-		public string AuthenticationId { get; set; }
-
-		[DynamoDBIgnore]
+		[DynamoDBProperty("Username")]
 		public string Name { get; set; }
 
-		[DynamoDBIgnore]
-		public string Status { get; set; }
+		[DynamoDBProperty("HasAvatar")]
+		public bool HasAvatar { get; set; }
 	}
 }

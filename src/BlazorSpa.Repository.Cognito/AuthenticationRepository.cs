@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
-using BlazorSpa.Model;
+using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository.Cognito {
 	public class AuthenticationRepository : IAuthenticationRepository {

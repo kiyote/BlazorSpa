@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
-using BlazorSpa.Model;
+using BlazorSpa.Repository.Model;
 using BlazorSpa.Repository.DynamoDb.Model;
 
 namespace BlazorSpa.Repository.DynamoDb {
@@ -19,9 +19,9 @@ namespace BlazorSpa.Repository.DynamoDb {
 			_context = new DynamoDBContext( client );
 		}
 
-		async Task<User> IUserRepository.GetByAuthenticationId( string authenticationId ) {
+		async Task<User> IUserRepository.GetByUsername( string username ) {
 			var authentication = new AuthenticationRecord {
-				AuthenticationId = authenticationId,
+				Username = username,
 				Status = UserRecord.Active
 			};
 			authentication = await _context.LoadAsync( authentication );
@@ -32,8 +32,8 @@ namespace BlazorSpa.Repository.DynamoDb {
 
 			var search = _context.QueryAsync<UserRecord>( 
 				authentication.UserId, 
-				QueryOperator.BeginsWith, 
-				new List<object>() { $"{UserRecord.Active}/" } 
+				QueryOperator.Equal, 
+				new List<object>() { UserRecord.Active } 
 			);
 
 			var userRecords = await search.GetRemainingAsync();
@@ -46,47 +46,61 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new User(
 				userRecord.UserId,
 				userRecord.Name,
-				userRecord.AuthenticationId);
+				userRecord.HasAvatar);
 		}
 
-		async Task<User> IUserRepository.AddUser( string userId, string authenticationId, string username ) {
+		async Task<User> IUserRepository.AddUser( string userId, string username ) {
 			var authentication = new AuthenticationRecord {
-				AuthenticationId = authenticationId,
+				Username = username,
 				Status = UserRecord.Active,
 				UserId = userId
 			};
 			await _context.SaveAsync( authentication );
 
-			var lastLogin = DateTimeOffset.Now;
 			var user = new UserRecord {
 				UserId = authentication.UserId,
 				Status = UserRecord.Active,
-				Name = username,
-				AuthenticationId = authentication.AuthenticationId
+				Name = username
 			};
 			await _context.SaveAsync( user );
 
 			return new User( 
 				userId, 
 				username,
-				authenticationId);
+				false);
 		}
 
 		async Task<User> IUserRepository.GetUser( string userId ) {
+			var userRecord = await GetById( userId );
+
+			return new User(
+				userRecord.UserId,
+				userRecord.Name,
+				userRecord.HasAvatar);
+		}
+
+		async Task<User> IUserRepository.UpdateAvatarStatus(string userId, bool hasAvatar) {
+			var userRecord = await GetById( userId );
+			userRecord.HasAvatar = true;
+			await _context.SaveAsync( userRecord );
+
+			return new User(
+				userRecord.UserId,
+				userRecord.Name,
+				userRecord.HasAvatar );
+		}
+
+		private async Task<UserRecord> GetById( string userId ) {
 			var search = _context.QueryAsync<UserRecord>(
 				userId,
-				QueryOperator.BeginsWith,
-				new List<object>() { $"{UserRecord.Active}/" }
+				QueryOperator.Equal,
+				new List<object>() { UserRecord.Active }
 			);
 
 			var userRecords = await search.GetRemainingAsync();
 			var userRecord = userRecords.FirstOrDefault();
 
-			return new User(
-				userRecord.UserId,
-				userRecord.Name,
-				userRecord.AuthenticationId
-			);
+			return userRecord;
 		}
 	}
 }

@@ -24,6 +24,8 @@ namespace BlazorSpa.Client.Pages.Auth {
 
 			var tokens = await _tokenService.GetToken( code );
 			_accessTokenProvider.SetTokens( tokens.access_token, tokens.refresh_token, DateTimeOffset.Now.AddSeconds( tokens.expires_in ) );
+			await _userApiService.RecordLogin();
+
 			var userInfo = await _userApiService.GetUserInformation();
 			_state.Username = userInfo.Name;
 			_uriHelper.NavigateTo( "/" );

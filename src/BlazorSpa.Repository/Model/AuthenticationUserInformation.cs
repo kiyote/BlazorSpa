@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlazorSpa.Model {
+namespace BlazorSpa.Repository.Model {
 	public sealed class AuthenticationUserInformation {
 
 		public AuthenticationUserInformation(

@@ -13,20 +13,20 @@ namespace BlazorSpa.Client {
 			return fromJson( responseJson );
 		}
 
-		public static Task<T> PostJsonAsync<T>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson, Func<string, T> fromJson )
-			=> httpClient.SendJsonAsync<T>( HttpMethod.Post, requestUri, content, toJson, fromJson );
+		public static Task<S> PostJsonAsync<T, S>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson, Func<string, S> fromJson )
+			=> httpClient.SendJsonAsync<T, S>( HttpMethod.Post, requestUri, content, toJson, fromJson );
 
-		public static Task<T> PutJsonAsync<T>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson, Func<string, T> fromJson )
-			=> httpClient.SendJsonAsync<T>( HttpMethod.Put, requestUri, content, toJson, fromJson );
+		public static Task<S> PutJsonAsync<T, S>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson, Func<string, S> fromJson )
+			=> httpClient.SendJsonAsync<T, S>( HttpMethod.Put, requestUri, content, toJson, fromJson );
 
 
-		public static async Task<T> SendJsonAsync<T>( this HttpClient httpClient, HttpMethod method, string requestUri, T content, Func<T, string> toJson, Func<string, T> fromJson ) {
+		public static async Task<S> SendJsonAsync<T, S>( this HttpClient httpClient, HttpMethod method, string requestUri, T content, Func<T, string> toJson, Func<string, S> fromJson ) {
 			var requestJson = toJson( content );
 			var response = await httpClient.SendAsync( new HttpRequestMessage( method, requestUri ) {
 				Content = new StringContent( requestJson, Encoding.UTF8, "application/json" )
 			} );
 
-			if( typeof( T ) == typeof( IgnoreResponse ) ) {
+			if( typeof( S ) == typeof( IgnoreResponse ) ) {
 				return default;
 			} else {
 				var responseJson = await response.Content.ReadAsStringAsync();

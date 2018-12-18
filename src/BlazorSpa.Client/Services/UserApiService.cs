@@ -22,12 +22,31 @@ namespace BlazorSpa.Client.Services {
 			_config = config;
 		}
 
+		async Task IUserApiService.RecordLogin() {
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
+			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user/login",
+				( s ) => { return JsonConvert.DeserializeObject<User>( s ); } );
+		}
+
 		async Task<User> IUserApiService.GetUserInformation() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user",
 				( s ) => { return JsonConvert.DeserializeObject<User>( s ); } );
 
 			return response;
+		}
+
+		async Task<string> IUserApiService.SetAvatar( string contentType, string content ) {
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
+			var request = new SetAvatarRequest() {
+				ContentType = contentType,
+				Content = content
+			};
+			var response = await _http.PostJsonAsync( $@"{_config.Host}/api/user/avatar", request,
+				( r ) => { return JsonConvert.SerializeObject( r ); },
+				( s ) => { return JsonConvert.DeserializeObject<SetAvatarResponse>(s); } );
+
+			return response.Url;
 		}
 	}
 }
