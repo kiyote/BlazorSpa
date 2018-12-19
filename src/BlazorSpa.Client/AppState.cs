@@ -8,7 +8,10 @@ namespace BlazorSpa.Client {
 
 		public AppState(SessionStorage storage) {
 			_storage = storage;
-			_storage[ "TokensExpireAt" ] = DateTimeOffset.MinValue.ToString( "o" );
+
+			if (_storage["TokensExpireAt"] == default) {
+				_storage[ "TokensExpireAt" ] = DateTimeOffset.MinValue.ToString( "o" );
+			}
 		}
 
 		public event EventHandler OnStateChanged;
@@ -53,7 +56,8 @@ namespace BlazorSpa.Client {
 
 		public bool IsAuthenticated {
 			get {
-				return ( TokensExpireAt > DateTimeOffset.Now );
+				var result = ( TokensExpireAt > DateTimeOffset.Now );
+				return result;
 			}
 		}
 	}

@@ -13,7 +13,6 @@ namespace BlazorSpa.Client.Services {
 		) {
 			_state = state;
 			_tokenService = tokenService;
-			_state.TokensExpireAt = DateTimeOffset.Now;
 		}
 
 		public void SetTokens( string accessToken, string refreshToken, DateTimeOffset expiresAt ) {
@@ -25,7 +24,9 @@ namespace BlazorSpa.Client.Services {
 		async Task<string> IAccessTokenProvider.GetJwtToken() {
 			if (_state.TokensExpireAt < DateTimeOffset.Now) {
 				var tokens = await _tokenService.RefreshToken( _state.AccessToken );
-				SetTokens( tokens.access_token, tokens.refresh_token, DateTimeOffset.Now.AddSeconds( tokens.expires_in ) );
+				if (tokens != default) {
+					SetTokens( tokens.access_token, tokens.refresh_token, DateTimeOffset.Now.AddSeconds( tokens.expires_in ) );
+				}
 			}
 			return _state.AccessToken;
 		}
