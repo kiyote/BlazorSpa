@@ -23,6 +23,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
+    <PackageReference Include="MimeTypes" Version="1.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0005" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.JSInterop;
 using Newtonsoft.Json;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace BlazorSpa.Client.Pages.User {
 	public class ProfileComponent : BlazorComponent {
@@ -45,6 +47,11 @@ namespace BlazorSpa.Client.Pages.User {
 			var encoding = descriptor[ 1 ];
 			var content = parts[ 1 ];
 			if (mimeType.StartsWith("image")) {
+				// Cheese it down to 64x64 for now
+				//using( var image = Image.Load( Convert.FromBase64String( content ) ) ) {
+				//	content = image.Clone( x => x.Resize( 64, 64 ) ).ToBase64String( ImageFormats.Png ).Split( ',' )[ 1 ];
+				//	mimeType = "image/png";
+				//}
 				Uploading = true;
 				StateHasChanged();
 				Avatar = await UserApiService.SetAvatar( mimeType, content );
