@@ -4,7 +4,7 @@ namespace BlazorSpa.Repository.Model {
 	public class User {
 
 		public User(
-			string id,
+			Id<User> id,
 			string name,
 			bool hasAvatar
 		) {
@@ -13,7 +13,7 @@ namespace BlazorSpa.Repository.Model {
 			HasAvatar = hasAvatar;
 		}
 
-		public string Id { get; }
+		public Id<User> Id { get; }
 
 		public string Name { get; }
 

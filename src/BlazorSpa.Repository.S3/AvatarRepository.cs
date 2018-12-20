@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Net;
 using System.IO;
 using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
+using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository.S3 {
 	public class AvatarRepository : IAvatarRepository {
 
+		private const int RetryCount = 3;
 		private readonly IAmazonS3 _client;
 		private readonly string _bucket;
 
@@ -18,23 +21,48 @@ namespace BlazorSpa.Repository.S3 {
 			_bucket = options.Bucket;
 		}
 
-		async Task<string> IAvatarRepository.SetAvatar(string userId, string contentType, string content) {
-			var key = $"avatar_{userId}";
-			var request = new PutObjectRequest() {
-				BucketName = _bucket,
-				Key = key,
-				ContentType = contentType,
-				InputStream = new MemoryStream( Convert.FromBase64String( content ) ),
-				CannedACL = S3CannedACL.PublicRead
-			};
-			var response = await _client.PutObjectAsync( request );
+		async Task<string> IAvatarRepository.SetAvatar( Id<User> userId, string contentType, string content) {
+			var key = GetKey( userId );
+			using( var ms = new MemoryStream( Convert.FromBase64String( content ) ) ) {
+				var request = new PutObjectRequest() {
+					BucketName = _bucket,
+					Key = key,
+					ContentType = contentType,
+					InputStream = ms,
+					CannedACL = S3CannedACL.PublicRead
+				};
+				bool isOk = false;
+				int attemptNumber = 1;
+				do {
+					var response = await _client.PutObjectAsync( request );
+					if (response.HttpStatusCode != HttpStatusCode.OK) {
+						Task.Delay( 100 * attemptNumber ).Wait();
+						attemptNumber += 1;
+					}
+				} while( !isOk && (attemptNumber <= RetryCount) );
 
-			return GenerateUrl( _bucket, key );
+				if (isOk) {
+					return GenerateUrl( _bucket, key );
+				}
+			}
+
+			return string.Empty;
 		}
 
-		Task<string> IAvatarRepository.GetAvatarUrl(string userId) {
-			var key = $"avatar_{userId}";
-			return Task.FromResult( GenerateUrl( _bucket, key ) );
+		Task<string> IAvatarRepository.GetAvatarUrl( Id<User> userId) {
+			return Task.FromResult( GenerateUrl( _bucket, GetKey(userId) ) );
+		}
+
+		async Task IAvatarRepository.DeleteAvatar( Id<User> userId ) {
+			var request = new DeleteObjectRequest {
+				BucketName = _bucket,
+				Key = GetKey(userId)
+			};
+			await _client.DeleteObjectAsync( request );
+		}
+
+		private static string GetKey(Id<User> userId) {
+			return $"avatar_{userId.Value}";
 		}
 
 		private static string GenerateUrl(string bucket, string key) {

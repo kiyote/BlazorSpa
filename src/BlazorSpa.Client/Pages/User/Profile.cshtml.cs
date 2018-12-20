@@ -27,11 +27,18 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public string Avatar { get; set; }
 
+		public bool Changing { get; set; }
+
 		protected override async Task OnInitAsync() {
 			var response = await UserApiService.GetUserInformation();
 			UserId = response.Id;
 			Username = response.Name;
 			Avatar = response.AvatarUrl;
+		}
+
+		public void ChangeAvatar() {
+			Changing = true;
+			StateHasChanged();
 		}
 
 		public async Task UploadFile() {
@@ -46,6 +53,16 @@ namespace BlazorSpa.Client.Pages.User {
 			var mimeType = descriptor[ 0 ];
 			var encoding = descriptor[ 1 ];
 			var content = parts[ 1 ];
+
+			/*
+			using( var ms = new System.IO.MemoryStream( 10000 ) ) {
+				using( var gzs = new System.IO.Compression.GZipStream( ms, System.IO.Compression.CompressionLevel.Optimal ) ) {
+					var bytes = System.Text.Encoding.UTF8.GetBytes( "Content" );
+					gzs.Write( bytes, 0, bytes.Length );
+				}
+			}
+			*/
+			
 			if (mimeType.StartsWith("image")) {
 				// Cheese it down to 64x64 for now
 				//using( var image = Image.Load( Convert.FromBase64String( content ) ) ) {
@@ -56,6 +73,7 @@ namespace BlazorSpa.Client.Pages.User {
 				StateHasChanged();
 				Avatar = await UserApiService.SetAvatar( mimeType, content );
 				Uploading = false;
+				Changing = false;
 				StateHasChanged();
 			}
 		}

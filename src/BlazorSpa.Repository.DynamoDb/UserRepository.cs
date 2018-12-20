@@ -44,16 +44,16 @@ namespace BlazorSpa.Repository.DynamoDb {
 			}
 
 			return new User(
-				userRecord.UserId,
+				new Id<User>(userRecord.UserId),
 				userRecord.Name,
 				userRecord.HasAvatar);
 		}
 
-		async Task<User> IUserRepository.AddUser( string userId, string username ) {
+		async Task<User> IUserRepository.AddUser( Id<User> userId, string username ) {
 			var authentication = new AuthenticationRecord {
 				Username = username,
 				Status = UserRecord.Active,
-				UserId = userId
+				UserId = userId.Value
 			};
 			await _context.SaveAsync( authentication );
 
@@ -70,27 +70,27 @@ namespace BlazorSpa.Repository.DynamoDb {
 				false);
 		}
 
-		async Task<User> IUserRepository.GetUser( string userId ) {
+		async Task<User> IUserRepository.GetUser( Id<User> userId ) {
 			var userRecord = await GetById( userId );
 
 			return new User(
-				userRecord.UserId,
+				new Id<User>(userRecord.UserId),
 				userRecord.Name,
 				userRecord.HasAvatar);
 		}
 
-		async Task<User> IUserRepository.UpdateAvatarStatus(string userId, bool hasAvatar) {
+		async Task<User> IUserRepository.UpdateAvatarStatus( Id<User> userId, bool hasAvatar) {
 			var userRecord = await GetById( userId );
 			userRecord.HasAvatar = true;
 			await _context.SaveAsync( userRecord );
 
 			return new User(
-				userRecord.UserId,
+				new Id<User>(userRecord.UserId),
 				userRecord.Name,
 				userRecord.HasAvatar );
 		}
 
-		private async Task<UserRecord> GetById( string userId ) {
+		private async Task<UserRecord> GetById( Id<User> userId ) {
 			var search = _context.QueryAsync<UserRecord>(
 				userId,
 				QueryOperator.Equal,

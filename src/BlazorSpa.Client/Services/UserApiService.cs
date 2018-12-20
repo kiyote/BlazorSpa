@@ -25,13 +25,13 @@ namespace BlazorSpa.Client.Services {
 		async Task IUserApiService.RecordLogin() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user/login",
-				( s ) => { return JsonConvert.DeserializeObject<User>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<ApiUser>( s ); } );
 		}
 
-		async Task<User> IUserApiService.GetUserInformation() {
+		async Task<ApiUser> IUserApiService.GetUserInformation() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user",
-				( s ) => { return JsonConvert.DeserializeObject<User>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<ApiUser>( s ); } );
 
 			return response;
 		}

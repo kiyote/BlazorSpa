@@ -31,7 +31,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<User>> GetUserInformation() {
+		public async Task<ActionResult<ApiUser>> GetUserInformation() {
 			var result = await _userManager.GetUser( _contextInformation.UserId );
 
 			if( result != default ) {

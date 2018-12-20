@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository {
 	public interface IAvatarRepository {
-		Task<string> SetAvatar(string userId, string contentType, string content);
+		Task<string> SetAvatar( Id<User> userId, string contentType, string content);
 
-		Task<string> GetAvatarUrl( string userId );
+		Task<string> GetAvatarUrl( Id<User> userId );
+
+		Task DeleteAvatar( Id<User> userId );
 	}
 }

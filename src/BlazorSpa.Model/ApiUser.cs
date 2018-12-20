@@ -2,10 +2,10 @@
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Model {
-	public class User {
+	public class ApiUser {
 
 		[JsonConstructor]
-		public User(
+		public ApiUser(
 			string id,
 			string name,
 			string avatarUrl
@@ -20,9 +20,5 @@ namespace BlazorSpa.Model {
 		public string Name { get; }
 
 		public string AvatarUrl { get; }
-
-		public static string CreateId() {
-			return Guid.NewGuid().ToString( "N" );
-		}
 	}
 }
