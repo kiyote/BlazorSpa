@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Pages.Auth;
 using Microsoft.AspNetCore.Blazor.Components;
 
@@ -13,6 +14,8 @@ namespace BlazorSpa.Client.Layouts {
 		[Parameter] protected bool IsAuthenticated { get; set; }
 
 		[Inject] private IConfig _config { get; set; }
+
+		protected NavBarItem NavItemLogIn { get; set; }
 
 		public string AuthUrl {
 			get {

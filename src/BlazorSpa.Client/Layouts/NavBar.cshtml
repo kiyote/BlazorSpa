@@ -1,15 +1,23 @@
 ﻿@inherits NavBarComponent
 @using BlazorSpa.Client.Pages.User
 
-<div class="ml-md-auto">
-    @if( !IsAuthenticated ) {
-        <NavLink class="nav-link" href=@AuthUrl>
-            Log In
-        </NavLink>
-    } else {
-        <NavLink class="nav-link" href="@ProfileComponent.Url">
-            <i class="fa fa-user" style="font-size:1em;padding-right:0.5em"></i>@Username
-        </NavLink>
-    }
-
+<span class="align-top nav-bar-top-band" />
+<div class="top-row px-4 nav-bar-shadow">
+    <div class="ml-md-auto">
+        @if( !IsAuthenticated ) {
+            <NavBarItem IsSelected=@false ref="NavItemLogIn">
+                <a class="nav-link" 
+                    href=@AuthUrl 
+                    onmouseover=@(() => { NavItemLogIn.IsSelected = true; }) 
+                    onmouseout=@(() => { NavItemLogIn.IsSelected = false; })>
+                    Log In
+                </a>
+            </NavBarItem>
+        } else {
+            <NavLink class="nav-link" href="@ProfileComponent.Url">
+                <i class="fa fa-user" style="font-size:1em;padding-right:0.5em"></i>@Username
+            </NavLink>
+        }
+    </div>
 </div>
+

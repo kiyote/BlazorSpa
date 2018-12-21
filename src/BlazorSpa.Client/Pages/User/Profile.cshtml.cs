@@ -4,9 +4,6 @@ using BlazorSpa.Client.Services;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.JSInterop;
-using Newtonsoft.Json;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace BlazorSpa.Client.Pages.User {
 	public class ProfileComponent : BlazorComponent {

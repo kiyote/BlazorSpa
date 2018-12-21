@@ -1,17 +1,13 @@
 ﻿@inherits MainLayoutComponent
 
 <div class="sidebar">
-    <NavMenu 
-        IsAuthenticated=@AppState.IsAuthenticated
-        Title=BlazorSpa />
+    <NavMenu IsAuthenticated=@AppState.IsAuthenticated
+                Title=BlazorSpa />
 </div>
 
 <div class="main">
-    <div class="top-row px-4">
-        <NavBar 
-            IsAuthenticated=@AppState.IsAuthenticated 
+    <NavBar IsAuthenticated=@AppState.IsAuthenticated
             UserName=@AppState.Username />
-    </div>
 
     <div class="content px-4">
         @Body

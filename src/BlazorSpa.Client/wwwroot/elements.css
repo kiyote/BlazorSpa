@@ -1,0 +1,11 @@
+﻿.nav-bar-top-band {
+	border-top-color: #006FBF;
+	border-top-style: solid;
+	border-top-width: 4px;
+	display: block;
+	width: 100%;
+}
+
+.nav-bar-shadow {
+	box-shadow: 0px 4px 2px 0px lightgray;
+}
