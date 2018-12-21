@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 using BlazorSpa.Repository.Model;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace BlazorSpa.Repository.S3 {
 	public class AvatarRepository : IAvatarRepository {
@@ -22,6 +24,13 @@ namespace BlazorSpa.Repository.S3 {
 		}
 
 		async Task<string> IAvatarRepository.SetAvatar( Id<User> userId, string contentType, string content) {
+			using( var image = Image.Load( Convert.FromBase64String( content) ) ) {
+				if( ( image.Width != 64 ) || ( image.Height != 64 ) ) {
+					content = image.Clone( x => x.Resize( 64, 64 ) ).ToBase64String( ImageFormats.Png ).Split( ',' )[ 1 ];
+					contentType = "image/png";
+				}
+			}
+
 			var key = GetKey( userId );
 			using( var ms = new MemoryStream( Convert.FromBase64String( content ) ) ) {
 				var request = new PutObjectRequest() {

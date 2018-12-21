@@ -3,7 +3,11 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	internal sealed class AuthenticationRecord {
+	public class AuthenticationRecord {
+
+		public AuthenticationRecord() {
+		}
+
 		[DynamoDBHashKey( "PK" )]
 		public string Username { get; set; }
 

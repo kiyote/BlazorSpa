@@ -3,9 +3,12 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	internal sealed class UserRecord {
+	public class UserRecord {
 
 		public readonly static string Active = "Active";
+
+		public UserRecord() {
+		}
 
 		[DynamoDBHashKey("PK")]
 		public string UserId { get; set; }

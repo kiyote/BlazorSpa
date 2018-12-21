@@ -30,7 +30,7 @@ namespace BlazorSpa.Server.Middleware {
 
 				var user = await _userRepository.GetByUsername( username );
 				if (user != default) {
-					httpContext.Items[ "UserId" ] = user.Id;
+					httpContext.Items[ "UserId" ] = user.Id.Value;
 				}
 			}
 

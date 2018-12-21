@@ -1,6 +1,7 @@
 ﻿using System;
 using Amazon;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.Runtime;
 using Amazon.Runtime.CredentialManagement;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return services;
 		}
 
-		public static IAmazonDynamoDB CreateProvider( DynamoDbOptions options ) {
+		public static IDynamoDBContext CreateProvider( DynamoDbOptions options ) {
 			var chain = new CredentialProfileStoreChain( options.CredentialsFile );
 			if( !chain.TryGetAWSCredentials( options.CredentialsProfile, out AWSCredentials credentials ) ) {
 				throw new InvalidOperationException();
@@ -32,7 +33,8 @@ namespace BlazorSpa.Repository.DynamoDb {
 			config.ServiceURL = options.ServiceUrl;
 			config.LogMetrics = true;
 			config.DisableLogging = false;
-			return new AmazonDynamoDBClient( roleCredentials, config );
+			var client = new AmazonDynamoDBClient( roleCredentials, config );
+			return new DynamoDBContext( client );
 		}
 	}
 }

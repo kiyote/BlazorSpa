@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using BlazorSpa.Repository.Model;
@@ -14,9 +13,9 @@ namespace BlazorSpa.Repository.DynamoDb {
 		private readonly IDynamoDBContext _context;
 
 		public UserRepository(
-			IAmazonDynamoDB client
+			IDynamoDBContext context
 		) {
-			_context = new DynamoDBContext( client );
+			_context = context;
 		}
 
 		async Task<User> IUserRepository.GetByUsername( string username ) {
@@ -92,7 +91,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 
 		private async Task<UserRecord> GetById( Id<User> userId ) {
 			var search = _context.QueryAsync<UserRecord>(
-				userId,
+				userId.Value,
 				QueryOperator.Equal,
 				new List<object>() { UserRecord.Active }
 			);
