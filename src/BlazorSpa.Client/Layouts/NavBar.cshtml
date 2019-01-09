@@ -1,28 +1,46 @@
 ﻿@inherits NavBarComponent
 @using BlazorSpa.Client.Pages.User
+@using BlazorSpa.Client.Pages.Chat
 
 <span class="align-top nav-bar-top-band" />
-<div class="top-row px-4 nav-bar-shadow">
-    <div class="ml-md-auto">
-        @if( !IsAuthenticated ) {
-            <NavBarItem IsSelected=@false ref="NavItemLogIn">
-                <a class="nav-link"
-                   href="@AuthUrl"
-                   onmouseover=@(() => { NavItemLogIn.IsSelected = true; })
-                   onmouseout=@(() => { NavItemLogIn.IsSelected = false; })>
-                    Log In
-                </a>
-            </NavBarItem>
-        } else {
-            <NavBarItem IsSelected=@false ref="NavItemProfile">
-                <a class="nav-link"
-                    href="@ProfileComponent.Url"
-                    onmouseover=@(() => { NavItemProfile.IsSelected = true; })
-                    onmouseout=@(() => { NavItemProfile.IsSelected = false; })>
-                    <i class="fa fa-user" style="font-size:1em;padding-right:0.5em"></i>@Username
-                </a>
-            </NavBarItem>
-        }
-    </div>
-</div>
-
+<nav class="navbar navbar-expand-md navbar-light bg-white mb-4 nav-bar-shadow">
+    <a class="navbar-brand" href="/" onclick=@(() => { SetActive( default ); })>BlazorSpa</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <CascadingValue Value=@this>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                @if( IsAuthenticated ) {
+                    <li class="nav-item">
+                        <NavBarItem ref="NavItemChat">
+                            <a class="nav-link"
+                               href="@ChatComponent.Url"><i class="fa fa-comments" style="font-size:1.5em;padding-right:0.5em"></i>Chat</a>
+                        </NavBarItem>
+                    </li>
+                }
+                <li class="nav-item">
+                    <NavBarItem ref="NavItemCounter">
+                        <a class="nav-link"
+                           href="/counter">Counter</a>
+                    </NavBarItem>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    @if( !IsAuthenticated ) {
+                        <NavBarItem ref="NavItemLogIn">
+                            <a class="nav-link"
+                               href="@AuthUrl"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>Log In</a>
+                        </NavBarItem>
+                    } else {
+                        <NavBarItem ref="NavItemProfile">
+                            <a class="nav-link"
+                               href="@ProfileComponent.Url"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>@Username</a>
+                        </NavBarItem>
+                    }
+                </li>
+            </ul>
+        </div>
+    </CascadingValue>
+</nav>

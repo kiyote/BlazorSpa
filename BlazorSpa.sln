@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.Dynamo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.S3", "src\BlazorSpa.Repository.S3\BlazorSpa.Repository.S3.csproj", "{468F74A9-CCEC-4F17-825B-69E853B8DB2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSpa.Repository.S3.Tests", "tests\BlazorSpa.Repository.S3.Tests\BlazorSpa.Repository.S3.Tests.csproj", "{1EA4D850-AB58-4CEF-851C-2BC85AB15F57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.S3.Tests", "tests\BlazorSpa.Repository.S3.Tests\BlazorSpa.Repository.S3.Tests.csproj", "{1EA4D850-AB58-4CEF-851C-2BC85AB15F57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
