@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorSpa.Client.Components {
-	public class NavBarItemComponent: BlazorComponent {
+	public class NavBarItemComponent : BlazorComponent {
 
 		[Parameter]
 		protected RenderFragment ChildContent { get; set; }

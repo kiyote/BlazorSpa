@@ -21,5 +21,8 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 
 		[DynamoDBProperty("HasAvatar")]
 		public bool HasAvatar { get; set; }
+
+		[DynamoDBProperty("LastLogin")]
+		public DateTime LastLogin { get; set; }
 	}
 }

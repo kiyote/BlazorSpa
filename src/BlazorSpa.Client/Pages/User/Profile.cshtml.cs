@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Services;
 using Microsoft.AspNetCore.Blazor;
@@ -26,11 +27,20 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public bool Changing { get; set; }
 
+		public string LastLogin { get; set; }
+
 		protected override async Task OnInitAsync() {
 			var response = await UserApiService.GetUserInformation();
+
+			// We have to do this because right now Blazor has no concept
+			// of the users culture info or timezone
+			var displayDate = DateTimeOffset.Parse( response.LastLogin ).ToOffset( TimeSpan.FromHours( -5 ) ).ToString( "F", CultureInfo.GetCultureInfo( "en-US" ) ); ;
+			//var displayDate = DateTimeOffset.Parse( response.LastLogin ).ToLocalTime().ToString( "F" );
+
 			UserId = response.Id;
 			Username = response.Name;
 			Avatar = response.AvatarUrl;
+			LastLogin = displayDate;
 		}
 
 		public void ChangeAvatar() {

@@ -24,13 +24,17 @@ namespace BlazorSpa.Server.Managers {
 		public async Task<ApiUser> RecordLogin( string username ) {
 			var authenticationInformation = await _authenticationRepository.GetUserInformation( username );
 			var user = await _userRepository.GetByUsername( username );
+			DateTimeOffset lastLogin = DateTimeOffset.Now;
 
 			// If they don't have a local record, create one
 			if( user == default ) {
 				user = await _userRepository.AddUser(
 					new Id<User>(),
-					authenticationInformation.Username
+					authenticationInformation.Username,
+					lastLogin
 				);
+			} else {
+				await _userRepository.SetLastLogin( user.Id, lastLogin );
 			}
 
 			var avatarUrl = user.HasAvatar ? await _avatarRepository.GetAvatarUrl( user.Id ) : default;
@@ -38,7 +42,8 @@ namespace BlazorSpa.Server.Managers {
 			return new ApiUser(
 				user.Id.Value,
 				user.Name,
-				avatarUrl);
+				avatarUrl,
+				user.LastLogin.ToString( "O" ) );
 		}
 
 		public async Task<ApiUser> GetUser( string userId ) {
@@ -49,7 +54,8 @@ namespace BlazorSpa.Server.Managers {
 			return new ApiUser(
 				user.Id.Value,
 				user.Name,
-				avatarUrl );
+				avatarUrl,
+				user.LastLogin.ToString( "O" ) );
 		}
 
 		public async Task<string> SetAvatar( string userId, string contentType, string content ) {

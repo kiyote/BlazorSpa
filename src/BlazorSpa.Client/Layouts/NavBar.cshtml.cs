@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Pages.Auth;
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorSpa.Client.Layouts {
-    public class NavBarComponent : BlazorComponent
-    {
+	public class NavBarComponent : BlazorComponent {
 		private NavBarItemComponent _selectedItem;
 
 		[Parameter] protected string Username { get; set; }
@@ -27,19 +21,18 @@ namespace BlazorSpa.Client.Layouts {
 
 		protected NavBarItemComponent NavItemCounter { get; set; }
 
-		public void SetActive(NavBarItemComponent item) {
-			if (item != _selectedItem) {
-				if (_selectedItem != default) {
+		public void SetActive( NavBarItemComponent item ) {
+			if( item != _selectedItem ) {
+				if( _selectedItem != default ) {
 					_selectedItem.IsActive = false;
 				}
 				_selectedItem = item;
-				if (_selectedItem != default) {
+				if( _selectedItem != default ) {
 					_selectedItem.IsActive = true;
 				}
 				StateHasChanged();
 			}
 		}
-
 
 		public string AuthUrl {
 			get {

@@ -45,10 +45,11 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new User(
 				new Id<User>(userRecord.UserId),
 				userRecord.Name,
-				userRecord.HasAvatar);
+				userRecord.HasAvatar,
+				new DateTimeOffset(userRecord.LastLogin));
 		}
 
-		async Task<User> IUserRepository.AddUser( Id<User> userId, string username ) {
+		async Task<User> IUserRepository.AddUser( Id<User> userId, string username, DateTimeOffset lastLogin ) {
 			var authentication = new AuthenticationRecord {
 				Username = username,
 				Status = UserRecord.Active,
@@ -59,14 +60,16 @@ namespace BlazorSpa.Repository.DynamoDb {
 			var user = new UserRecord {
 				UserId = authentication.UserId,
 				Status = UserRecord.Active,
-				Name = username
+				Name = username,
+				LastLogin = lastLogin.UtcDateTime
 			};
 			await _context.SaveAsync( user );
 
 			return new User( 
 				userId, 
 				username,
-				false);
+				false,
+				lastLogin);
 		}
 
 		async Task<User> IUserRepository.GetUser( Id<User> userId ) {
@@ -75,7 +78,8 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new User(
 				new Id<User>(userRecord.UserId),
 				userRecord.Name,
-				userRecord.HasAvatar);
+				userRecord.HasAvatar,
+				new DateTimeOffset(userRecord.LastLogin));
 		}
 
 		async Task<User> IUserRepository.UpdateAvatarStatus( Id<User> userId, bool hasAvatar) {
@@ -86,7 +90,14 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new User(
 				new Id<User>(userRecord.UserId),
 				userRecord.Name,
-				userRecord.HasAvatar );
+				userRecord.HasAvatar,
+				new DateTimeOffset(userRecord.LastLogin));
+		}
+
+		async Task IUserRepository.SetLastLogin(Id<User> userId, DateTimeOffset lastLogin) {
+			var userRecord = await GetById( userId );
+			userRecord.LastLogin = lastLogin.UtcDateTime;
+			await _context.SaveAsync( userRecord );
 		}
 
 		private async Task<UserRecord> GetById( Id<User> userId ) {

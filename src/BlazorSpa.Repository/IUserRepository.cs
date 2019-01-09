@@ -7,10 +7,12 @@ namespace BlazorSpa.Repository {
 
 		Task<User> GetByUsername( string username );
 
-		Task<User> AddUser( Id<User> userId, string username );
+		Task<User> AddUser( Id<User> userId, string username, DateTimeOffset lastLogin );
 
 		Task<User> GetUser( Id<User> userId );
 
 		Task<User> UpdateAvatarStatus( Id<User> userId, bool hasAvatar );
+
+		Task SetLastLogin( Id<User> userId, DateTimeOffset lastLogin );
 	}
 }

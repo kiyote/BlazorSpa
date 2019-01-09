@@ -6,10 +6,10 @@ namespace BlazorSpa.Client {
 
 		private readonly SessionStorage _storage;
 
-		public AppState(SessionStorage storage) {
+		public AppState( SessionStorage storage ) {
 			_storage = storage;
 
-			if (_storage["TokensExpireAt"] == default) {
+			if( _storage[ "TokensExpireAt" ] == default ) {
 				_storage[ "TokensExpireAt" ] = DateTimeOffset.MinValue.ToString( "o" );
 			}
 		}
@@ -50,7 +50,7 @@ namespace BlazorSpa.Client {
 			}
 			set {
 				_storage[ "TokensExpireAt" ] = value.ToString( "o" );
-				OnStateChanged?.Invoke(this, EventArgs.Empty);
+				OnStateChanged?.Invoke( this, EventArgs.Empty );
 			}
 		}
 

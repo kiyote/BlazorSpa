@@ -4,8 +4,6 @@ using BlazorSpa.Model;
 using BlazorSpa.Server.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace BlazorSpa.Server.Controllers {
 	[Authorize]
@@ -23,11 +21,11 @@ namespace BlazorSpa.Server.Controllers {
 			_contextInformation = contextInformation;
 		}
 
-		[HttpGet("login")]
+		[HttpGet( "login" )]
 		public async Task<ActionResult> RecordLogin() {
 			var user = await _userManager.RecordLogin( _contextInformation.Username );
 
-			return Ok(user);
+			return Ok( user );
 		}
 
 		[HttpGet]
@@ -42,11 +40,11 @@ namespace BlazorSpa.Server.Controllers {
 			}
 		}
 
-		[HttpPost("avatar")]
-		public async Task<ActionResult<string>> SetAvatar([FromBody] SetAvatarRequest request) {
+		[HttpPost( "avatar" )]
+		public async Task<ActionResult<string>> SetAvatar( [FromBody] SetAvatarRequest request ) {
 
 			var url = await _userManager.SetAvatar( _contextInformation.UserId, request.ContentType, request.Content );
-			return Ok(new SetAvatarResponse() { Url = url });
+			return Ok( new SetAvatarResponse() { Url = url } );
 		}
 	}
 }
