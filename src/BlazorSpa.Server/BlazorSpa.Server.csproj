@@ -37,6 +37,7 @@
     <ProjectReference Include="..\BlazorSpa.Client\BlazorSpa.Client.csproj" />
     <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Model.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.S3\BlazorSpa.Repository.S3.csproj" />
+    <ProjectReference Include="..\BlazorSpa.Service\BlazorSpa.Service.csproj" />
   </ItemGroup>
 
 </Project>

@@ -40,13 +40,14 @@ namespace BlazorSpa.Repository.S3 {
 					InputStream = ms,
 					CannedACL = S3CannedACL.PublicRead
 				};
-				bool isOk = false;
+				bool isOk = true;
 				int attemptNumber = 1;
 				do {
 					var response = await _client.PutObjectAsync( request );
 					if (response.HttpStatusCode != HttpStatusCode.OK) {
 						Task.Delay( 100 * attemptNumber ).Wait();
 						attemptNumber += 1;
+						isOk = false;
 					}
 				} while( !isOk && (attemptNumber <= RetryCount) );
 

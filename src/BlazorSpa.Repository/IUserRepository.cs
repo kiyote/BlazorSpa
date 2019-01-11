@@ -13,6 +13,6 @@ namespace BlazorSpa.Repository {
 
 		Task<User> UpdateAvatarStatus( Id<User> userId, bool hasAvatar );
 
-		Task SetLastLogin( Id<User> userId, DateTimeOffset lastLogin );
+		Task<User> SetLastLogin( Id<User> userId, DateTimeOffset lastLogin );
 	}
 }

@@ -9,12 +9,14 @@ namespace BlazorSpa.Model {
 			string id,
 			string name,
 			string avatarUrl,
-			string lastLogin
+			string lastLogin,
+			string previousLogin
 		) {
 			Id = id;
 			Name = name;
 			AvatarUrl = avatarUrl;
 			LastLogin = lastLogin;
+			PreviousLogin = previousLogin;
 		}
 
 		public string Id { get; }
@@ -24,5 +26,7 @@ namespace BlazorSpa.Model {
 		public string AvatarUrl { get; }
 
 		public string LastLogin { get; }
+
+		public string PreviousLogin { get; set; }
 	}
 }

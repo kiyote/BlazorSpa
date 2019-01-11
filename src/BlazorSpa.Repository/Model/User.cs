@@ -7,12 +7,14 @@ namespace BlazorSpa.Repository.Model {
 			Id<User> id,
 			string name,
 			bool hasAvatar,
-			DateTimeOffset lastLogin
+			DateTimeOffset lastLogin,
+			DateTimeOffset? previousLogin
 		) {
 			Id = id;
 			Name = name;
 			HasAvatar = hasAvatar;
 			LastLogin = lastLogin;
+			PreviousLogin = previousLogin;
 		}
 
 		public Id<User> Id { get; }
@@ -22,6 +24,8 @@ namespace BlazorSpa.Repository.Model {
 		public bool HasAvatar { get; }
 
 		public DateTimeOffset LastLogin { get; }
+
+		public DateTimeOffset? PreviousLogin { get; }
 
 		public static string CreateId() {
 			return Guid.NewGuid().ToString( "N" );
@@ -39,7 +43,8 @@ namespace BlazorSpa.Repository.Model {
 			return Id.Equals( other.Id )
 				&& string.Equals( Name, other.Name, StringComparison.Ordinal )
 				&& ( HasAvatar == other.HasAvatar )
-				&& ( LastLogin.Equals( other.LastLogin ) );
+				&& ( LastLogin.Equals( other.LastLogin ) )
+				&& ( PreviousLogin.Equals( other.PreviousLogin ) );
 		}
 
 		public override bool Equals( object obj ) {
@@ -52,6 +57,7 @@ namespace BlazorSpa.Repository.Model {
 				result = ( result * 31 ) + Name.GetHashCode();
 				result = ( result * 31 ) + HasAvatar.GetHashCode();
 				result = ( result * 31 ) + LastLogin.GetHashCode();
+				result = ( result * 31 ) + PreviousLogin.GetHashCode();
 
 				return result;
 			}

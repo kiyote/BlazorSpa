@@ -12,6 +12,7 @@ using BlazorSpa.Repository.S3;
 using BlazorSpa.Server.Hubs;
 using BlazorSpa.Server.Managers;
 using BlazorSpa.Server.Middleware;
+using BlazorSpa.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Blazor.Server;
 using Microsoft.AspNetCore.Builder;
@@ -85,6 +86,7 @@ namespace BlazorSpa.Server {
 			services.AddSingleton<IAvatarRepository, AvatarRepository>();
 			services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<IIdentificationService, IdentificationService>();
 			services.AddSingleton<IContextInformation, ContextInformation>();
 			services.AddSingleton<UserManager>();
 		}

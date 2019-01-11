@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.S3", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.S3.Tests", "tests\BlazorSpa.Repository.S3.Tests\BlazorSpa.Repository.S3.Tests.csproj", "{1EA4D850-AB58-4CEF-851C-2BC85AB15F57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSpa.Service", "src\BlazorSpa.Service\BlazorSpa.Service.csproj", "{E57A141E-D30E-4B99-ACB9-414E15230D3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{1EA4D850-AB58-4CEF-851C-2BC85AB15F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EA4D850-AB58-4CEF-851C-2BC85AB15F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EA4D850-AB58-4CEF-851C-2BC85AB15F57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E57A141E-D30E-4B99-ACB9-414E15230D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E57A141E-D30E-4B99-ACB9-414E15230D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E57A141E-D30E-4B99-ACB9-414E15230D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E57A141E-D30E-4B99-ACB9-414E15230D3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{C9F0A995-2B8D-4FA5-9A31-B17BD2FE1E0E} = {8607A33D-D40A-4954-9578-93FF8CD98299}
 		{468F74A9-CCEC-4F17-825B-69E853B8DB2F} = {C37E0E83-054D-4D35-B936-77A01065FBE6}
 		{1EA4D850-AB58-4CEF-851C-2BC85AB15F57} = {8607A33D-D40A-4954-9578-93FF8CD98299}
+		{E57A141E-D30E-4B99-ACB9-414E15230D3A} = {C37E0E83-054D-4D35-B936-77A01065FBE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00F989B3-623D-4C22-8546-03222C9E54AF}
