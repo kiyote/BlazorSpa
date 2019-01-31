@@ -6,6 +6,7 @@ using BlazorSpa.Service;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.Primitives;
 using Image = BlazorSpa.Repository.Model.Image;
 using LaborImage = SixLabors.ImageSharp.Image;
 
@@ -39,7 +40,11 @@ namespace BlazorSpa.Server.Managers {
 		public async Task<string> SetAvatar( string userId, string contentType, string content ) {
 			using( var image = LaborImage.Load( Convert.FromBase64String( content ) ) ) {
 				if( ( image.Width != 64 ) || ( image.Height != 64 ) ) {
-					content = image.Clone( x => x.Resize( 64, 64 ) ).ToBase64String( PngFormat.Instance ).Split( ',' )[ 1 ];
+					var options = new ResizeOptions() {
+						Mode = ResizeMode.Max,
+						Size = new Size( 64, 64 )
+					};
+					content = image.Clone( x => x.Resize( options ) ).ToBase64String( PngFormat.Instance ).Split( ',' )[ 1 ];
 					contentType = "image/png";
 				}
 			}
@@ -65,6 +70,7 @@ namespace BlazorSpa.Server.Managers {
 			string result = default;
 
 			if( user.HasAvatar ) {
+				// Not a mistake, we're reusing the userId as the imageId for their avatar
 				result = ( await _imageService.Get( new Id<Image>( user.Id.Value ) ) )?.Url;
 			}
 

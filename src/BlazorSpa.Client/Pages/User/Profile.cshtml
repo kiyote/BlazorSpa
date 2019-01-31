@@ -3,31 +3,39 @@
 @layout MainLayout
 
 <div class="table">
-    <div class="row">
-        <div class="col-sm-1">
-            @if( string.IsNullOrWhiteSpace( Avatar ) ) {
-                <i class="fa fa-user" style="font-size:4em"></i>
-            } else {
-                <img src="@Avatar" />
-            }
-        </div>
-        <div class="col-sm-11">
-            <div>UserId: @UserId</div>
-            <div>Username: @Username</div>
-            <div>Last Login: @LastLogin</div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            @if( Changing ) {
-                @if( Uploading ) {
-                    <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+    @if( !string.IsNullOrWhiteSpace( UserId ) ) {
+        <div class="row">
+            <div class="col-sm-1">
+                @if( string.IsNullOrWhiteSpace( Avatar ) ) {
+                    <i class="fa fa-user" style="font-size:4em"></i>
                 } else {
-                    <input type="file" onchange="@UploadFile" ref="FileUploadRef" />
+                    <img src="@Avatar" />
                 }
-            } else {
-                <button type="button" class="btn btn-sm btn-primary" onclick=@ChangeAvatar>Change</button>
-            }
+            </div>
+            <div class="col-sm-11">
+                <div>UserId: @UserId</div>
+                <div>Username: @Username</div>
+                <div>Last Login: @LastLogin</div>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-sm-12">
+                @if( Changing ) {
+                    @if( Uploading ) {
+                        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+                    } else {
+                        <input type="file" onchange="@UploadFile" ref="FileUploadRef" />
+                    }
+                } else {
+                    <button type="button" class="btn btn-sm btn-primary" onclick=@ChangeAvatar>Change</button>
+                }
+            </div>
+        </div>
+    } else {
+        <div class="row">
+            <div class="col-sm-12">
+                <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+            </div>
+        </div>
+    }
 </div>
