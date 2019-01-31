@@ -8,7 +8,7 @@ using BlazorSpa.Repository.Model;
 using BlazorSpa.Repository.DynamoDb.Model;
 
 namespace BlazorSpa.Repository.DynamoDb {
-	public class UserRepository : IUserRepository {
+	public sealed class UserRepository : IUserRepository {
 
 		private readonly IDynamoDBContext _context;
 

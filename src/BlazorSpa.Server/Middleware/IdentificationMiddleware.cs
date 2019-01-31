@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
 namespace BlazorSpa.Server.Middleware {
-	public class IdentificationMiddleware {
+	public sealed class IdentificationMiddleware {
 
 		private readonly RequestDelegate _next;
 		private readonly IUserRepository _userRepository;

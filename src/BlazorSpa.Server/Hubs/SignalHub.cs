@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace BlazorSpa.Server.Hubs {
 	[Authorize( JwtBearerDefaults.AuthenticationScheme )]
-	public class SignalHub : Hub {
+	public sealed class SignalHub : Hub {
 
 		public readonly static string Url = "/signalhub";
 

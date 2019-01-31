@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	public class UserRecord {
+	public sealed class UserRecord {
 
 		public readonly static string UserItemType = "User";
 		public readonly static string Active = "Active";

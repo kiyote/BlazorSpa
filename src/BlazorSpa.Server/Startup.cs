@@ -26,7 +26,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 
 namespace BlazorSpa.Server {
-	public class Startup {
+	public sealed class Startup {
 
 		public Startup( IConfiguration configuration ) {
 			Configuration = configuration;

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlazorSpa.Server.Controllers {
 	[Authorize]
 	[Route( "api/user" )]
-	public class UserController : Controller {
+	public sealed class UserController : Controller {
 
 		private readonly UserManager _userManager;
 		private readonly IContextInformation _contextInformation;

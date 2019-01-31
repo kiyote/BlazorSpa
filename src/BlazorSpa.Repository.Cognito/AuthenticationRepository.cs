@@ -6,7 +6,8 @@ using Amazon.CognitoIdentityProvider.Model;
 using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository.Cognito {
-	public class AuthenticationRepository : IAuthenticationRepository {
+	public sealed class AuthenticationRepository : IAuthenticationRepository {
+
 		private readonly IAmazonCognitoIdentityProvider _client;
 		private readonly CognitoOptions _cognitoOptions;
 

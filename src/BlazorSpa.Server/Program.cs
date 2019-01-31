@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting.WindowsServices;
 using Microsoft.Extensions.Configuration;
 
 namespace BlazorSpa.Server {
-	public class Program {
+	public sealed class Program {
 		public static void Main( string[] args ) {
 			var isService = !( Debugger.IsAttached || args.Contains( "--console" ) );
 			IWebHostBuilder builder = BuildWebHost( args );

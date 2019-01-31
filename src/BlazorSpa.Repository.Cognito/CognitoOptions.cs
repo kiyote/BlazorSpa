@@ -1,5 +1,6 @@
 ﻿namespace BlazorSpa.Repository.Cognito {
-	public class CognitoOptions {
+	public sealed class CognitoOptions {
+
 		public string CredentialsProfile { get; set; }
 
 		public string UserPoolId { get; set; }

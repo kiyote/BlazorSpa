@@ -1,5 +1,6 @@
 ﻿namespace BlazorSpa.Repository.DynamoDb {
-	public class DynamoDbOptions {
+	public sealed class DynamoDbOptions {
+
 		public string CredentialsProfile { get; set; }
 
 		public string RegionEndpoint { get; set; }

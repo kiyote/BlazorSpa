@@ -1,7 +1,8 @@
 ﻿using System;
 
 namespace BlazorSpa.Repository.S3 {
-	public class S3Options {
+	public sealed class S3Options {
+
 		public string CredentialsFile { get; set; }
 
 		public string CredentialsProfile { get; set; }

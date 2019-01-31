@@ -3,7 +3,7 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	public class AuthenticationRecord {
+	public sealed class AuthenticationRecord {
 
 		public static readonly string AuthenticationItemType = "Authentication";
 		public static readonly string StatusActive = "Active";
