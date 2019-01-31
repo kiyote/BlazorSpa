@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace BlazorSpa.Repository.Model {
-	public class User : IEquatable<User> {
+	public sealed class User : IEquatable<User> {
 
 		public User(
 			Id<User> id,

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace BlazorSpa.Repository.Model {
-	public class Id<T> : IEquatable<Id<T>> {
+	public sealed class Id<T> : IEquatable<Id<T>> {
 
 		public static readonly Id<T> Empty = new Id<T>( Guid.Empty.ToString("N"), false );
 

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using BlazorSpa.Repository;
 using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Service {
-	public class IdentificationService: IIdentificationService {
+	public sealed class IdentificationService: IIdentificationService {
 
 		private readonly IAuthenticationRepository _authenticationRepository;
 		private readonly IUserRepository _userRepository;

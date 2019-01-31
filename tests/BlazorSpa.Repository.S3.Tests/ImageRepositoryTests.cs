@@ -11,9 +11,9 @@ using Moq;
 
 namespace BlazorSpa.Repository.S3.Tests {
 	[TestClass]
-	public class AvatarRepositoryTests {
+	public class ImageRepositoryTests {
 
-		private IAvatarRepository _repository;
+		private IImageRepository _repository;
 		private Mock<IAmazonS3> _client;
 		private S3Options _options;
 
@@ -23,15 +23,15 @@ namespace BlazorSpa.Repository.S3.Tests {
 			_options = new S3Options {
 				Bucket = "test"
 			};
-			_repository = new AvatarRepository( _client.Object, _options );
+			_repository = new ImageRepository( _client.Object, _options );
 		}
 
 		[TestMethod]
 		public async Task SetAvatar_RequestSuccessful_UrlReturned() {
-			var userId = new Id<User>();
+			var imageId = new Id<Image>();
 			var contentType = "contentType";
 			var content = Convert.ToBase64String( Encoding.UTF8.GetBytes( "content" ) );
-			var expected = $"https://{_options.Bucket}.s3.amazonaws.com/avatar_{userId.Value}";
+			var expected = $"https://{_options.Bucket}.s3.amazonaws.com/image_{imageId.Value}";
 
 			string requestBucket = default;
 			string requestKey = default;
@@ -51,11 +51,11 @@ namespace BlazorSpa.Repository.S3.Tests {
 					HttpStatusCode = HttpStatusCode.OK
 				} ) );
 
-			var actual = await _repository.SetAvatar( userId, contentType, content );
+			var actual = await _repository.Add( imageId, contentType, content );
 
-			Assert.AreEqual( expected, actual );
+			Assert.AreEqual( expected, actual.Url );
 			Assert.AreEqual( _options.Bucket, requestBucket );
-			Assert.AreEqual( $"avatar_{userId.Value}", requestKey );
+			Assert.AreEqual( $"image_{imageId.Value}", requestKey );
 			Assert.AreEqual( S3CannedACL.PublicRead, requestCannedACL );
 			Assert.AreEqual( contentType, requestContentType );
 			Assert.AreEqual( "content".Length, requestInputStreamLength );
@@ -63,7 +63,7 @@ namespace BlazorSpa.Repository.S3.Tests {
 
 		[TestMethod]
 		public async Task SetAvatar_S3Failture_Retried() {
-			var userId = new Id<User>();
+			var imageId = new Id<Image>();
 			var contentType = "contentType";
 			var content = Convert.ToBase64String( Encoding.UTF8.GetBytes( "content" ) );
 			_client
@@ -72,7 +72,7 @@ namespace BlazorSpa.Repository.S3.Tests {
 					HttpStatusCode = HttpStatusCode.BadRequest
 				} ) );
 
-			var actual = await _repository.SetAvatar( userId, contentType, content );
+			var actual = await _repository.Add( imageId, contentType, content );
 
 			_client.Verify( c => c.PutObjectAsync( It.IsAny<PutObjectRequest>(), It.IsAny<CancellationToken>() ), Times.AtLeast( 2 ) );
 		}
