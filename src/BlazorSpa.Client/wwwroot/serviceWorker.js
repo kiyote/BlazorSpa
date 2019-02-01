@@ -73,7 +73,7 @@
     '/manifest.json'
 ];
 
-const staticCacheName = 'blazorspa-635de64ce70c4ad3b01abd9b844aa523';
+const staticCacheName = 'blazorspa-e00ca59a54324fc4ba7f43f145fd4425';
 
 self.addEventListener('install', event => {
     self.skipWaiting();
@@ -88,10 +88,19 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
 
-    // First, handle requests for the root path - server up index.html
+    // First, handle requests for the root path - serve up index.html
     if (requestUrl.origin === location.origin) {
         if (requestUrl.pathname === '/') {
             event.respondWith(caches.match('/index.html'));
+            return;
+        } else if (/^\/auth\//.test(requestUrl.pathname)) {
+            event.respondWith(fetch(event.request));
+            return;
+        } else if (/^\/api\//.test(requestUrl.pathname)) {
+            event.respondWith(fetch(event.request));
+            return;
+        } else if (/^\/signalhub\//.test(requestUrl.pathname)) {
+            event.respondWith(fetch(event.request));
             return;
         }
     }
