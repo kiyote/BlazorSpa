@@ -4,5 +4,15 @@
         UserName=@AppState.Username />
 
 <main role="main" class="container main">
+    @if( UpdateReady ) {
+        <div class="top-row px-4">
+            <p class="text-muted mb-0">Version 0.1</p>
+            <p class="text-info mb-0">
+                There is an update available. Reload when ready.
+            </p>
+        </div>
+    }
+
     @Body
 </main>
+

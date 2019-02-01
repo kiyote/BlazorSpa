@@ -14,3 +14,16 @@
         });
     }
 };
+
+window.blazorFuncs = {
+    registerClient: function (caller) {
+        if (window['updateAvailable']) {
+            window['updateAvailable']
+                .then(isAvailable => {
+                    if (isAvailable) {
+                        caller.invokeMethodAsync("onupdateavailable").then(r => console.log(r));
+                    }
+                });
+        }
+    }
+};
