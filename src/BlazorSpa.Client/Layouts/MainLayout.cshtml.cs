@@ -19,7 +19,7 @@ namespace BlazorSpa.Client.Layouts {
 		}
 
 		public void Dispose() {
-			AppState.OnStateChanged += AppState_OnStateChanged;
+			AppState.OnStateChanged -= AppState_OnStateChanged;
 		}
 	}
 }
