@@ -15,7 +15,7 @@ namespace BlazorSpa.Repository.Model {
 
 		public string Url { get; }
 
-		bool IEquatable<Image>.Equals( Image other ) {
+		public bool Equals( Image other ) {
 			if (ReferenceEquals(other, default)) {
 				return false;
 			}

@@ -12,7 +12,7 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 			ItemType = UserItemType;
 		}
 
-		[DynamoDBHashKey("PK")]
+		[DynamoDBHashKey( "PK" )]
 		public string UserId { get; set; }
 
 		[DynamoDBRangeKey( "SK" )]
