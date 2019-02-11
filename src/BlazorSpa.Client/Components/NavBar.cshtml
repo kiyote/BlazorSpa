@@ -1,6 +1,7 @@
 ﻿@inherits NavBarComponent
 @using BlazorSpa.Client.Pages.User
 @using BlazorSpa.Client.Pages.Chat
+@using BlazorSpa.Client.Pages.Admin
 
 <span class="align-top nav-bar-top-band" />
 <nav class="navbar navbar-expand-md navbar-light bg-white mb-4 nav-bar-shadow">
@@ -10,37 +11,35 @@
     </button>
     <CascadingValue Value=@this>
         <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
+            <NavBarItemCollection Layout=@NavBarItemsLayout.LeftFill>
                 @if( IsAuthenticated ) {
-                    <li class="nav-item">
-                        <NavBarItem ref="NavItemChat">
-                            <a class="nav-link"
-                               href="@ChatComponent.Url"><i class="fa fa-comments" style="font-size:1.5em;padding-right:0.5em"></i>Chat</a>
-                        </NavBarItem>
-                    </li>
-                }
-                <li class="nav-item">
-                    <NavBarItem ref="NavItemCounter">
+                    <NavBarItem ref="NavItemChat">
                         <a class="nav-link"
-                           href="/counter">Counter</a>
+                            href="@ChatComponent.Url"><i class="fa fa-comments" style="font-size:1.5em;padding-right:0.5em"></i>Chat</a>
                     </NavBarItem>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    @if( !IsAuthenticated ) {
-                        <NavBarItem ref="NavItemLogIn">
-                            <a class="nav-link"
-                               href="@AuthUrl"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>Log In</a>
-                        </NavBarItem>
-                    } else {
-                        <NavBarItem ref="NavItemProfile">
-                            <a class="nav-link"
-                               href="@ProfileComponent.Url"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>@Username</a>
-                        </NavBarItem>
-                    }
-                </li>
-            </ul>
+                }
+                <NavBarItem ref="NavItemCounter">
+                    <a class="nav-link"
+                        href="/counter"><i class="fa fa-plus" style="font-size:1.5em;padding-right:0.5em"></i>Counter</a>
+                </NavBarItem>
+            </NavBarItemCollection>
+            <NavBarItemCollection Layout=@NavBarItemsLayout.Right>
+                @if( !IsAuthenticated ) {
+                    <NavBarItem ref="NavItemLogIn">
+                        <a class="nav-link"
+                            href="@AuthUrl"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>Log In</a>
+                    </NavBarItem>
+                } else {
+                    <NavBarItem ref="NavItemProfile">
+                        <a class="nav-link"
+                            href="@ProfileComponent.Url"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>@Username</a>
+                    </NavBarItem>
+                    <NavBarItem ref="NavItemAdmin">
+                        <a class="nav-link"
+                            href="@AdminComponent.Url"><i class="fa fa-cog" style="font-size:1.5em;"></i></a>
+                    </NavBarItem>
+                }
+            </NavBarItemCollection>
         </div>
     </CascadingValue>
 </nav>

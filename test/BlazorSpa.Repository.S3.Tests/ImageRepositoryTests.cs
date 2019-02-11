@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 using BlazorSpa.Repository.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace BlazorSpa.Repository.S3.Tests {
-	[TestClass]
+	[TestFixture]
 	public class ImageRepositoryTests {
 
 		private IImageRepository _repository;
 		private Mock<IAmazonS3> _client;
 		private S3Options _options;
 
-		[TestInitialize]
+		[SetUp]
 		public void TestInitialize() {
 			_client = new Mock<IAmazonS3>( MockBehavior.Strict );
 			_options = new S3Options {
@@ -26,7 +26,7 @@ namespace BlazorSpa.Repository.S3.Tests {
 			_repository = new ImageRepository( _client.Object, _options );
 		}
 
-		[TestMethod]
+		[Test]
 		public async Task SetAvatar_RequestSuccessful_UrlReturned() {
 			var imageId = new Id<Image>();
 			var contentType = "contentType";
@@ -40,14 +40,14 @@ namespace BlazorSpa.Repository.S3.Tests {
 			long requestInputStreamLength = -1L;
 			_client
 				.Setup( c => c.PutObjectAsync( It.IsAny<PutObjectRequest>(), It.IsAny<CancellationToken>() ) )
-				.Callback<PutObjectRequest, CancellationToken>((request, token) => {
+				.Callback<PutObjectRequest, CancellationToken>( ( request, token ) => {
 					requestBucket = request.BucketName;
 					requestKey = request.Key;
 					requestCannedACL = request.CannedACL;
 					requestContentType = request.ContentType;
 					requestInputStreamLength = request.InputStream.Length;
 				} )
-				.Returns( Task.FromResult(new PutObjectResponse {
+				.Returns( Task.FromResult( new PutObjectResponse {
 					HttpStatusCode = HttpStatusCode.OK
 				} ) );
 
@@ -61,7 +61,7 @@ namespace BlazorSpa.Repository.S3.Tests {
 			Assert.AreEqual( "content".Length, requestInputStreamLength );
 		}
 
-		[TestMethod]
+		[Test]
 		public async Task SetAvatar_S3Failture_Retried() {
 			var imageId = new Id<Image>();
 			var contentType = "contentType";

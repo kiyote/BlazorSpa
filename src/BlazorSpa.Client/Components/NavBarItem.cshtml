@@ -1,10 +1,12 @@
 ﻿@inherits NavBarItemComponent
 
-<div 
-    onmouseover=@(() => { this.IsSelected = true; })
-    onmouseout=@(() => { this.IsSelected = false; })
-    onclick=@(() => { NavBar.SetActive( this ); })>
-    <span class="align-top nav-bar-top-band" style="visibility:@((IsSelected || IsActive) ? null : "hidden")"/>
-    @ChildContent
-</div>
+<li nav-item>
+    <div 
+        onmouseover=@(() => { this.IsSelected = true; })
+        onmouseout=@(() => { this.IsSelected = false; })
+        onclick=@(() => { NavBar.SetActive( this ); })>
+        <span class="align-top nav-bar-top-band" style="visibility:@((IsSelected || IsActive) ? null : "hidden")"/>
+        @ChildContent
+    </div>
+</li>
 

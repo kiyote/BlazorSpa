@@ -8,15 +8,28 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		public readonly static string UserItemType = "User";
 		public readonly static string Active = "Active";
 
-		public UserRecord() {
-			ItemType = UserItemType;
+		[DynamoDBHashKey( "PK" )]
+		public string PK {
+			get {
+				return $"{UserItemType}-{UserId}";
+			}
+			set {
+				UserId = value.Split( '-' )[ 1 ];
+			}
 		}
 
-		[DynamoDBHashKey( "PK" )]
-		public string UserId { get; set; }
-
 		[DynamoDBRangeKey( "SK" )]
-		public string ItemType { get; set; }
+		public string SK {
+			get {
+				return PK;
+			}
+			set {
+				PK = value;
+			}
+		}
+
+		[DynamoDBIgnore]
+		public string UserId { get; set; }
 
 		[DynamoDBProperty("Username")]
 		public string Name { get; set; }
@@ -32,5 +45,9 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 
 		[DynamoDBProperty( "Status" )]
 		public string Status { get; set; }
+
+		public static string GetKey(string userId) {
+			return $"{UserItemType}-{userId}";
+		}
 	}
 }

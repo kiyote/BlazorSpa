@@ -1,0 +1,5 @@
+﻿@inherits NavBarItemCollectionComponent
+
+<ul class="navbar-nav @(Layout == NavBarItemsLayout.LeftFill ? "mr-auto" : null)">
+    @ChildContent
+</ul>

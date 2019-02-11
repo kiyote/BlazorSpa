@@ -7,15 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.3.17.4" />
+    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.69" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.4.50" />
+    <PackageReference Include="nunit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\BlazorSpa.Repository.DynamoDb\BlazorSpa.Repository.DynamoDb.csproj" />
+    <ProjectReference Include="..\..\src\BlazorSpa.Repository.Cognito\BlazorSpa.Repository.Cognito.csproj" />
     <ProjectReference Include="..\..\src\BlazorSpa.Repository\BlazorSpa.Repository.csproj" />
   </ItemGroup>
 

@@ -4,7 +4,7 @@ using BlazorSpa.Repository;
 using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Service {
-	public sealed class IdentificationService: IIdentificationService {
+	internal sealed class IdentificationService: IIdentificationService {
 
 		private readonly IAuthenticationRepository _authenticationRepository;
 		private readonly IUserRepository _userRepository;

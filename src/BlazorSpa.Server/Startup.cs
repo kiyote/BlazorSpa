@@ -87,8 +87,7 @@ namespace BlazorSpa.Server {
 			services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
 
-			services.AddSingleton<IImageService, ImageService>();
-			services.AddSingleton<IIdentificationService, IdentificationService>();
+			services.RegisterServices();
 
 			services.AddSingleton<IContextInformation, ContextInformation>();
 			services.AddSingleton<UserManager>();

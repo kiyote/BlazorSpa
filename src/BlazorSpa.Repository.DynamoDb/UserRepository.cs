@@ -22,7 +22,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 			string username
 		) {
 			var authentication = new AuthenticationRecord {
-				Identifier = username
+				Username = username
 			};
 			authentication = await _context.LoadAsync( authentication );
 
@@ -30,10 +30,11 @@ namespace BlazorSpa.Repository.DynamoDb {
 				return default;
 			}
 
+			var userKey = UserRecord.GetKey( authentication.UserId );
 			var search = _context.QueryAsync<UserRecord>(
-				authentication.UserId,
+				userKey,
 				QueryOperator.Equal,
-				new List<object>() { UserRecord.UserItemType }
+				new List<object>() { userKey }
 			);
 
 			var userRecords = await search.GetRemainingAsync();
@@ -59,7 +60,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 			DateTimeOffset lastLogin
 		) {
 			var authentication = new AuthenticationRecord {
-				Identifier = username,
+				Username = username,
 				UserId = userId.Value,
 				DateCreated = DateTime.UtcNow,
 				Status = AuthenticationRecord.StatusActive
@@ -117,10 +118,11 @@ namespace BlazorSpa.Repository.DynamoDb {
 		private async Task<UserRecord> GetById(
 			Id<User> userId
 		) {
+			var userKey = UserRecord.GetKey( userId.Value );
 			var search = _context.QueryAsync<UserRecord>(
-				userId.Value,
+				userKey,
 				QueryOperator.Equal,
-				new List<object>() { UserRecord.UserItemType }
+				new List<object>() { userKey }
 			);
 
 			var userRecords = await search.GetRemainingAsync();

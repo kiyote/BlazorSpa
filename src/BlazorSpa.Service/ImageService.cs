@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using BlazorSpa.Repository;
 
 namespace BlazorSpa.Service {
-	public sealed class ImageService : IImageService {
+	internal sealed class ImageService : IImageService {
 
 		private readonly IImageRepository _imageRepository;
 

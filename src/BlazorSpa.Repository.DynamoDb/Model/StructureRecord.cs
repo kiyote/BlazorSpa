@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
@@ -9,20 +7,37 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		public readonly static string StructureItemType = "Structure";
 		public readonly static string Active = "Active";
 
-		public StructureRecord() {
-			ItemType = StructureItemType;
+		[DynamoDBHashKey( "PK" )]
+		public string PK {
+			get {
+				return GetKey( StructureId );
+			}
+			set {
+				StructureId = value.Split( '-' )[ 1 ];
+			}
 		}
 
-		[DynamoDBHashKey( "PK" )]
-		public string StructureId { get; set; }
-
 		[DynamoDBRangeKey( "SK" )]
-		public string ItemType { get; set; }
+		public string SK {
+			get {
+				return PK;
+			}
+			set {
+				PK = value;
+			}
+		}
+
+		[DynamoDBIgnore]
+		public string StructureId { get; set; }
 
 		[DynamoDBProperty("StructureType")]
 		public string StructureType { get; set; }
 
 		[DynamoDBProperty( "Status" )]
 		public string Status { get; set; }
+
+		public static string GetKey(string structureId) {
+			return $"{StructureItemType}-{structureId}";
+		}
 	}
 }

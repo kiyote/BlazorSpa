@@ -21,6 +21,8 @@ namespace BlazorSpa.Client.Layouts {
 
 		protected NavBarItemComponent NavItemCounter { get; set; }
 
+		protected NavBarItemComponent NavItemAdmin { get; set; }
+
 		public void SetActive( NavBarItemComponent item ) {
 			if( item != _selectedItem ) {
 				if( _selectedItem != default ) {

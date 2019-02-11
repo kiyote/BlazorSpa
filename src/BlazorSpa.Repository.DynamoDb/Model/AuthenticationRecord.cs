@@ -8,15 +8,28 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		public static readonly string AuthenticationItemType = "Authentication";
 		public static readonly string StatusActive = "Active";
 
-		public AuthenticationRecord() {
-			ItemType = AuthenticationItemType;
+		[DynamoDBHashKey( "PK" )]
+		public string PK {
+			get {
+				return $"{AuthenticationItemType}-{Username}";
+			}
+			set {
+				Username = value.Split( '-' )[ 1 ];
+			}
 		}
 
-		[DynamoDBHashKey( "PK" )]
-		public string Identifier { get; set; }
-
 		[DynamoDBRangeKey( "SK" )]
-		public string ItemType { get; set; }
+		public string SK {
+			get {
+				return PK;
+			}
+			set {
+				PK = value;
+			}
+		}
+
+		[DynamoDBIgnore]
+		public string Username { get; set; }
 
 		[DynamoDBProperty("UserId")]
 		public string UserId { get; set; }
