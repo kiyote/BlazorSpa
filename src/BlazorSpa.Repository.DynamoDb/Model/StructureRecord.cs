@@ -3,27 +3,27 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	public class StructureRecord {
-		public readonly static string StructureItemType = "Structure";
-		public readonly static string Active = "Active";
+	internal class StructureRecord {
+		public const string StructureItemType = "Structure-";
+		public const string Active = "Active";
 
 		[DynamoDBHashKey( "PK" )]
-		public string PK {
+		private string PK {
 			get {
 				return GetKey( StructureId );
 			}
 			set {
-				StructureId = value.Split( '-' )[ 1 ];
+				StructureId = GetIdFromKey( value );
 			}
 		}
 
 		[DynamoDBRangeKey( "SK" )]
-		public string SK {
+		private string SK {
 			get {
 				return PK;
 			}
 			set {
-				PK = value;
+				// Do nothing
 			}
 		}
 
@@ -36,8 +36,15 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		[DynamoDBProperty( "Status" )]
 		public string Status { get; set; }
 
+		[DynamoDBProperty("DateCreated")]
+		public DateTime DateCreated { get; set; }
+
 		public static string GetKey(string structureId) {
-			return $"{StructureItemType}-{structureId}";
+			return $"{StructureItemType}{structureId}";
+		}
+
+		public static string GetIdFromKey(string key) {
+			return key.Substring( StructureItemType.Length );
 		}
 	}
 }

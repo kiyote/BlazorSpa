@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using BlazorSpa.Repository.Model;
@@ -11,7 +12,7 @@ using NUnit.Framework;
 
 namespace BlazorSpa.Repository.S3.Tests {
 	[TestFixture]
-	public class ImageRepositoryTests {
+	public class ImageRepositoryUnitTests {
 
 		private IImageRepository _repository;
 		private Mock<IAmazonS3> _client;
@@ -27,7 +28,7 @@ namespace BlazorSpa.Repository.S3.Tests {
 		}
 
 		[Test]
-		public async Task SetAvatar_RequestSuccessful_UrlReturned() {
+		public async Task Add_RequestSuccessful_UrlReturned() {
 			var imageId = new Id<Image>();
 			var contentType = "contentType";
 			var content = Convert.ToBase64String( Encoding.UTF8.GetBytes( "content" ) );
@@ -62,7 +63,7 @@ namespace BlazorSpa.Repository.S3.Tests {
 		}
 
 		[Test]
-		public async Task SetAvatar_S3Failture_Retried() {
+		public async Task Add_S3Failture_Retried() {
 			var imageId = new Id<Image>();
 			var contentType = "contentType";
 			var content = Convert.ToBase64String( Encoding.UTF8.GetBytes( "content" ) );
@@ -75,6 +76,19 @@ namespace BlazorSpa.Repository.S3.Tests {
 			var actual = await _repository.Add( imageId, contentType, content );
 
 			_client.Verify( c => c.PutObjectAsync( It.IsAny<PutObjectRequest>(), It.IsAny<CancellationToken>() ), Times.AtLeast( 2 ) );
+			Assert.IsNull( actual );
+		}
+
+		[Test]
+		public async Task Exists_NotInS3_ReturnsFalse() {
+			var imageId = new Id<Image>();
+			_client.Setup( c => c.GetObjectMetadataAsync( It.IsAny<GetObjectMetadataRequest>(), default ))
+				.Callback<GetObjectMetadataRequest, CancellationToken>( ( req, tok ) => { throw new AmazonS3Exception( "message", ErrorType.Receiver, "NotFound", "requestId", HttpStatusCode.OK ); } )
+				.Returns( Task.FromResult<GetObjectMetadataResponse>(default) );
+
+			var actual = await _repository.Exists( imageId );
+
+			Assert.IsFalse( actual );
 		}
 	}
 }

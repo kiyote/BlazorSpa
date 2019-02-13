@@ -11,7 +11,7 @@ using Moq;
 using NUnit.Framework;
 
 namespace Tests {
-	public class UserRepositoryTests {
+	public class UserRepositoryUnitTests {
 
 		private IUserRepository _userRepository;
 		private Mock<IDynamoDBContext> _context;
@@ -23,7 +23,7 @@ namespace Tests {
 		}
 
 		[Test]
-		public async Task GetUser_InvalidUserId_NoUserReturned() {
+		public Task GetUser_InvalidUserId_NoUserReturned() {
 			/*
 			var userId = new Id<User>();
 			var userKey = UserRecord.GetKey( userId.Value );
@@ -37,6 +37,7 @@ namespace Tests {
 
 			_context.VerifyAll();
 			*/
+			return Task.CompletedTask;
 		}
 	}
 }

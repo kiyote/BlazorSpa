@@ -19,12 +19,14 @@ namespace BlazorSpa.Repository.DynamoDb {
 
 		async Task<Structure> IStructureRepository.Add( 
 			Id<Structure> structureId, 
-			string structureType 
+			string structureType,
+			DateTimeOffset dateCreated
 		) {
 			var sr = new StructureRecord() {
 				StructureId = structureId.Value,
 				StructureType = structureType,				
-				Status = StructureRecord.Active
+				Status = StructureRecord.Active,
+				DateCreated = dateCreated.UtcDateTime
 			};
 
 			await _context.SaveAsync( sr );
@@ -32,34 +34,15 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new Structure( structureId, structureType );
 		}
 
-		async Task IStructureRepository.Organize( Id<Structure> parentStructureId, Id<Structure> childStructureId) {
-			/*
-			var or = new OrganizationRecord() {
-				StructureId = parentStructureId.Value,
+		async Task IStructureRepository.AddChild( Id<View> viewId, Id<Structure> parentStructureId, Id<Structure> childStructureId, DateTimeOffset dateCreated ) {
+			var childRecord = new ChildStructureRecord() {
+				ViewId = viewId.Value,
+				ParentStructureId = parentStructureId.Value,
 				ChildStructureId = childStructureId.Value,
-				DateCreated = DateTime.UtcNow,
-				Status = OrganizationRecord.Active
+				DateCreated = dateCreated.UtcDateTime
 			};
 
-			await _context.SaveAsync( or );
-			*/
-		}
-
-		async Task<IEnumerable<Id<Structure>>> IStructureRepository.GetHomeStructureIds( Id<User> userId) {
-			var userKey = UserRecord.GetKey( userId.Value );
-			var search = _context.QueryAsync<HomeStructureRecord>(
-				userKey,
-				QueryOperator.BeginsWith,
-				new List<object>() { StructureRecord.StructureItemType } );
-
-			var homeRecords = await search.GetRemainingAsync();
-
-			var result = new List<Id<Structure>>();
-			foreach (var homeRecord in homeRecords) {
-				result.Add( new Id<Structure>( homeRecord.StructureId ) );
-			}
-
-			return result;
+			await _context.SaveAsync( childRecord );
 		}
 
 		async Task<IEnumerable<Structure>> IStructureRepository.GetStructures(IEnumerable<Id<Structure>> structureIds) {
@@ -74,6 +57,40 @@ namespace BlazorSpa.Repository.DynamoDb {
 				result.Add( new Structure(
 					new Id<Structure>(structure.StructureId),
 					structure.StructureType
+				) );
+			}
+
+			return result;
+		}
+
+		async Task<IEnumerable<Id<View>>> IStructureRepository.GetUserViewIds( Id<User> userId ) {
+			var query = _context.QueryAsync<UserViewRecord>(
+				UserRecord.GetKey( userId.Value ),
+				QueryOperator.BeginsWith,
+				new List<object>() { ViewRecord.ViewItemType } );
+
+			var records = await query.GetRemainingAsync();
+
+			var result = new List<Id<View>>();
+			foreach (var record in records) {
+				result.Add( new Id<View>( record.ViewId ) );
+			}
+
+			return result;
+		}
+
+		async Task<IEnumerable<View>> IStructureRepository.GetViews( IEnumerable<Id<View>> viewIds ) {
+			var batchGet = _context.CreateBatchGet<ViewRecord>();
+			foreach( var id in viewIds ) {
+				batchGet.AddKey( ViewRecord.GetKey( id.Value ) );
+			}
+			await batchGet.ExecuteAsync();
+
+			var result = new List<View>();
+			foreach( var view in batchGet.Results ) {
+				result.Add( new View(
+					new Id<View>( view.ViewId ),
+					view.ViewType
 				) );
 			}
 

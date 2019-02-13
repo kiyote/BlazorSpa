@@ -3,28 +3,28 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	public sealed class UserRecord {
+	internal sealed class UserRecord {
 
-		public readonly static string UserItemType = "User";
+		private const string UserItemType = "User-";
 		public readonly static string Active = "Active";
 
 		[DynamoDBHashKey( "PK" )]
-		public string PK {
+		private string PK {
 			get {
-				return $"{UserItemType}-{UserId}";
+				return GetKey( UserId );
 			}
 			set {
-				UserId = value.Split( '-' )[ 1 ];
+				UserId = value.Substring( UserItemType.Length );
 			}
 		}
 
 		[DynamoDBRangeKey( "SK" )]
-		public string SK {
+		private string SK {
 			get {
 				return PK;
 			}
 			set {
-				PK = value;
+				// Do nothing
 			}
 		}
 
@@ -47,7 +47,11 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		public string Status { get; set; }
 
 		public static string GetKey(string userId) {
-			return $"{UserItemType}-{userId}";
+			return $"{UserItemType}{userId}";
+		}
+
+		public static string GetIdFromKey( string key ) {
+			return key.Substring( UserItemType.Length );
 		}
 	}
 }

@@ -3,28 +3,28 @@ using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
-	public sealed class AuthenticationRecord {
+	internal sealed class AuthenticationRecord {
 
-		public static readonly string AuthenticationItemType = "Authentication";
+		private const string AuthenticationItemType = "Authentication-";
 		public static readonly string StatusActive = "Active";
 
 		[DynamoDBHashKey( "PK" )]
-		public string PK {
+		private string PK {
 			get {
-				return $"{AuthenticationItemType}-{Username}";
+				return GetKey( Username );
 			}
 			set {
-				Username = value.Split( '-' )[ 1 ];
+				Username = value.Substring( AuthenticationItemType.Length );
 			}
 		}
 
 		[DynamoDBRangeKey( "SK" )]
-		public string SK {
+		private string SK {
 			get {
 				return PK;
 			}
 			set {
-				PK = value;
+				// Do nothing
 			}
 		}
 
@@ -39,5 +39,9 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 
 		[DynamoDBProperty("Status")]
 		public string Status { get; set; }
+
+		public static string GetKey(string username) {
+			return $"{AuthenticationItemType}{username}";
+		}
 	}
 }
