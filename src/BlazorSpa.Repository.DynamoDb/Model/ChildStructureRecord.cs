@@ -42,5 +42,9 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		public static string GetKey( string viewId, string structureId ) {
 			return $"{ViewRecord.GetKey( viewId )}|{StructureRecord.GetKey(structureId)}";
 		}
+
+		public static string ChildStructureType(string viewId) {
+			return $"{ViewRecord.GetKey( viewId )}|{StructureRecord.StructureItemType}";
+		}
 	}
 }

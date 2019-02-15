@@ -16,7 +16,7 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		}
 
 		[DynamoDBRangeKey( "SK" )]
-		public string SK {
+		private string SK {
 			get {
 				return ViewRecord.GetKey( ViewId );
 			}

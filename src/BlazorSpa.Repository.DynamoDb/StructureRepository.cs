@@ -17,14 +17,14 @@ namespace BlazorSpa.Repository.DynamoDb {
 			_context = context;
 		}
 
-		async Task<Structure> IStructureRepository.Add( 
-			Id<Structure> structureId, 
+		async Task<Structure> IStructureRepository.AddStructure(
+			Id<Structure> structureId,
 			string structureType,
 			DateTimeOffset dateCreated
 		) {
 			var sr = new StructureRecord() {
 				StructureId = structureId.Value,
-				StructureType = structureType,				
+				StructureType = structureType,
 				Status = StructureRecord.Active,
 				DateCreated = dateCreated.UtcDateTime
 			};
@@ -34,7 +34,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new Structure( structureId, structureType );
 		}
 
-		async Task IStructureRepository.AddChild( Id<View> viewId, Id<Structure> parentStructureId, Id<Structure> childStructureId, DateTimeOffset dateCreated ) {
+		async Task IStructureRepository.AddChildStructure( Id<View> viewId, Id<Structure> parentStructureId, Id<Structure> childStructureId, DateTimeOffset dateCreated ) {
 			var childRecord = new ChildStructureRecord() {
 				ViewId = viewId.Value,
 				ParentStructureId = parentStructureId.Value,
@@ -45,35 +45,35 @@ namespace BlazorSpa.Repository.DynamoDb {
 			await _context.SaveAsync( childRecord );
 		}
 
-		async Task<IEnumerable<Structure>> IStructureRepository.GetStructures(IEnumerable<Id<Structure>> structureIds) {
-			var batchGet = _context.CreateBatchGet<StructureRecord>();
-			foreach (var id in structureIds) {
-				batchGet.AddKey( StructureRecord.GetKey( id.Value ) );
-			}
-			await batchGet.ExecuteAsync();
+		async Task<IEnumerable<Id<Structure>>> IStructureRepository.GetChildStructureIds( Id<View> viewId, Id<Structure> structureId ) {
+			var query = _context.QueryAsync<ChildStructureRecord>(
+				StructureRecord.GetKey( structureId.Value ),
+				QueryOperator.BeginsWith,
+				new List<object>() { ChildStructureRecord.ChildStructureType( viewId.Value ) }
+			);
 
-			var result = new List<Structure>();
-			foreach (var structure in batchGet.Results) {
-				result.Add( new Structure(
-					new Id<Structure>(structure.StructureId),
-					structure.StructureType
-				) );
+			var childStructures = await query.GetRemainingAsync();
+			var result = new List<Id<Structure>>();
+			foreach( var childStructure in childStructures ) {
+				result.Add( new Id<Structure>( childStructure.ChildStructureId ) );
 			}
 
 			return result;
 		}
 
-		async Task<IEnumerable<Id<View>>> IStructureRepository.GetUserViewIds( Id<User> userId ) {
-			var query = _context.QueryAsync<UserViewRecord>(
-				UserRecord.GetKey( userId.Value ),
-				QueryOperator.BeginsWith,
-				new List<object>() { ViewRecord.ViewItemType } );
+		async Task<IEnumerable<Structure>> IStructureRepository.GetStructures( IEnumerable<Id<Structure>> structureIds ) {
+			var batchGet = _context.CreateBatchGet<StructureRecord>();
+			foreach( var id in structureIds ) {
+				batchGet.AddKey( StructureRecord.GetKey( id.Value ), StructureRecord.GetKey( id.Value ) );
+			}
+			await batchGet.ExecuteAsync();
 
-			var records = await query.GetRemainingAsync();
-
-			var result = new List<Id<View>>();
-			foreach (var record in records) {
-				result.Add( new Id<View>( record.ViewId ) );
+			var result = new List<Structure>();
+			foreach( var structure in batchGet.Results ) {
+				result.Add( new Structure(
+					new Id<Structure>( structure.StructureId ),
+					structure.StructureType
+				) );
 			}
 
 			return result;
@@ -82,7 +82,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 		async Task<IEnumerable<View>> IStructureRepository.GetViews( IEnumerable<Id<View>> viewIds ) {
 			var batchGet = _context.CreateBatchGet<ViewRecord>();
 			foreach( var id in viewIds ) {
-				batchGet.AddKey( ViewRecord.GetKey( id.Value ) );
+				batchGet.AddKey( ViewRecord.FixedViewId, ViewRecord.GetKey( id.Value ) );
 			}
 			await batchGet.ExecuteAsync();
 
@@ -92,6 +92,34 @@ namespace BlazorSpa.Repository.DynamoDb {
 					new Id<View>( view.ViewId ),
 					view.ViewType
 				) );
+			}
+
+			return result;
+		}
+
+		async Task<View> IStructureRepository.AddView( Id<View> viewId, string viewType, DateTimeOffset dateCreated ) {
+			var viewRecord = new ViewRecord() {
+				ViewId = viewId.Value,
+				ViewType = viewType,
+				DateCreated = dateCreated.UtcDateTime
+			};
+
+			await _context.SaveAsync( viewRecord );
+
+			return new View( viewId, viewType );
+		}
+
+		async Task<IEnumerable<Id<View>>> IStructureRepository.GetViewIds() {
+			var query = _context.QueryAsync<ViewRecord>(
+				ViewRecord.FixedViewId,
+				QueryOperator.BeginsWith,
+				new List<object>() { ViewRecord.ViewItemType }
+			);
+
+			var views = await query.GetRemainingAsync();
+			var result = new List<Id<View>>();
+			foreach( var view in views ) {
+				result.Add( new Id<View>( view.ViewId ) );
 			}
 
 			return result;

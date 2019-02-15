@@ -6,6 +6,7 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using BlazorSpa.Repository.Model;
 using BlazorSpa.Repository.DynamoDb.Model;
+using System.Threading;
 
 namespace BlazorSpa.Repository.DynamoDb {
 	public sealed class UserRepository : IUserRepository {
@@ -115,6 +116,36 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return ToUser( userId, userRecord );
 		}
 
+		async Task<IEnumerable<Id<View>>> IUserRepository.GetViewIds( Id<User> userId ) {
+			var query = _context.QueryAsync<UserViewRecord>(
+				UserRecord.GetKey( userId.Value ),
+				QueryOperator.BeginsWith,
+				new List<object>() { ViewRecord.ViewItemType } );
+
+			var records = await query.GetRemainingAsync();
+
+			var result = new List<Id<View>>();
+			foreach( var record in records ) {
+				result.Add( new Id<View>( record.ViewId ) );
+			}
+
+			return result;
+		}
+
+		async Task IUserRepository.AddView( Id<User> userId, Id<View> viewId, DateTimeOffset dateCreated ) {
+			var userViewRecord = new UserViewRecord() {
+				DateCreated = dateCreated.UtcDateTime,
+				UserId = userId.Value,
+				ViewId = viewId.Value
+			};
+
+			await _context.SaveAsync( userViewRecord );
+		}
+
+		async Task IUserRepository.RemoveView( Id<User> userId, Id<View> viewId ) {
+			await _context.DeleteAsync<UserViewRecord>( UserRecord.GetKey( userId.Value ), ViewRecord.GetKey( viewId.Value ));
+		}
+
 		private async Task<UserRecord> GetById(
 			Id<User> userId
 		) {
@@ -131,7 +162,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return userRecord;
 		}
 
-		private static User ToUser(Id<User> userId, UserRecord userRecord) {
+		private static User ToUser( Id<User> userId, UserRecord userRecord ) {
 			return new User(
 				userId,
 				userRecord.Name,

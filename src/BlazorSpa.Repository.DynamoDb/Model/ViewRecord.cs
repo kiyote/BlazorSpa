@@ -1,31 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Amazon.DynamoDBv2.DataModel;
 
 namespace BlazorSpa.Repository.DynamoDb.Model {
 	[DynamoDBTable( "BlazorSpa" )]
 	internal sealed class ViewRecord {
 
+		public const string FixedViewId = ViewItemType + "00000000000000000000000000000000";
 		public const string ViewItemType = "View-";
 
 		[DynamoDBHashKey( "PK" )]
 		private string PK {
 			get {
-				return GetKey( ViewId );
+				return FixedViewId;
 			}
 			set {
-				ViewId = GetIdFromKey( value );
+				// Do Nothing
 			}
 		}
 
 		[DynamoDBRangeKey( "SK" )]
-		public string SK {
+		private string SK {
 			get {
-				return PK;
+				return GetKey( ViewId );
 			}
 			set {
-				// Do nothing
+				ViewId = GetIdFromKey( value );
 			}
 		}
 

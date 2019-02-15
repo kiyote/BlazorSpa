@@ -8,7 +8,7 @@ namespace BlazorSpa.Repository.Model {
 			string structureType
 		) {
 			Id = id;
-			StructureType = StructureType;
+			StructureType = structureType;
 		}
 
 		public Id<Structure> Id { get; }
