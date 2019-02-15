@@ -86,11 +86,13 @@ namespace BlazorSpa.Server {
 			services.AddSingleton<IImageRepository, ImageRepository>();
 			services.AddSingleton<IAuthenticationRepository, AuthenticationRepository>();
 			services.AddSingleton<IUserRepository, UserRepository>();
+			services.AddSingleton<IStructureRepository, StructureRepository>();
 
 			services.RegisterServices();
 
 			services.AddSingleton<IContextInformation, ContextInformation>();
 			services.AddSingleton<UserManager>();
+			services.AddSingleton<StructureManager>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

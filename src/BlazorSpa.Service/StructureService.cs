@@ -18,5 +18,12 @@ namespace BlazorSpa.Service {
 		public Task<IEnumerable<Structure>> GetHomeStructures( Id<User> userId ) {
 			return Task.FromResult(default(IEnumerable<Structure>));
 		}
+
+		async Task<IEnumerable<View>> IStructureService.GetAllViews() {
+			var viewIds = await _structureRepository.GetViewIds();
+			var views = await _structureRepository.GetViews( viewIds );
+
+			return views;
+		}
 	}
 }
