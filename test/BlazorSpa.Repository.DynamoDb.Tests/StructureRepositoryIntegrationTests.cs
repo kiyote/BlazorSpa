@@ -127,6 +127,29 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			CollectionAssert.Contains( views, view );
 		}
 
+		[Test]
+		public async Task AddViewStructure_ValidViewValidStructure_NoErrors() {
+			var viewId = new Id<View>();
+			await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );			
+			var structureId = new Id<Structure>();
+
+			await _structureRepository.AddViewStructure( viewId, structureId, DateTimeOffset.Now );
+		}
+
+		[Test]
+		public async Task GetViewStructureIds_ValidViewOneStructure_OneStructureReturned() {
+			var viewId = new Id<View>();
+			var structureId = new Id<Structure>();
+			var expected = new List<Id<Structure>>() {
+				structureId
+			};
+			await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );
+			await _structureRepository.AddViewStructure( viewId, structureId, DateTimeOffset.Now );
+
+			var actual = await _structureRepository.GetViewStructureIds( viewId );
+			CollectionAssert.AreEquivalent( expected, actual );
+		}
+
 		private static async Task<Structure> CreateStructure(IStructureRepository repository, string structureType) {
 			var structureId = new Id<Structure>();
 			var createdOn = DateTimeOffset.Now;
@@ -169,7 +192,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 				ProvisionedThroughput = new ProvisionedThroughput() {
 					ReadCapacityUnits = 1,
 					WriteCapacityUnits = 1
-				},
+				}/*,
 				GlobalSecondaryIndexes = new List<GlobalSecondaryIndex>() {
 					new GlobalSecondaryIndex() {
 						IndexName = "GSI",
@@ -187,7 +210,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 							WriteCapacityUnits = 1
 						}
 					}
-				}
+				}*/
 			};
 			await client.CreateTableAsync( request );
 		}

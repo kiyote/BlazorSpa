@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using BlazorSpa.Repository;
-using BlazorSpa.Repository.Model;
 using Moq;
 using NUnit.Framework;
 
@@ -10,11 +7,13 @@ namespace BlazorSpa.Service.Tests {
 
 		private IStructureService _service;
 		private Mock<IStructureRepository> _structureRepository;
+		private Mock<IUserRepository> _userRepository;
 
 		[SetUp]
 		public void Setup() {
 			_structureRepository = new Mock<IStructureRepository>( MockBehavior.Strict );
-			_service = new StructureService( _structureRepository.Object );
+			_userRepository = new Mock<IUserRepository>( MockBehavior.Strict );
+			_service = new StructureService( _structureRepository.Object, _userRepository.Object );
 		}
 
 		[Test]

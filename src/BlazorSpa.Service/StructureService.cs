@@ -8,15 +8,28 @@ namespace BlazorSpa.Service {
 	internal sealed class StructureService : IStructureService {
 
 		private readonly IStructureRepository _structureRepository;
+		private readonly IUserRepository _userRepository;
 
 		public StructureService(
-			IStructureRepository structureRepository
+			IStructureRepository structureRepository,
+			IUserRepository userRepository
 		) {
 			_structureRepository = structureRepository;
+			_userRepository = userRepository;
 		}
 
-		public Task<IEnumerable<Structure>> GetHomeStructures( Id<User> userId ) {
-			return Task.FromResult(default(IEnumerable<Structure>));
+		async Task<IEnumerable<Structure>> IStructureService.GetViewRootStrutures( Id<View> viewId ) {
+			var structureIds = await _structureRepository.GetViewStructureIds( viewId );
+			var structures = await _structureRepository.GetStructures( structureIds );
+
+			return structures;
+		}
+
+		async Task<IEnumerable<View>> IStructureService.GetUserViews( Id<User> userId ) {
+			var viewIds = await _userRepository.GetViewIds( userId );
+			var views = await _structureRepository.GetViews( viewIds );
+
+			return views;
 		}
 
 		async Task<IEnumerable<View>> IStructureService.GetAllViews() {

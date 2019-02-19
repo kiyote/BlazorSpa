@@ -5,8 +5,10 @@ using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Service {
 	public interface IStructureService {
-		Task<IEnumerable<Structure>> GetHomeStructures( Id<User> userId );
+		Task<IEnumerable<View>> GetUserViews( Id<User> userId );
 
 		Task<IEnumerable<View>> GetAllViews();
+
+		Task<IEnumerable<Structure>> GetViewRootStrutures( Id<View> viewId );
 	}
 }

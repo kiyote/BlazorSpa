@@ -27,6 +27,6 @@ namespace BlazorSpa.Model {
 
 		public string LastLogin { get; }
 
-		public string PreviousLogin { get; set; }
+		public string PreviousLogin { get; }
 	}
 }

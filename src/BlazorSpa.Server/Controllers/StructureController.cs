@@ -22,7 +22,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpGet("views")]
-		public async Task<ActionResult<ApiUser>> GetAllViews() {
+		public async Task<ActionResult<ApiView>> GetAllViews() {
 			var result = await _structureManager.GetAllViews();
 
 			if( result != default ) {

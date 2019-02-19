@@ -124,5 +124,31 @@ namespace BlazorSpa.Repository.DynamoDb {
 
 			return result;
 		}
+
+		async Task<IEnumerable<Id<Structure>>> IStructureRepository.GetViewStructureIds( Id<View> viewId ) {
+			var query = _context.QueryAsync<ViewStructureRecord>(
+				ViewRecord.GetKey( viewId.Value ),
+				QueryOperator.BeginsWith,
+				new List<object>() { StructureRecord.StructureItemType }
+			);
+
+			var structures = await query.GetRemainingAsync();
+			var result = new List<Id<Structure>>();
+			foreach( var structure in structures ) {
+				result.Add( new Id<Structure>( structure.StructureId ) );
+			}
+
+			return result;
+		}
+
+		async Task IStructureRepository.AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTimeOffset dateCreated ) {
+			var record = new ViewStructureRecord() {
+				ViewId = viewId.Value,
+				StructureId = structureId.Value,
+				DateCreated = dateCreated.UtcDateTime
+			};
+
+			await _context.SaveAsync( record );
+		}
 	}
 }
