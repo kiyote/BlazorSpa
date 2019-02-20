@@ -20,6 +20,7 @@ namespace BlazorSpa.Client {
 			services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
 			services.AddSingleton<ISignalService, SignalService>();
 			services.AddSingleton<IUserApiService, UserApiService>();
+			services.AddSingleton<IStructureApiService, StructureApiService>();
 		}
 
 		public void Configure( IBlazorApplicationBuilder app ) {

@@ -36,7 +36,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		}
 
 		[Test]
-		public async Task Add_ValidData_StructureReturned() {
+		public async Task AddStructure_ValidData_StructureReturned() {
 			var structureId = new Id<Structure>();
 			var structure = await _structureRepository.AddStructure( structureId, "test", DateTimeOffset.Now );
 
@@ -99,7 +99,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddView_ValidData_ViewReturned() {
 			var viewId = new Id<View>();
-			var view = await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );
+			var view = await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
 
 			Assert.IsNotNull( view );
 			Assert.AreEqual( viewId, view.Id );
@@ -108,7 +108,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task GetViewIds_OneView_OneViewReturned() {
 			var viewId = new Id<View>();
-			var view = await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );
+			var view = await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
 
 			var views = await _structureRepository.GetViewIds();
 			Assert.AreEqual( 1, views.Count() );
@@ -116,9 +116,20 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		}
 
 		[Test]
+		public async Task GetViews_NoViews_EmptyListReturned() {
+			var viewId = new Id<View>();
+			var viewIds = new List<Id<View>>() { viewId };
+
+			var views = await _structureRepository.GetViews( viewIds );
+
+			Assert.IsNotNull( views );
+			CollectionAssert.IsEmpty( views );
+		}
+
+		[ Test ]
 		public async Task GetViews_OneView_OneViewReturned() {
 			var viewId = new Id<View>();
-			var view = await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );
+			var view = await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
 			var viewIds = new List<Id<View>>() { viewId };
 
 			var views = await _structureRepository.GetViews( viewIds );
@@ -130,7 +141,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddViewStructure_ValidViewValidStructure_NoErrors() {
 			var viewId = new Id<View>();
-			await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );			
+			await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
 			var structureId = new Id<Structure>();
 
 			await _structureRepository.AddViewStructure( viewId, structureId, DateTimeOffset.Now );
@@ -143,20 +154,20 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			var expected = new List<Id<Structure>>() {
 				structureId
 			};
-			await _structureRepository.AddView( viewId, "test", DateTimeOffset.Now );
+			await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
 			await _structureRepository.AddViewStructure( viewId, structureId, DateTimeOffset.Now );
 
 			var actual = await _structureRepository.GetViewStructureIds( viewId );
 			CollectionAssert.AreEquivalent( expected, actual );
 		}
 
-		private static async Task<Structure> CreateStructure(IStructureRepository repository, string structureType) {
+		private static async Task<Structure> CreateStructure( IStructureRepository repository, string structureType ) {
 			var structureId = new Id<Structure>();
 			var createdOn = DateTimeOffset.Now;
 			return await repository.AddStructure( structureId, structureType, createdOn );
 		}
 
-		private static async Task RemoveTable(IAmazonDynamoDB client) {
+		private static async Task RemoveTable( IAmazonDynamoDB client ) {
 			var deleteRequest = new DeleteTableRequest() {
 				TableName = "BlazorSpa"
 			};
@@ -166,7 +177,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			}
 		}
 
-		private static async Task CreateTable(IAmazonDynamoDB client) {
+		private static async Task CreateTable( IAmazonDynamoDB client ) {
 			var request = new CreateTableRequest() {
 				TableName = "BlazorSpa",
 				AttributeDefinitions = new List<AttributeDefinition>() {
@@ -192,7 +203,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 				ProvisionedThroughput = new ProvisionedThroughput() {
 					ReadCapacityUnits = 1,
 					WriteCapacityUnits = 1
-				}/*,
+				},
 				GlobalSecondaryIndexes = new List<GlobalSecondaryIndex>() {
 					new GlobalSecondaryIndex() {
 						IndexName = "GSI",
@@ -200,17 +211,21 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 							new KeySchemaElement() {
 								AttributeName = "SK",
 								KeyType = KeyType.HASH
+							},
+							new KeySchemaElement() {
+								AttributeName = "PK",
+								KeyType = KeyType.RANGE
 							}
 						},
 						Projection = new Projection() {
-							ProjectionType = ProjectionType.ALL
+							ProjectionType = ProjectionType.KEYS_ONLY
 						},
 						ProvisionedThroughput = new ProvisionedThroughput() {
 							ReadCapacityUnits = 1,
 							WriteCapacityUnits = 1
 						}
 					}
-				}*/
+				}
 			};
 			await client.CreateTableAsync( request );
 		}

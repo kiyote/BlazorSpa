@@ -7,6 +7,14 @@ using BlazorSpa.Model;
 namespace BlazorSpa.Client.Services {
 	public interface IStructureApiService {
 
-		Task<IEnumerable<ApiView>> GetViews();
+		Task<IEnumerable<ApiView>> GetAllViews();
+
+		Task<IEnumerable<ApiView>> GetUserViews();
+
+		Task<ApiView> CreateView( string viewType, string viewName );
+
+		Task<ApiStructure> CreateStructureInView( string viewId, string structureType );
+
+		Task<ApiStructureOperation> AddStructureToView( string structureId, string viewId );
 	}
 }

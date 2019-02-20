@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorSpa.Repository;
 using BlazorSpa.Repository.Model;
@@ -37,6 +38,44 @@ namespace BlazorSpa.Service {
 			var views = await _structureRepository.GetViews( viewIds );
 
 			return views;
+		}
+
+		async Task<Structure> IStructureService.CreateStructure( Id<Structure> structureId, string structureType, DateTimeOffset dateCreated ) {
+			var structureIds = new List<Id<Structure>>() {
+				structureId
+			};
+			var result = await _structureRepository.GetStructures( structureIds );
+			if (result.Any()) {
+				return result.First();
+			}
+
+			return await _structureRepository.AddStructure( structureId, structureType, dateCreated );
+		}
+
+		async Task<StructureOperationStatus> IStructureService.AddStructureToView(Id<Structure> structureId, Id<View> viewId, DateTimeOffset dateCreated ) {
+			var structures = await _structureRepository.GetViewStructureIds( viewId );
+			if (structures.Contains(structureId)) {
+				return StructureOperationStatus.AlreadyExists;
+			}
+
+			return await _structureRepository.AddViewStructure( viewId, structureId, dateCreated );
+		}
+
+		async Task<View> IStructureService.CreateViewWithUser(Id<User> userId, Id<View> viewId, string viewType, string viewName, DateTimeOffset dateCreated) {
+			var viewIds = new List<Id<View>>() {
+				viewId
+			};
+
+			var result = await _structureRepository.GetViews( viewIds );
+			if( result.Any() ) {
+				return result.First();
+			}
+
+			var view = await _structureRepository.AddView( viewId, viewType, viewName, dateCreated );
+
+			await _userRepository.AddView( userId, viewId, dateCreated );
+
+			return view;
 		}
 	}
 }

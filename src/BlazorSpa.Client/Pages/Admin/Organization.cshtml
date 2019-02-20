@@ -2,6 +2,22 @@
 @page "/admin/organization"
 @layout MainLayout
 
-<p>
+<h1>
     Organization Editor
+</h1>
+<p>
+    Organizations
+    <ul>
+        @foreach( var organization in Organizations ) {
+            <li>@organization.Name</li>
+        }
+    </ul>
+</p>
+<p>
+    @if( CreatingView ) {
+        <input type="text" id="viewType" placeholder="Organization Name" bind=@_createViewName />
+        <button type="button" class="btn btn-sm btn-primary" onclick=@CreateView>Create</button>
+    } else {
+        <button type="button" class="btn btn-sm btn-primary" onclick=@ShowCreateView>Create</button>
+    }
 </p>

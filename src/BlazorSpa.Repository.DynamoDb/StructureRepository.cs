@@ -90,23 +90,30 @@ namespace BlazorSpa.Repository.DynamoDb {
 			foreach( var view in batchGet.Results ) {
 				result.Add( new View(
 					new Id<View>( view.ViewId ),
-					view.ViewType
+					view.ViewType,
+					view.Name
 				) );
 			}
 
 			return result;
 		}
 
-		async Task<View> IStructureRepository.AddView( Id<View> viewId, string viewType, DateTimeOffset dateCreated ) {
+		async Task<View> IStructureRepository.AddView( 
+			Id<View> viewId, 
+			string viewType, 
+			string name, 
+			DateTimeOffset dateCreated 
+		) {
 			var viewRecord = new ViewRecord() {
 				ViewId = viewId.Value,
 				ViewType = viewType,
+				Name = name,
 				DateCreated = dateCreated.UtcDateTime
 			};
 
 			await _context.SaveAsync( viewRecord );
 
-			return new View( viewId, viewType );
+			return new View( viewId, viewType, name );
 		}
 
 		async Task<IEnumerable<Id<View>>> IStructureRepository.GetViewIds() {
@@ -141,7 +148,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return result;
 		}
 
-		async Task IStructureRepository.AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTimeOffset dateCreated ) {
+		async Task<StructureOperationStatus> IStructureRepository.AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTimeOffset dateCreated ) {
 			var record = new ViewStructureRecord() {
 				ViewId = viewId.Value,
 				StructureId = structureId.Value,
@@ -149,6 +156,8 @@ namespace BlazorSpa.Repository.DynamoDb {
 			};
 
 			await _context.SaveAsync( record );
+
+			return StructureOperationStatus.Success;
 		}
 	}
 }

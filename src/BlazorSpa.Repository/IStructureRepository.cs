@@ -13,7 +13,7 @@ namespace BlazorSpa.Repository {
 
 		Task<IEnumerable<Id<Structure>>> GetChildStructureIds( Id<View> viewId, Id<Structure> structureId );
 
-		Task<View> AddView( Id<View> viewId, string viewType, DateTimeOffset dateCreated );
+		Task<View> AddView( Id<View> viewId, string viewType, string name, DateTimeOffset dateCreated );
 
 		Task<IEnumerable<View>> GetViews( IEnumerable<Id<View>> viewIds );
 
@@ -21,6 +21,6 @@ namespace BlazorSpa.Repository {
 
 		Task<IEnumerable<Id<Structure>>> GetViewStructureIds( Id<View> viewId );
 
-		Task AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTimeOffset dateCreated );
+		Task<StructureOperationStatus> AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTimeOffset dateCreated );
 	}
 }
