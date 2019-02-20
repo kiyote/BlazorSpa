@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlazorSpa.Model;
+using BlazorSpa.Client.Model;
 
 namespace BlazorSpa.Client.Services {
 	public interface IStructureApiService {
 
-		Task<IEnumerable<ApiView>> GetAllViews();
+		Task<IEnumerable<View>> GetAllViews();
 
-		Task<IEnumerable<ApiView>> GetUserViews();
+		Task<IEnumerable<View>> GetUserViews();
 
-		Task<ApiView> CreateView( string viewType, string viewName );
+		Task<View> CreateView( string viewType, string viewName );
 
-		Task<ApiStructure> CreateStructureInView( string viewId, string structureType );
+		Task<Structure> CreateStructureInView( string viewId, string structureType );
 
 		Task<ApiStructureOperation> AddStructureToView( string structureId, string viewId );
 	}

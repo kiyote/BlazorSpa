@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Client", "src\Bla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{89A1B1DA-944E-4041-8919-5D920658D713}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Model", "src\BlazorSpa.Model\BlazorSpa.Model.csproj", "{7DA6F9C0-6E45-414D-AE13-806312E2EC2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Shared", "src\BlazorSpa.Model\BlazorSpa.Shared.csproj", "{7DA6F9C0-6E45-414D-AE13-806312E2EC2D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository", "src\BlazorSpa.Repository\BlazorSpa.Repository.csproj", "{D8C0BDD8-F039-4A9A-B0BE-E5D7A4F70F39}"
 EndProject
@@ -29,13 +29,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.S3", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Service", "src\BlazorSpa.Service\BlazorSpa.Service.csproj", "{E57A141E-D30E-4B99-ACB9-414E15230D3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSpa.Service.Tests", "test\BlazorSpa.Service.Tests\BlazorSpa.Service.Tests.csproj", "{8F841BCE-E62E-4B79-B7D7-3E7A5B720B9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Service.Tests", "test\BlazorSpa.Service.Tests\BlazorSpa.Service.Tests.csproj", "{8F841BCE-E62E-4B79-B7D7-3E7A5B720B9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSpa.Repository.Cognito.Tests", "test\BlazorSpa.Repository.Cognito.Tests\BlazorSpa.Repository.Cognito.Tests.csproj", "{1CDE64EA-2B7B-4A0A-959E-FE159EAAA4EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.Cognito.Tests", "test\BlazorSpa.Repository.Cognito.Tests\BlazorSpa.Repository.Cognito.Tests.csproj", "{1CDE64EA-2B7B-4A0A-959E-FE159EAAA4EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.DynamoDb.Tests", "test\BlazorSpa.Repository.DynamoDb.Tests\BlazorSpa.Repository.DynamoDb.Tests.csproj", "{A41EC01A-69FD-443D-89A5-F528547BB70E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSpa.Repository.S3.Tests", "test\BlazorSpa.Repository.S3.Tests\BlazorSpa.Repository.S3.Tests.csproj", "{1513AE4A-F729-4670-86E1-5D7AF2599752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository.S3.Tests", "test\BlazorSpa.Repository.S3.Tests\BlazorSpa.Repository.S3.Tests.csproj", "{1513AE4A-F729-4670-86E1-5D7AF2599752}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorSpa.Client.Model", "src\BlazorSpa.Client.Model\BlazorSpa.Client.Model.csproj", "{318B92FA-DE77-491A-BAD3-75CB5588264A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{1513AE4A-F729-4670-86E1-5D7AF2599752}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1513AE4A-F729-4670-86E1-5D7AF2599752}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1513AE4A-F729-4670-86E1-5D7AF2599752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{318B92FA-DE77-491A-BAD3-75CB5588264A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{318B92FA-DE77-491A-BAD3-75CB5588264A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{318B92FA-DE77-491A-BAD3-75CB5588264A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{318B92FA-DE77-491A-BAD3-75CB5588264A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +121,7 @@ Global
 		{1CDE64EA-2B7B-4A0A-959E-FE159EAAA4EF} = {8607A33D-D40A-4954-9578-93FF8CD98299}
 		{A41EC01A-69FD-443D-89A5-F528547BB70E} = {8607A33D-D40A-4954-9578-93FF8CD98299}
 		{1513AE4A-F729-4670-86E1-5D7AF2599752} = {8607A33D-D40A-4954-9578-93FF8CD98299}
+		{318B92FA-DE77-491A-BAD3-75CB5588264A} = {D7FC993F-2D62-44EB-9366-8DFD953EC018}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {00F989B3-623D-4C22-8546-03222C9E54AF}

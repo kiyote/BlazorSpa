@@ -31,12 +31,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BlazorSpa.Client.Model\BlazorSpa.Client.Model.csproj" />
+    <ProjectReference Include="..\BlazorSpa.Client\BlazorSpa.Client.csproj" />
     <ProjectReference Include="..\BlazorSpa.Logging.CloudWatch\BlazorSpa.Logging.CloudWatch.csproj" />
+    <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Shared.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.Cognito\BlazorSpa.Repository.Cognito.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.DynamoDb\BlazorSpa.Repository.DynamoDb.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository\BlazorSpa.Repository.csproj" />
-    <ProjectReference Include="..\BlazorSpa.Client\BlazorSpa.Client.csproj" />
-    <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Model.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.S3\BlazorSpa.Repository.S3.csproj" />
     <ProjectReference Include="..\BlazorSpa.Service\BlazorSpa.Service.csproj" />
   </ItemGroup>

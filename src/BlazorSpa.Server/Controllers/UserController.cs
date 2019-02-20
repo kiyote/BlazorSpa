@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BlazorSpa.Client.Model;
 using BlazorSpa.Model;
 using BlazorSpa.Server.Managers;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<ApiUser>> GetUserInformation() {
+		public async Task<ActionResult<User>> GetUserInformation() {
 			var result = await _userManager.GetUser( _contextInformation.UserId );
 
 			if( result != default ) {

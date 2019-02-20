@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace BlazorSpa.Server {
@@ -76,6 +77,8 @@ namespace BlazorSpa.Server {
 				.SetCompatibilityVersion( CompatibilityVersion.Version_2_1 )
 				.AddJsonOptions( options => {
 					options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+					options.SerializerSettings.DateParseHandling = DateParseHandling.None;
+					options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
 				} );
 
 			services.AddDynamoDb( Configuration.GetSection( "DynamoDb" ).Get<DynamoDbOptions>() );

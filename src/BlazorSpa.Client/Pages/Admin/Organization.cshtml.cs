@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Services;
-using BlazorSpa.Model;
+using BlazorSpa.Client.Model;
 using Microsoft.AspNetCore.Blazor.Components;
 
 namespace BlazorSpa.Client.Pages.Admin
@@ -16,7 +16,7 @@ namespace BlazorSpa.Client.Pages.Admin
 
 		protected string _createViewName { get; set; }
 
-		public IEnumerable<ApiView> Organizations { get; set; } = new List<ApiView>();
+		public IEnumerable<View> Organizations { get; set; } = new List<View>();
 
 		public bool CreatingView { get; set; }
 

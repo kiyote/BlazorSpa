@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BlazorSpa.Shared;
 using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository.DynamoDb {

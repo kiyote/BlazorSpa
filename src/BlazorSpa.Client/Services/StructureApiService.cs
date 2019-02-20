@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using BlazorSpa.Model;
+using BlazorSpa.Client.Model;
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Services {
@@ -24,44 +24,44 @@ namespace BlazorSpa.Client.Services {
 			_config = config;
 		}
 
-		async Task<IEnumerable<ApiView>> IStructureApiService.GetAllViews() {
+		async Task<IEnumerable<View>> IStructureApiService.GetAllViews() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/views",
-				( s ) => { return JsonConvert.DeserializeObject<ApiView[]>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<View[]>( s ); } );
 
 			return response;
 		}
 
-		async Task<IEnumerable<ApiView>> IStructureApiService.GetUserViews() {
+		async Task<IEnumerable<View>> IStructureApiService.GetUserViews() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/view",
-				( s ) => { Console.WriteLine( s ); return JsonConvert.DeserializeObject<ApiView[]>( s ); } );
+				( s ) => { Console.WriteLine( s ); return JsonConvert.DeserializeObject<View[]>( s ); } );
 
 			return response;
 		}
 
-		async Task<ApiView> IStructureApiService.CreateView( 
+		async Task<View> IStructureApiService.CreateView( 
 			string viewType, 
 			string viewName 
 		) {
-			var newView = new ApiView( default, viewType, viewName );
+			var newView = new View( default, viewType, viewName );
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view",
 				newView,
 				( v ) => { return JsonConvert.SerializeObject( v ); },
-				( s ) => { return JsonConvert.DeserializeObject<ApiView>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<View>( s ); } );
 
 			return response;
 		}
 
-		async Task<ApiStructure> IStructureApiService.CreateStructureInView( string viewId, string structureType ) {
-			var newStructure = new ApiStructure( default, structureType );
+		async Task<Structure> IStructureApiService.CreateStructureInView( string viewId, string structureType ) {
+			var newStructure = new Structure( default, structureType );
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId}",
 				newStructure,
 				( v ) => { return JsonConvert.SerializeObject( v ); },
-				( s ) => { return JsonConvert.DeserializeObject<ApiStructure>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<Structure>( s ); } );
 
 			return response;
 		}
@@ -69,7 +69,7 @@ namespace BlazorSpa.Client.Services {
 		async Task<ApiStructureOperation> IStructureApiService.AddStructureToView(string structureId, string viewId) {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/{structureId}/view/{viewId}",
-				default(ApiStructure),
+				default(Structure),
 				( v ) => { return "{}"; },
 				( s ) => { return JsonConvert.DeserializeObject<ApiStructureOperation>( s ); } );
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.Model {
 	public sealed class Structure: IEquatable<Structure> {

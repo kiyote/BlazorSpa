@@ -1,26 +1,24 @@
 ﻿using System;
+using BlazorSpa.Shared;
 using Newtonsoft.Json;
 
-namespace BlazorSpa.Model {
-	public class ApiView {
-
-		public ApiView() {
-		}
+namespace BlazorSpa.Client.Model {
+	public class View {
 
 		[JsonConstructor]
-		public ApiView(
+		public View(
 			string id,
 			string viewType,
 			string name
 		) {
-			Id = id;
+			Id = new Id<View>(id);
 			ViewType = viewType;
 			Name = name;
 		}
 
-		public string Id { get; }
+		public Id<View> Id { get; }
 
-		public string ViewType { get; set; }
+		public string ViewType { get; }
 
 		public string Name { get; }
 	}

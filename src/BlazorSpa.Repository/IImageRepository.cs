@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using BlazorSpa.Shared;
 using BlazorSpa.Repository.Model;
 
 namespace BlazorSpa.Repository {

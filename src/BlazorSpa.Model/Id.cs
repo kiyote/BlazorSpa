@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace BlazorSpa.Repository.Model {
+namespace BlazorSpa.Shared {
+	[JsonConverter( typeof( IdConverter ) )]
 	public sealed class Id<T> : IEquatable<Id<T>> {
 
 		public static readonly Id<T> Empty = new Id<T>( Guid.Empty.ToString("N"), false );
@@ -32,8 +34,7 @@ namespace BlazorSpa.Repository.Model {
 					throw new ArgumentException( value );
 				}
 
-				Guid id;
-				if( !Guid.TryParse( value, out id ) ) {
+				if( !Guid.TryParse( value, out Guid id ) ) {
 					throw new ArgumentException( nameof( value ) );
 				}
 
@@ -78,8 +79,7 @@ namespace BlazorSpa.Repository.Model {
 				return false;
 			}
 
-			Guid id;
-			if( !Guid.TryParse( value, out id ) ) {
+			if( !Guid.TryParse( value, out Guid id ) ) {
 				return false;
 			}
 

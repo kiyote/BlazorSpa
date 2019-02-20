@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace BlazorSpa.Model {
+namespace BlazorSpa.Client.Model {
 	public class ApiStructureOperation {
 
 		[JsonConstructor]

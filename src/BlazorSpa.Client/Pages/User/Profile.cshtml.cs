@@ -32,17 +32,14 @@ namespace BlazorSpa.Client.Pages.User {
 		protected override async Task OnInitAsync() {
 			var response = await UserApiService.GetUserInformation();
 
-			var displayDate = "None";
-			if (response.PreviousLogin != default) {
-				// We have to do this because right now Blazor has no concept
-				// of the users culture info or timezone
-				displayDate = DateTimeOffset.Parse( response.PreviousLogin )
-					.ToOffset( TimeSpan.FromHours( -5 ) )
-					.ToString( "F", CultureInfo.GetCultureInfo( "en-US" ) ); ;
-				//var displayDate = DateTimeOffset.Parse( response.PreviousLogin ).ToLocalTime().ToString( "F" );
-			}
+			// We have to do this because right now Blazor has no concept
+			// of the users culture info or timezone
+			var displayDate = response.PreviousLogin
+				?.ToString( "F", CultureInfo.GetCultureInfo( "en-US" ) )
+				?? "None";
+			//var displayDate = DateTimeOffset.Parse( response.PreviousLogin ).ToLocalTime().ToString( "F" );
 
-			UserId = response.Id;
+			UserId = response.Id.Value;
 			Username = response.Name;
 			Avatar = response.AvatarUrl;
 			LastLogin = displayDate;

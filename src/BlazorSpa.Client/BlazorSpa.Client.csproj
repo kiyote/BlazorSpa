@@ -29,7 +29,8 @@
   </ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Model.csproj" />
+	  <ProjectReference Include="..\BlazorSpa.Client.Model\BlazorSpa.Client.Model.csproj" />
+	  <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

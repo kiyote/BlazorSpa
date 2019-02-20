@@ -1,11 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace BlazorSpa.Model {
-	public class ApiStructure {
+namespace BlazorSpa.Client.Model {
+	public class Structure {
 
 		[JsonConstructor]
-		public ApiStructure(
+		public Structure(
 			string id,
 			string structureType
 		) {

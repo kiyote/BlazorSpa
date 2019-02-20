@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Pages.Auth;
-using BlazorSpa.Model;
+using BlazorSpa.Client.Model;
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Services {

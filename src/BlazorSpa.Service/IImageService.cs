@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Service {
 	public interface IImageService {

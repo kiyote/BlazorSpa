@@ -8,6 +8,7 @@ using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using BlazorSpa.Repository.Model;
 using NUnit.Framework;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.DynamoDb.Tests {
 	[TestFixture]

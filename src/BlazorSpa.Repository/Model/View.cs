@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.Model {
 	public sealed class View: IEquatable<View> {

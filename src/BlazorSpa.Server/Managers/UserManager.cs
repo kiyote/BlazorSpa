@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorSpa.Model;
 using BlazorSpa.Repository.Model;
 using BlazorSpa.Service;
+using BlazorSpa.Shared;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.Primitives;
 using Image = BlazorSpa.Repository.Model.Image;
 using LaborImage = SixLabors.ImageSharp.Image;
+using ClientUser = BlazorSpa.Client.Model.User;
 
 namespace BlazorSpa.Server.Managers {
 	public sealed class UserManager {
@@ -24,13 +25,13 @@ namespace BlazorSpa.Server.Managers {
 			_imageService = imageService;
 		}
 
-		public async Task<ApiUser> RecordLogin( string username ) {
+		public async Task<ClientUser> RecordLogin( string username ) {
 			var user = await _identificationService.RecordLogin( username );
 
 			return ToApiUser( user, await GetAvatarUrl( user ) );
 		}
 
-		public async Task<ApiUser> GetUser( string userId ) {
+		public async Task<ClientUser> GetUser( string userId ) {
 			var id = new Id<User>( userId );
 			var user = await _identificationService.GetUser( id );
 
@@ -57,13 +58,14 @@ namespace BlazorSpa.Server.Managers {
 			return avatar.Url;
 		}
 
-		private static ApiUser ToApiUser( User user, string avatarUrl ) {
-			return new ApiUser(
-				user.Id.Value,
+		private static ClientUser ToApiUser( User user, string avatarUrl ) {
+			return new ClientUser(
+				new Id<ClientUser>(user.Id.Value),
 				user.Name,
 				avatarUrl,
-				user.LastLogin.ToString( "O" ),
-				user.PreviousLogin?.ToString( "O" ) ?? default );
+				user.LastLogin,
+				user.PreviousLogin
+			);
 		}
 
 		private async Task<string> GetAvatarUrl( User user ) {

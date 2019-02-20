@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlazorSpa.Repository;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Service {
 	internal sealed class StructureService : IStructureService {

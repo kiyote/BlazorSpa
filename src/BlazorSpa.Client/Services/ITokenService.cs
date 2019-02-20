@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using BlazorSpa.Model;
+using BlazorSpa.Client.Model;
 
 namespace BlazorSpa.Client.Services {
 	public interface ITokenService {

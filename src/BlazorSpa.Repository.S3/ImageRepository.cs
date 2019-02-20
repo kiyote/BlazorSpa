@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Amazon.S3;
 using Amazon.S3.Model;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.S3 {
 	public sealed class ImageRepository : IImageRepository {

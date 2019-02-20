@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorSpa.Model;
+using BlazorSpa.Client.Model;
 using BlazorSpa.Server.Managers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +25,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpGet( "views" )]
-		public async Task<ActionResult<IEnumerable<ApiView>>> GetAllViews() {
+		public async Task<ActionResult<IEnumerable<View>>> GetAllViews() {
 			var result = await _structureManager.GetAllViews();
 
 			if( result != default ) {
@@ -37,7 +37,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpGet( "view" )]
-		public async Task<ActionResult<IEnumerable<ApiView>>> GetUserViews() {
+		public async Task<ActionResult<IEnumerable<View>>> GetUserViews() {
 			var userId = _contextInformation.UserId;
 			var result = await _structureManager.GetUserViews( userId );
 
@@ -45,7 +45,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpPost( "view" )]
-		public async Task<ActionResult<ApiView>> CreateView( [FromBody] ApiView view ) {
+		public async Task<ActionResult<View>> CreateView( [FromBody] View view ) {
 
 			if( ( view == default )
 				|| ( string.IsNullOrWhiteSpace( view.ViewType ) )
@@ -59,7 +59,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpPost( "view/{viewId}" )]
-		public async Task<ActionResult<ApiStructure>> CreateStructureInView( string viewId, [FromBody] ApiStructure structure ) {
+		public async Task<ActionResult<Structure>> CreateStructureInView( string viewId, [FromBody] Structure structure ) {
 			if ((structure == default)
 				|| (string.IsNullOrWhiteSpace(structure.StructureType))
 				|| string.IsNullOrWhiteSpace(viewId)) {
@@ -76,7 +76,7 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpPost( "{structureId}/view/{viewId}" )]
-		public async Task<ActionResult<ApiStructure>> AddStructureToView( string viewId, string structureId ) {
+		public async Task<ActionResult<Structure>> AddStructureToView( string viewId, string structureId ) {
 			if( ( string.IsNullOrWhiteSpace( structureId ) )
 				|| string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();

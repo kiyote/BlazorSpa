@@ -7,6 +7,7 @@ using Amazon.DynamoDBv2.DocumentModel;
 using BlazorSpa.Repository.Model;
 using BlazorSpa.Repository.DynamoDb.Model;
 using System.Threading;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.DynamoDb {
 	public sealed class UserRepository : IUserRepository {
