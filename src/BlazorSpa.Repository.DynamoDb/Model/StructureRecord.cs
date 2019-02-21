@@ -33,8 +33,8 @@ namespace BlazorSpa.Repository.DynamoDb.Model {
 		[DynamoDBProperty("StructureType")]
 		public string StructureType { get; set; }
 
-		[DynamoDBProperty( "Status" )]
-		public string Status { get; set; }
+		[DynamoDBProperty( "Name" )]
+		public string Name { get; set; }
 
 		[DynamoDBProperty("DateCreated")]
 		public DateTime DateCreated { get; set; }

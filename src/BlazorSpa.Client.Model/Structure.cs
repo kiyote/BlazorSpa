@@ -6,14 +6,18 @@ namespace BlazorSpa.Client.Model {
 		[JsonConstructor]
 		public Structure(
 			string id,
-			string structureType
+			string structureType,
+			string name
 		) {
 			Id = id;
 			StructureType = structureType;
+			Name = name;
 		}
 
 		public string Id { get; }
 
 		public string StructureType { get; }
+
+		public string Name { get; }
 	}
 }

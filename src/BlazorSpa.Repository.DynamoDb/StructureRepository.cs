@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
@@ -21,18 +22,19 @@ namespace BlazorSpa.Repository.DynamoDb {
 		async Task<Structure> IStructureRepository.AddStructure(
 			Id<Structure> structureId,
 			string structureType,
+			string name,
 			DateTime dateCreated
 		) {
 			var sr = new StructureRecord() {
 				StructureId = structureId.Value,
 				StructureType = structureType,
-				Status = StructureRecord.Active,
+				Name = name,
 				DateCreated = dateCreated.ToUniversalTime()
 			};
 
 			await _context.SaveAsync( sr );
 
-			return new Structure( structureId, structureType );
+			return new Structure( structureId, structureType, name );
 		}
 
 		async Task IStructureRepository.AddChildStructure( 
@@ -81,11 +83,12 @@ namespace BlazorSpa.Repository.DynamoDb {
 			foreach( var structure in batchGet.Results ) {
 				result.Add( new Structure(
 					new Id<Structure>( structure.StructureId ),
-					structure.StructureType
+					structure.StructureType,
+					structure.Name
 				) );
 			}
 
-			return result;
+			return result.OrderBy( s => s.Name );
 		}
 
 		async Task<IEnumerable<View>> IStructureRepository.GetViews( IEnumerable<Id<View>> viewIds ) {
@@ -104,7 +107,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 				) );
 			}
 
-			return result;
+			return result.OrderBy( v => v.Name );
 		}
 
 		async Task<View> IStructureRepository.AddView( 

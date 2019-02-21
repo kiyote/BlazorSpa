@@ -39,7 +39,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddStructure_ValidData_StructureReturned() {
 			var structureId = new Id<Structure>();
-			var structure = await _structureRepository.AddStructure( structureId, "test", DateTime.UtcNow );
+			var structure = await _structureRepository.AddStructure( structureId, "test", "name", DateTime.UtcNow );
 
 			Assert.IsNotNull( structure );
 			Assert.AreEqual( structureId, structure.Id );
@@ -49,8 +49,9 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		public async Task GetStructures_OneValidStructure_StructureReturned() {
 			var structureId = new Id<Structure>();
 			var structureType = "test";
+			var structureName = "name";
 			var createdOn = DateTime.UtcNow;
-			await _structureRepository.AddStructure( structureId, structureType, createdOn );
+			await _structureRepository.AddStructure( structureId, structureType, structureName, createdOn );
 
 			var structures = await _structureRepository.GetStructures( new List<Id<Structure>>() { structureId } );
 			var structure = structures.FirstOrDefault();
@@ -58,12 +59,13 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			Assert.IsNotNull( structure );
 			Assert.AreEqual( structureId, structure.Id );
 			Assert.AreEqual( structureType, structure.StructureType );
+			Assert.AreEqual( structureName, structure.Name );
 		}
 
 		[Test]
 		public async Task GetStructures_TwoStructuresOnRequested_StructureReturned() {
-			var structure1 = await CreateStructure( _structureRepository, "test1" );
-			var structure2 = await CreateStructure( _structureRepository, "test2" );
+			var structure1 = await CreateStructure( _structureRepository, "test1", "name" );
+			var structure2 = await CreateStructure( _structureRepository, "test2", "name" );
 
 			var structures = await _structureRepository.GetStructures( new List<Id<Structure>>() { structure2.Id } );
 			var structure = structures.FirstOrDefault();
@@ -76,8 +78,8 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddChild_OneChild_NoErrors() {
 			var viewId = new Id<View>();
-			var structure1 = await CreateStructure( _structureRepository, "test1" );
-			var structure2 = await CreateStructure( _structureRepository, "test2" );
+			var structure1 = await CreateStructure( _structureRepository, "test1", "name" );
+			var structure2 = await CreateStructure( _structureRepository, "test2", "name" );
 			var dateCreated = DateTime.UtcNow;
 
 			await _structureRepository.AddChildStructure( viewId, structure1.Id, structure2.Id, dateCreated );
@@ -86,8 +88,8 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task GetChildStructureIds_OneChild_OneChildReturned() {
 			var viewId = new Id<View>();
-			var structure1 = await CreateStructure( _structureRepository, "test1" );
-			var structure2 = await CreateStructure( _structureRepository, "test2" );
+			var structure1 = await CreateStructure( _structureRepository, "test1", "name" );
+			var structure2 = await CreateStructure( _structureRepository, "test2", "name" );
 			var dateCreated = DateTime.UtcNow;
 			await _structureRepository.AddChildStructure( viewId, structure1.Id, structure2.Id, dateCreated );
 
@@ -162,10 +164,14 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			CollectionAssert.AreEquivalent( expected, actual );
 		}
 
-		private static async Task<Structure> CreateStructure( IStructureRepository repository, string structureType ) {
+		private static async Task<Structure> CreateStructure( 
+			IStructureRepository repository, 
+			string structureType,
+			string name
+		) {
 			var structureId = new Id<Structure>();
 			var createdOn = DateTime.UtcNow;
-			return await repository.AddStructure( structureId, structureType, createdOn );
+			return await repository.AddStructure( structureId, structureType, name, createdOn );
 		}
 
 		private static async Task RemoveTable( IAmazonDynamoDB client ) {

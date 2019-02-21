@@ -44,9 +44,9 @@ namespace BlazorSpa.Server.Managers {
 			return ToApiView( view );
 		}
 
-		public async Task<ClientStructure> CreateStructureInView( string viewId, string structureType ) {
+		public async Task<ClientStructure> CreateStructureInView( string viewId, string structureType, string name ) {
 			var operationTimestamp = DateTime.UtcNow;
-			var structure = await _structureService.CreateStructure( new Id<Structure>(), structureType, operationTimestamp );
+			var structure = await _structureService.CreateStructure( new Id<Structure>(), structureType, name, operationTimestamp );
 			var result = await _structureService.AddStructureToView( structure.Id, new Id<View>( viewId ), operationTimestamp );
 
 			if (result == Repository.StructureOperationStatus.Failure) {
@@ -73,7 +73,8 @@ namespace BlazorSpa.Server.Managers {
 		private ClientStructure ToApiStructure( Structure structure ) {
 			return new ClientStructure(
 				structure.Id.Value,
-				structure.StructureType );
+				structure.StructureType,
+				structure.Name );
 		}
 	}
 }

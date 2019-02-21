@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Client.Services {
 	public interface IStructureApiService {
@@ -11,8 +12,10 @@ namespace BlazorSpa.Client.Services {
 
 		Task<View> CreateView( string viewType, string viewName );
 
-		Task<Structure> CreateStructureInView( string viewId, string structureType );
+		Task<Structure> CreateStructureInView( Id<View> viewId, string structureType, string name );
 
-		Task<ApiStructureOperation> AddStructureToView( string structureId, string viewId );
+		Task<ApiStructureOperation> AddStructureToView( Id<Structure> structureId, Id<View> viewId );
+
+		Task<IEnumerable<Structure>> GetViewStructures( Id<View> viewId );
 	}
 }

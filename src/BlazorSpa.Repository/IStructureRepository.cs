@@ -6,7 +6,7 @@ using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository {
 	public interface IStructureRepository {
-		Task<Structure> AddStructure( Id<Structure> structureId, string structureType, DateTime dateCreated );
+		Task<Structure> AddStructure( Id<Structure> structureId, string structureType, string name, DateTime dateCreated );
 
 		Task<IEnumerable<Structure>> GetStructures( IEnumerable<Id<Structure>> structureIds );
 

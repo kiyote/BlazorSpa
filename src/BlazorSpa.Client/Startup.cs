@@ -14,6 +14,7 @@ namespace BlazorSpa.Client {
 			);
 
 			services.AddStorage();
+			services.AddSingleton<IJsonConverter, JsonConverter>();
 			services.AddSingleton<AppState>();
 			services.AddSingleton<IConfig, Config>();
 			services.AddSingleton<ITokenService, TokenService>();

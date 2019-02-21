@@ -65,7 +65,7 @@ namespace BlazorSpa.Server.Controllers {
 				return BadRequest();
 			}
 
-			var result = await _structureManager.CreateStructureInView( viewId, structure.StructureType );
+			var result = await _structureManager.CreateStructureInView( viewId, structure.StructureType, structure.Name );
 
 			if (result != default) {
 				return Ok( result );
@@ -83,6 +83,15 @@ namespace BlazorSpa.Server.Controllers {
 
 			await _structureManager.AddStructureToView( viewId, structureId );
 			return Ok();
+		}
+
+		[HttpGet("view/{viewId}/structures")]
+		public async Task<ActionResult<IEnumerable<Structure>>> GetViewStructures(string viewId) {
+			if (string.IsNullOrWhiteSpace(viewId)) {
+				return BadRequest();
+			}
+
+			return Ok( await _structureManager.GetViewRootStructures( viewId ) );
 		}
 	}
 }

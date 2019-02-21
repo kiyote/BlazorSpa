@@ -3,27 +3,22 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
 using BlazorSpa.Client.Pages.Auth;
-using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Services {
 	public class TokenService : ITokenService {
 
 		private readonly HttpClient _http;
 		private readonly IConfig _config;
-		private readonly JsonSerializerSettings _settings;
+		private readonly IJsonConverter _json;
 
 		public TokenService(
 			HttpClient httpClient,
-			IConfig config
+			IConfig config,
+			IJsonConverter json
 		) {
 			_http = httpClient;
 			_config = config;
-
-			_settings = new JsonSerializerSettings() {
-				DateParseHandling = DateParseHandling.None,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				DateFormatHandling = DateFormatHandling.IsoDateFormat
-			};
+			_json = json;
 		}
 
 		async Task<AuthorizationToken> ITokenService.GetToken( string code ) {
@@ -38,7 +33,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostAsync( _config.TokenUrl, content );
 			if( response.IsSuccessStatusCode ) {
 				var payload = await response.Content.ReadAsStringAsync();
-				var tokens = JsonConvert.DeserializeObject<AuthorizationToken>( payload, _settings );
+				var tokens = _json.Deserialize<AuthorizationToken>( payload );
 
 				return tokens;
 			}
@@ -55,7 +50,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostAsync( _config.TokenUrl, content );
 			if( response.IsSuccessStatusCode ) {
 				var payload = await response.Content.ReadAsStringAsync();
-				var tokens = JsonConvert.DeserializeObject<AuthorizationToken>( payload, _settings );
+				var tokens = _json.Deserialize<AuthorizationToken>( payload );
 
 				return tokens;
 			}

@@ -6,15 +6,19 @@ namespace BlazorSpa.Repository.Model {
 
 		public Structure(
 			Id<Structure> id,
-			string structureType
+			string structureType,
+			string name
 		) {
 			Id = id;
 			StructureType = structureType;
+			Name = name;
 		}
 
 		public Id<Structure> Id { get; }
 
 		public string StructureType { get; }
+
+		public string Name { get; }
 
 		public bool Equals( Structure other ) {
 			if (ReferenceEquals(other, null)) {
@@ -26,7 +30,8 @@ namespace BlazorSpa.Repository.Model {
 			}
 
 			return Id.Equals( other.Id )
-				&& string.Equals( StructureType, other.StructureType, StringComparison.Ordinal );
+				&& string.Equals( StructureType, other.StructureType, StringComparison.Ordinal )
+				&& string.Equals( Name, other.Name, StringComparison.Ordinal );
 		}
 
 		public override bool Equals( object obj ) {
@@ -37,6 +42,7 @@ namespace BlazorSpa.Repository.Model {
 			unchecked {
 				var result = 31 * Id.GetHashCode();
 				result = ( result * 31 ) + StructureType.GetHashCode();
+				result = ( result * 31 ) + Name.GetHashCode();
 
 				return result;
 			}

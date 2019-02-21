@@ -3,7 +3,6 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
 using BlazorSpa.Model;
-using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Services {
 	internal sealed class UserApiService : IUserApiService {
@@ -11,35 +10,30 @@ namespace BlazorSpa.Client.Services {
 		private readonly HttpClient _http;
 		private readonly IAccessTokenProvider _accessTokenProvider;
 		private readonly IConfig _config;
-		private readonly JsonSerializerSettings _settings;
+		private readonly IJsonConverter _json;
 
 		public UserApiService(
 			HttpClient http,
 			IAccessTokenProvider accessTokenProvider,
-			IConfig config
+			IConfig config,
+			IJsonConverter json
 		) {
 			_http = http;
 			_accessTokenProvider = accessTokenProvider;
 			_config = config;
-
-			_settings = new JsonSerializerSettings() {
-				DateParseHandling = DateParseHandling.None,
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				DateFormatHandling = DateFormatHandling.IsoDateFormat
-			};
-
+			_json = json;
 		}
 
 		async Task IUserApiService.RecordLogin() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user/login",
-				( s ) => { return JsonConvert.DeserializeObject<User>( s, _settings ); } );
+				( s ) => { return _json.Deserialize<User>( s ); } );
 		}
 
 		async Task<User> IUserApiService.GetUserInformation() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}/api/user",
-				( s ) => { return JsonConvert.DeserializeObject<User>( s, _settings ); } );
+				( s ) => { return _json.Deserialize<User>( s ); } );
 
 			return response;
 		}
@@ -51,8 +45,8 @@ namespace BlazorSpa.Client.Services {
 				content
 			);
 			var response = await _http.PostJsonAsync( $@"{_config.Host}/api/user/avatar", request,
-				( r ) => { return JsonConvert.SerializeObject( r, _settings ); },
-				( s ) => { return JsonConvert.DeserializeObject<AvatarUrl>( s, _settings ); } );
+				( r ) => { return _json.Serialize( r ); },
+				( s ) => { return _json.Deserialize<AvatarUrl>( s ); } );
 
 			return response.Url;
 		}
