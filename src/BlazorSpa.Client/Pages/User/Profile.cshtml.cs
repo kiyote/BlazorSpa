@@ -11,38 +11,53 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public static string Url = "/user/profile";
 
+		private Model.User _user;
+
 		[Inject] private AppState State { get; set; }
 
 		[Inject] private IUserApiService UserApiService { get; set; }
-
-		public string UserId { get; set; }
-
-		public string Username { get; set; }
 
 		public ElementRef FileUploadRef { get; set; }
 
 		public bool Uploading { get; set; }
 
-		public string Avatar { get; set; }
-
 		public bool Changing { get; set; }
 
-		public string LastLogin { get; set; }
+		public string UserId {
+			get {
+				return _user?.Id.Value;
+			}
+		}
+
+		public string UserName {
+			get {
+				return _user?.Name;
+			}
+		}
+
+		public string AvatarUrl { get; private set; }
+
+		public string LastLogin {
+			get {
+				// We have to do this because right now Blazor has no concept
+				// of the users culture info or timezone
+				return _user.PreviousLogin
+					?.Subtract( TimeSpan.FromHours( 5 ) )
+					.ToString( "F", CultureInfo.GetCultureInfo( "en-US" ) )
+					?? "None";
+				//var displayDate = DateTimeOffset.Parse( response.PreviousLogin ).ToLocalTime().ToString( "F" );
+
+			}
+		}
 
 		protected override async Task OnInitAsync() {
+			await UpdateUserInformation();
+		}
+
+		private async Task UpdateUserInformation() {
 			var response = await UserApiService.GetUserInformation();
-
-			// We have to do this because right now Blazor has no concept
-			// of the users culture info or timezone
-			var displayDate = response.PreviousLogin
-				?.ToString( "F", CultureInfo.GetCultureInfo( "en-US" ) )
-				?? "None";
-			//var displayDate = DateTimeOffset.Parse( response.PreviousLogin ).ToLocalTime().ToString( "F" );
-
-			UserId = response.Id.Value;
-			Username = response.Name;
-			Avatar = response.AvatarUrl;
-			LastLogin = displayDate;
+			_user = response;
+			AvatarUrl = _user.AvatarUrl;
 		}
 
 		public void ChangeAvatar() {
@@ -80,7 +95,7 @@ namespace BlazorSpa.Client.Pages.User {
 				//}
 				Uploading = true;
 				StateHasChanged();
-				Avatar = await UserApiService.SetAvatar( mimeType, content );
+				AvatarUrl = await UserApiService.SetAvatar( mimeType, content );
 				Uploading = false;
 				Changing = false;
 				StateHasChanged();

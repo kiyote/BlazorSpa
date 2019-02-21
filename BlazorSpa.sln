@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Client", "src\Bla
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{89A1B1DA-944E-4041-8919-5D920658D713}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Shared", "src\BlazorSpa.Model\BlazorSpa.Shared.csproj", "{7DA6F9C0-6E45-414D-AE13-806312E2EC2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Shared", "src\BlazorSpa.Shared\BlazorSpa.Shared.csproj", "{7DA6F9C0-6E45-414D-AE13-806312E2EC2D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorSpa.Repository", "src\BlazorSpa.Repository\BlazorSpa.Repository.csproj", "{D8C0BDD8-F039-4A9A-B0BE-E5D7A4F70F39}"
 EndProject

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using BlazorSpa.Shared;
 using Newtonsoft.Json;
 
@@ -11,8 +10,8 @@ namespace BlazorSpa.Client.Model {
 			Id<User> id,
 			string name,
 			string avatarUrl,
-			DateTimeOffset lastLogin,
-			DateTimeOffset? previousLogin
+			DateTime lastLogin,
+			DateTime? previousLogin
 		) {
 			Id = id;
 			Name = name;
@@ -27,8 +26,8 @@ namespace BlazorSpa.Client.Model {
 
 		public string AvatarUrl { get; }
 
-		public DateTimeOffset LastLogin { get; }
+		public DateTime LastLogin { get; }
 
-		public DateTimeOffset? PreviousLogin { get; }
+		public DateTime? PreviousLogin { get; }
 	}
 }

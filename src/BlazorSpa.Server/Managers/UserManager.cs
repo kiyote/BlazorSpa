@@ -4,12 +4,12 @@ using BlazorSpa.Repository.Model;
 using BlazorSpa.Service;
 using BlazorSpa.Shared;
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Processing;
 using SixLabors.Primitives;
+using ClientUser = BlazorSpa.Client.Model.User;
 using Image = BlazorSpa.Repository.Model.Image;
 using LaborImage = SixLabors.ImageSharp.Image;
-using ClientUser = BlazorSpa.Client.Model.User;
 
 namespace BlazorSpa.Server.Managers {
 	public sealed class UserManager {

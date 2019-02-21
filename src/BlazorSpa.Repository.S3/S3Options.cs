@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BlazorSpa.Repository.S3 {
+﻿namespace BlazorSpa.Repository.S3 {
 	public sealed class S3Options {
 
 		public string CredentialsFile { get; set; }

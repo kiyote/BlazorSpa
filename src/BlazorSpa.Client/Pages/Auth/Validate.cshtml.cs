@@ -23,7 +23,7 @@ namespace BlazorSpa.Client.Pages.Auth {
 			var code = _uriHelper.GetParameter( "code" );
 
 			var tokens = await _tokenService.GetToken( code );
-			_accessTokenProvider.SetTokens( tokens.access_token, tokens.refresh_token, DateTimeOffset.Now.AddSeconds( tokens.expires_in ) );
+			_accessTokenProvider.SetTokens( tokens.access_token, tokens.refresh_token, DateTime.UtcNow.AddSeconds( tokens.expires_in ) );
 			await _userApiService.RecordLogin();
 
 			var userInfo = await _userApiService.GetUserInformation();

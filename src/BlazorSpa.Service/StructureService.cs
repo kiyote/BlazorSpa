@@ -41,7 +41,7 @@ namespace BlazorSpa.Service {
 			return views;
 		}
 
-		async Task<Structure> IStructureService.CreateStructure( Id<Structure> structureId, string structureType, DateTimeOffset dateCreated ) {
+		async Task<Structure> IStructureService.CreateStructure( Id<Structure> structureId, string structureType, DateTime createdOn ) {
 			var structureIds = new List<Id<Structure>>() {
 				structureId
 			};
@@ -50,19 +50,19 @@ namespace BlazorSpa.Service {
 				return result.First();
 			}
 
-			return await _structureRepository.AddStructure( structureId, structureType, dateCreated );
+			return await _structureRepository.AddStructure( structureId, structureType, createdOn );
 		}
 
-		async Task<StructureOperationStatus> IStructureService.AddStructureToView(Id<Structure> structureId, Id<View> viewId, DateTimeOffset dateCreated ) {
+		async Task<StructureOperationStatus> IStructureService.AddStructureToView(Id<Structure> structureId, Id<View> viewId, DateTime createdOn ) {
 			var structures = await _structureRepository.GetViewStructureIds( viewId );
 			if (structures.Contains(structureId)) {
 				return StructureOperationStatus.AlreadyExists;
 			}
 
-			return await _structureRepository.AddViewStructure( viewId, structureId, dateCreated );
+			return await _structureRepository.AddViewStructure( viewId, structureId, createdOn );
 		}
 
-		async Task<View> IStructureService.CreateViewWithUser(Id<User> userId, Id<View> viewId, string viewType, string viewName, DateTimeOffset dateCreated) {
+		async Task<View> IStructureService.CreateViewWithUser(Id<User> userId, Id<View> viewId, string viewType, string viewName, DateTime createdOn ) {
 			var viewIds = new List<Id<View>>() {
 				viewId
 			};
@@ -72,9 +72,9 @@ namespace BlazorSpa.Service {
 				return result.First();
 			}
 
-			var view = await _structureRepository.AddView( viewId, viewType, viewName, dateCreated );
+			var view = await _structureRepository.AddView( viewId, viewType, viewName, createdOn );
 
-			await _userRepository.AddView( userId, viewId, dateCreated );
+			await _userRepository.AddView( userId, viewId, createdOn );
 
 			return view;
 		}

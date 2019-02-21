@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
@@ -47,13 +46,13 @@ namespace BlazorSpa.Client.Services {
 
 		async Task<string> IUserApiService.SetAvatar( string contentType, string content ) {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
-			var request = new SetAvatarRequest() {
-				ContentType = contentType,
-				Content = content
-			};
+			var request = new AvatarImage(
+				contentType,
+				content
+			);
 			var response = await _http.PostJsonAsync( $@"{_config.Host}/api/user/avatar", request,
 				( r ) => { return JsonConvert.SerializeObject( r, _settings ); },
-				( s ) => { return JsonConvert.DeserializeObject<SetAvatarResponse>( s, _settings ); } );
+				( s ) => { return JsonConvert.DeserializeObject<AvatarUrl>( s, _settings ); } );
 
 			return response.Url;
 		}

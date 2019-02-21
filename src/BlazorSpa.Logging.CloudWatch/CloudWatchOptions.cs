@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BlazorSpa.Logging.CloudWatch {
+﻿namespace BlazorSpa.Logging.CloudWatch {
 	public sealed class CloudWatchOptions {
 		public string Region { get; set; }
 

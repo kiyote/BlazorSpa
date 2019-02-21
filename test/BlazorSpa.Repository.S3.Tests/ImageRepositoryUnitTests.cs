@@ -7,9 +7,9 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 using Moq;
 using NUnit.Framework;
-using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.S3.Tests {
 	[TestFixture]

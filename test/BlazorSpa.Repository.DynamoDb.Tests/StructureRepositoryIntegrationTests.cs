@@ -7,8 +7,8 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
 using BlazorSpa.Repository.Model;
-using NUnit.Framework;
 using BlazorSpa.Shared;
+using NUnit.Framework;
 
 namespace BlazorSpa.Repository.DynamoDb.Tests {
 	[TestFixture]
@@ -39,7 +39,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddStructure_ValidData_StructureReturned() {
 			var structureId = new Id<Structure>();
-			var structure = await _structureRepository.AddStructure( structureId, "test", DateTimeOffset.Now );
+			var structure = await _structureRepository.AddStructure( structureId, "test", DateTime.UtcNow );
 
 			Assert.IsNotNull( structure );
 			Assert.AreEqual( structureId, structure.Id );
@@ -49,7 +49,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		public async Task GetStructures_OneValidStructure_StructureReturned() {
 			var structureId = new Id<Structure>();
 			var structureType = "test";
-			var createdOn = DateTimeOffset.Now;
+			var createdOn = DateTime.UtcNow;
 			await _structureRepository.AddStructure( structureId, structureType, createdOn );
 
 			var structures = await _structureRepository.GetStructures( new List<Id<Structure>>() { structureId } );
@@ -78,7 +78,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			var viewId = new Id<View>();
 			var structure1 = await CreateStructure( _structureRepository, "test1" );
 			var structure2 = await CreateStructure( _structureRepository, "test2" );
-			var dateCreated = DateTimeOffset.Now;
+			var dateCreated = DateTime.UtcNow;
 
 			await _structureRepository.AddChildStructure( viewId, structure1.Id, structure2.Id, dateCreated );
 		}
@@ -88,7 +88,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			var viewId = new Id<View>();
 			var structure1 = await CreateStructure( _structureRepository, "test1" );
 			var structure2 = await CreateStructure( _structureRepository, "test2" );
-			var dateCreated = DateTimeOffset.Now;
+			var dateCreated = DateTime.UtcNow;
 			await _structureRepository.AddChildStructure( viewId, structure1.Id, structure2.Id, dateCreated );
 
 			var children = await _structureRepository.GetChildStructureIds( viewId, structure1.Id );
@@ -100,7 +100,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddView_ValidData_ViewReturned() {
 			var viewId = new Id<View>();
-			var view = await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
+			var view = await _structureRepository.AddView( viewId, "type", "test", DateTime.UtcNow );
 
 			Assert.IsNotNull( view );
 			Assert.AreEqual( viewId, view.Id );
@@ -109,7 +109,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task GetViewIds_OneView_OneViewReturned() {
 			var viewId = new Id<View>();
-			var view = await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
+			var view = await _structureRepository.AddView( viewId, "type", "test", DateTime.UtcNow );
 
 			var views = await _structureRepository.GetViewIds();
 			Assert.AreEqual( 1, views.Count() );
@@ -130,7 +130,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[ Test ]
 		public async Task GetViews_OneView_OneViewReturned() {
 			var viewId = new Id<View>();
-			var view = await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
+			var view = await _structureRepository.AddView( viewId, "type", "test", DateTime.UtcNow );
 			var viewIds = new List<Id<View>>() { viewId };
 
 			var views = await _structureRepository.GetViews( viewIds );
@@ -142,10 +142,10 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 		[Test]
 		public async Task AddViewStructure_ValidViewValidStructure_NoErrors() {
 			var viewId = new Id<View>();
-			await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
+			await _structureRepository.AddView( viewId, "type", "test", DateTime.UtcNow );
 			var structureId = new Id<Structure>();
 
-			await _structureRepository.AddViewStructure( viewId, structureId, DateTimeOffset.Now );
+			await _structureRepository.AddViewStructure( viewId, structureId, DateTime.UtcNow );
 		}
 
 		[Test]
@@ -155,8 +155,8 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			var expected = new List<Id<Structure>>() {
 				structureId
 			};
-			await _structureRepository.AddView( viewId, "type", "test", DateTimeOffset.Now );
-			await _structureRepository.AddViewStructure( viewId, structureId, DateTimeOffset.Now );
+			await _structureRepository.AddView( viewId, "type", "test", DateTime.UtcNow );
+			await _structureRepository.AddViewStructure( viewId, structureId, DateTime.UtcNow );
 
 			var actual = await _structureRepository.GetViewStructureIds( viewId );
 			CollectionAssert.AreEquivalent( expected, actual );
@@ -164,7 +164,7 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 
 		private static async Task<Structure> CreateStructure( IStructureRepository repository, string structureType ) {
 			var structureId = new Id<Structure>();
-			var createdOn = DateTimeOffset.Now;
+			var createdOn = DateTime.UtcNow;
 			return await repository.AddStructure( structureId, structureType, createdOn );
 		}
 

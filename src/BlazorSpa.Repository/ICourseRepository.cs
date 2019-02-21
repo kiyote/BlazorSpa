@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using BlazorSpa.Shared;
+﻿using System.Collections.Generic;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository {
 	public interface ICourseRepository {

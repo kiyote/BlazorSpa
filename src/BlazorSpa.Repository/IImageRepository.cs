@@ -1,7 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using BlazorSpa.Shared;
+﻿using System.Threading.Tasks;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository {
 	public interface IImageRepository {

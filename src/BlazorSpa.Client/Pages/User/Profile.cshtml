@@ -3,18 +3,18 @@
 @layout MainLayout
 
 <div class="table">
-    @if( !string.IsNullOrWhiteSpace( UserId ) ) {
+    @if( !string.IsNullOrWhiteSpace(UserId) ) {
         <div class="row">
             <div class="col-sm-1">
-                @if( string.IsNullOrWhiteSpace( Avatar ) ) {
+                @if( string.IsNullOrWhiteSpace( AvatarUrl ) ) {
                     <i class="fa fa-user" style="font-size:4em"></i>
                 } else {
-                    <img src="@Avatar" />
+                    <img src="@AvatarUrl" />
                 }
             </div>
             <div class="col-sm-11">
                 <div>UserId: @UserId</div>
-                <div>Username: @Username</div>
+                <div>Username: @UserName</div>
                 <div>Last Login: @LastLogin</div>
             </div>
         </div>

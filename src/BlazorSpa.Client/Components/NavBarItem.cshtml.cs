@@ -1,5 +1,4 @@
-﻿using System;
-using BlazorSpa.Client.Layouts;
+﻿using BlazorSpa.Client.Layouts;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
 

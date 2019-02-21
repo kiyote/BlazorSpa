@@ -16,7 +16,11 @@
 <p>
     @if( CreatingView ) {
         <input type="text" id="viewType" placeholder="Organization Name" bind=@_createViewName />
-        <button type="button" class="btn btn-sm btn-primary" onclick=@CreateView>Create</button>
+        @if( Busy ) {
+            <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        } else {
+            <button type="button" class="btn btn-sm btn-primary" onclick=@CreateView>Create</button>
+        }
     } else {
         <button type="button" class="btn btn-sm btn-primary" onclick=@ShowCreateView>Create</button>
     }

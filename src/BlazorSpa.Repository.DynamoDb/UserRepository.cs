@@ -4,9 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
-using BlazorSpa.Repository.Model;
 using BlazorSpa.Repository.DynamoDb.Model;
-using System.Threading;
+using BlazorSpa.Repository.Model;
 using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.DynamoDb {
@@ -50,21 +49,21 @@ namespace BlazorSpa.Repository.DynamoDb {
 				new Id<User>( userRecord.UserId ),
 				userRecord.Name,
 				userRecord.HasAvatar,
-				new DateTimeOffset( userRecord.LastLogin ),
-				userRecord.PreviousLogin.HasValue
-					? new DateTimeOffset( userRecord.PreviousLogin.Value ) 
-					: default );
+				userRecord.LastLogin,
+				userRecord.PreviousLogin );
 		}
+		
 
 		async Task<User> IUserRepository.AddUser(
 			Id<User> userId,
 			string username,
-			DateTimeOffset lastLogin
+			DateTime createdOn,
+			DateTime lastLogin
 		) {
 			var authentication = new AuthenticationRecord {
 				Username = username,
 				UserId = userId.Value,
-				DateCreated = DateTime.UtcNow,
+				DateCreated = createdOn.ToUniversalTime(),
 				Status = AuthenticationRecord.StatusActive
 			};
 			await _context.SaveAsync( authentication );
@@ -73,7 +72,7 @@ namespace BlazorSpa.Repository.DynamoDb {
 				UserId = authentication.UserId,
 				Name = username,
 				HasAvatar = false,
-				LastLogin = lastLogin.UtcDateTime,
+				LastLogin = lastLogin.ToUniversalTime(),
 				PreviousLogin = default,
 				Status = UserRecord.Active
 			};
@@ -107,11 +106,11 @@ namespace BlazorSpa.Repository.DynamoDb {
 
 		async Task<User> IUserRepository.SetLastLogin(
 			Id<User> userId,
-			DateTimeOffset lastLogin
+			DateTime lastLogin
 		) {
 			var userRecord = await GetById( userId );
 			userRecord.PreviousLogin = userRecord.LastLogin;
-			userRecord.LastLogin = lastLogin.UtcDateTime;
+			userRecord.LastLogin = lastLogin.ToUniversalTime();
 			await _context.SaveAsync( userRecord );
 
 			return ToUser( userId, userRecord );
@@ -133,9 +132,13 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return result;
 		}
 
-		async Task IUserRepository.AddView( Id<User> userId, Id<View> viewId, DateTimeOffset dateCreated ) {
+		async Task IUserRepository.AddView( 
+			Id<User> userId, 
+			Id<View> viewId, 
+			DateTime createdOn
+		) {
 			var userViewRecord = new UserViewRecord() {
-				DateCreated = dateCreated.UtcDateTime,
+				DateCreated = createdOn.ToUniversalTime(),
 				UserId = userId.Value,
 				ViewId = viewId.Value
 			};
@@ -168,10 +171,9 @@ namespace BlazorSpa.Repository.DynamoDb {
 				userId,
 				userRecord.Name,
 				userRecord.HasAvatar,
-				new DateTimeOffset( userRecord.LastLogin ),
-				userRecord.PreviousLogin.HasValue
-					? new DateTimeOffset( userRecord.PreviousLogin.Value )
-					: default( DateTimeOffset? ) );
+				userRecord.LastLogin,
+				userRecord.PreviousLogin
+			);
 		}
 	}
 }

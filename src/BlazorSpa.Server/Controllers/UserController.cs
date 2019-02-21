@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
 using BlazorSpa.Model;
 using BlazorSpa.Server.Managers;
@@ -42,10 +41,10 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpPost( "avatar" )]
-		public async Task<ActionResult<string>> SetAvatar( [FromBody] SetAvatarRequest request ) {
+		public async Task<ActionResult<AvatarUrl>> SetAvatar( [FromBody] AvatarImage request ) {
 
 			var url = await _userManager.SetAvatar( _contextInformation.UserId, request.ContentType, request.Content );
-			return Ok( new SetAvatarResponse() { Url = url } );
+			return Ok( new AvatarUrl( url ) );
 		}
 	}
 }

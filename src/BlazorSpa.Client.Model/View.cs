@@ -1,5 +1,4 @@
-﻿using System;
-using BlazorSpa.Shared;
+﻿using BlazorSpa.Shared;
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Model {

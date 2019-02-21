@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Blazor.Components;
 using Microsoft.AspNetCore.Blazor.Layouts;
-using Microsoft.JSInterop;
 
 namespace BlazorSpa.Client.Layouts {
 	public class MainLayoutComponent : BlazorLayoutComponent, IDisposable {

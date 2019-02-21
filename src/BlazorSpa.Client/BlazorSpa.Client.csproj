@@ -30,7 +30,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BlazorSpa.Client.Model\BlazorSpa.Client.Model.csproj" />
-	  <ProjectReference Include="..\BlazorSpa.Model\BlazorSpa.Shared.csproj" />
+	  <ProjectReference Include="..\BlazorSpa.Shared\BlazorSpa.Shared.csproj" />
 	</ItemGroup>
 
 </Project>

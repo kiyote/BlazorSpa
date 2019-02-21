@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using BlazorSpa.Repository.Model;
 using BlazorSpa.Service;
 using BlazorSpa.Shared;
-using ClientView = BlazorSpa.Client.Model.View;
 using ClientStructure = BlazorSpa.Client.Model.Structure;
+using ClientView = BlazorSpa.Client.Model.View;
 
 namespace BlazorSpa.Server.Managers {
 	public class StructureManager {
@@ -38,14 +38,14 @@ namespace BlazorSpa.Server.Managers {
 		}
 
 		public async Task<ClientView> CreateViewWithUser( string userId, string viewType, string viewName ) {
-			var operationTimestamp = DateTimeOffset.Now;
+			var operationTimestamp = DateTime.UtcNow;
 			var view = await _structureService.CreateViewWithUser( new Id<User>( userId ), new Id<View>(), viewType, viewName, operationTimestamp );
 
 			return ToApiView( view );
 		}
 
 		public async Task<ClientStructure> CreateStructureInView( string viewId, string structureType ) {
-			var operationTimestamp = DateTimeOffset.Now;
+			var operationTimestamp = DateTime.UtcNow;
 			var structure = await _structureService.CreateStructure( new Id<Structure>(), structureType, operationTimestamp );
 			var result = await _structureService.AddStructureToView( structure.Id, new Id<View>( viewId ), operationTimestamp );
 
@@ -60,7 +60,7 @@ namespace BlazorSpa.Server.Managers {
 			await _structureService.AddStructureToView( 
 				new Id<Structure>( structureId ), 
 				new Id<View>( viewId ), 
-				DateTimeOffset.Now );
+				DateTime.UtcNow );
 		}
 
 		private ClientView ToApiView( View view ) {

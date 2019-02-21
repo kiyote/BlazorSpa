@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using BlazorSpa.Shared;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.DynamoDb {
 	public sealed class CourseRepository : ICourseRepository {

@@ -13,6 +13,7 @@ namespace BlazorSpa.Client.Services {
 		private readonly HttpClient _http;
 		private readonly IAccessTokenProvider _accessTokenProvider;
 		private readonly IConfig _config;
+		private readonly JsonSerializerSettings _settings;
 
 		public StructureApiService(
 			HttpClient http,
@@ -22,12 +23,19 @@ namespace BlazorSpa.Client.Services {
 			_http = http;
 			_accessTokenProvider = accessTokenProvider;
 			_config = config;
+
+			_settings = new JsonSerializerSettings() {
+				DateParseHandling = DateParseHandling.None,
+				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+				DateFormatHandling = DateFormatHandling.IsoDateFormat
+			};
+
 		}
 
 		async Task<IEnumerable<View>> IStructureApiService.GetAllViews() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/views",
-				( s ) => { return JsonConvert.DeserializeObject<View[]>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<View[]>( s, _settings ); } );
 
 			return response;
 		}
@@ -35,7 +43,7 @@ namespace BlazorSpa.Client.Services {
 		async Task<IEnumerable<View>> IStructureApiService.GetUserViews() {
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/view",
-				( s ) => { Console.WriteLine( s ); return JsonConvert.DeserializeObject<View[]>( s ); } );
+				( s ) => { Console.WriteLine( s ); return JsonConvert.DeserializeObject<View[]>( s, _settings ); } );
 
 			return response;
 		}
@@ -50,7 +58,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view",
 				newView,
 				( v ) => { return JsonConvert.SerializeObject( v ); },
-				( s ) => { return JsonConvert.DeserializeObject<View>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<View>( s, _settings ); } );
 
 			return response;
 		}
@@ -61,7 +69,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId}",
 				newStructure,
 				( v ) => { return JsonConvert.SerializeObject( v ); },
-				( s ) => { return JsonConvert.DeserializeObject<Structure>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<Structure>( s, _settings ); } );
 
 			return response;
 		}
@@ -71,7 +79,7 @@ namespace BlazorSpa.Client.Services {
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/{structureId}/view/{viewId}",
 				default(Structure),
 				( v ) => { return "{}"; },
-				( s ) => { return JsonConvert.DeserializeObject<ApiStructureOperation>( s ); } );
+				( s ) => { return JsonConvert.DeserializeObject<ApiStructureOperation>( s, _settings ); } );
 
 			return response;
 		}

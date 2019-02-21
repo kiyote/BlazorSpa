@@ -8,14 +8,14 @@ namespace BlazorSpa.Repository.Model {
 			Id<User> id,
 			string name,
 			bool hasAvatar,
-			DateTimeOffset lastLogin,
-			DateTimeOffset? previousLogin
+			DateTime lastLogin,
+			DateTime? previousLogin
 		) {
 			Id = id;
 			Name = name;
 			HasAvatar = hasAvatar;
-			LastLogin = lastLogin;
-			PreviousLogin = previousLogin;
+			LastLogin = lastLogin.ToUniversalTime();
+			PreviousLogin = previousLogin?.ToUniversalTime();
 		}
 
 		public Id<User> Id { get; }
@@ -24,9 +24,9 @@ namespace BlazorSpa.Repository.Model {
 
 		public bool HasAvatar { get; }
 
-		public DateTimeOffset LastLogin { get; }
+		public DateTime LastLogin { get; }
 
-		public DateTimeOffset? PreviousLogin { get; }
+		public DateTime? PreviousLogin { get; }
 
 		public static string CreateId() {
 			return Guid.NewGuid().ToString( "N" );

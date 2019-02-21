@@ -1,4 +1,3 @@
-using System;
 using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Pages.Auth;
 using Microsoft.AspNetCore.Blazor.Components;

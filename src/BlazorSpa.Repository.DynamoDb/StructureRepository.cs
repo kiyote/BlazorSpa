@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
-using BlazorSpa.Shared;
 using BlazorSpa.Repository.DynamoDb.Model;
 using BlazorSpa.Repository.Model;
+using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.DynamoDb {
 	public class StructureRepository : IStructureRepository {
@@ -21,13 +21,13 @@ namespace BlazorSpa.Repository.DynamoDb {
 		async Task<Structure> IStructureRepository.AddStructure(
 			Id<Structure> structureId,
 			string structureType,
-			DateTimeOffset dateCreated
+			DateTime dateCreated
 		) {
 			var sr = new StructureRecord() {
 				StructureId = structureId.Value,
 				StructureType = structureType,
 				Status = StructureRecord.Active,
-				DateCreated = dateCreated.UtcDateTime
+				DateCreated = dateCreated.ToUniversalTime()
 			};
 
 			await _context.SaveAsync( sr );
@@ -35,18 +35,26 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return new Structure( structureId, structureType );
 		}
 
-		async Task IStructureRepository.AddChildStructure( Id<View> viewId, Id<Structure> parentStructureId, Id<Structure> childStructureId, DateTimeOffset dateCreated ) {
+		async Task IStructureRepository.AddChildStructure( 
+			Id<View> viewId, 
+			Id<Structure> parentStructureId, 
+			Id<Structure> childStructureId, 
+			DateTime dateCreated 
+		) {
 			var childRecord = new ChildStructureRecord() {
 				ViewId = viewId.Value,
 				ParentStructureId = parentStructureId.Value,
 				ChildStructureId = childStructureId.Value,
-				DateCreated = dateCreated.UtcDateTime
+				DateCreated = dateCreated.ToUniversalTime()
 			};
 
 			await _context.SaveAsync( childRecord );
 		}
 
-		async Task<IEnumerable<Id<Structure>>> IStructureRepository.GetChildStructureIds( Id<View> viewId, Id<Structure> structureId ) {
+		async Task<IEnumerable<Id<Structure>>> IStructureRepository.GetChildStructureIds( 
+			Id<View> viewId, 
+			Id<Structure> structureId 
+		) {
 			var query = _context.QueryAsync<ChildStructureRecord>(
 				StructureRecord.GetKey( structureId.Value ),
 				QueryOperator.BeginsWith,
@@ -103,13 +111,13 @@ namespace BlazorSpa.Repository.DynamoDb {
 			Id<View> viewId, 
 			string viewType, 
 			string name, 
-			DateTimeOffset dateCreated 
+			DateTime dateCreated 
 		) {
 			var viewRecord = new ViewRecord() {
 				ViewId = viewId.Value,
 				ViewType = viewType,
 				Name = name,
-				DateCreated = dateCreated.UtcDateTime
+				DateCreated = dateCreated.ToUniversalTime()
 			};
 
 			await _context.SaveAsync( viewRecord );
@@ -149,11 +157,15 @@ namespace BlazorSpa.Repository.DynamoDb {
 			return result;
 		}
 
-		async Task<StructureOperationStatus> IStructureRepository.AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTimeOffset dateCreated ) {
+		async Task<StructureOperationStatus> IStructureRepository.AddViewStructure( 
+			Id<View> viewId, 
+			Id<Structure> structureId, 
+			DateTime dateCreated 
+		) {
 			var record = new ViewStructureRecord() {
 				ViewId = viewId.Value,
 				StructureId = structureId.Value,
-				DateCreated = dateCreated.UtcDateTime
+				DateCreated = dateCreated.ToUniversalTime()
 			};
 
 			await _context.SaveAsync( record );

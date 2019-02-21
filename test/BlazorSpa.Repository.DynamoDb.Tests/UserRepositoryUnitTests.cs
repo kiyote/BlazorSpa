@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.DataModel;
-using Amazon.DynamoDBv2.DocumentModel;
 using BlazorSpa.Repository;
 using BlazorSpa.Repository.DynamoDb;
-using BlazorSpa.Repository.DynamoDb.Model;
-using BlazorSpa.Repository.Model;
 using Moq;
 using NUnit.Framework;
 

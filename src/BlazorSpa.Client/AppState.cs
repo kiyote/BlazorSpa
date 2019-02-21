@@ -10,7 +10,7 @@ namespace BlazorSpa.Client {
 			_storage = storage;
 
 			if( _storage[ "TokensExpireAt" ] == default ) {
-				_storage[ "TokensExpireAt" ] = DateTimeOffset.MinValue.ToString( "o" );
+				_storage[ "TokensExpireAt" ] = DateTime.MinValue.ToUniversalTime().ToString( "o" );
 			}
 		}
 
@@ -44,9 +44,9 @@ namespace BlazorSpa.Client {
 			}
 		}
 
-		public DateTimeOffset TokensExpireAt {
+		public DateTime TokensExpireAt {
 			get {
-				return DateTimeOffset.Parse( _storage[ "TokensExpireAt" ] );
+				return DateTime.Parse( _storage[ "TokensExpireAt" ] ).ToUniversalTime();
 			}
 			set {
 				_storage[ "TokensExpireAt" ] = value.ToString( "o" );
@@ -56,7 +56,7 @@ namespace BlazorSpa.Client {
 
 		public bool IsAuthenticated {
 			get {
-				var result = ( TokensExpireAt > DateTimeOffset.Now );
+				var result = ( TokensExpireAt > DateTime.UtcNow );
 				return result;
 			}
 		}

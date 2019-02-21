@@ -21,13 +21,14 @@ namespace BlazorSpa.Service {
 		async Task<User> IIdentificationService.RecordLogin( string username ) {
 			var authenticationInformation = await _authenticationRepository.GetUserInformation( username );
 			var user = await _userRepository.GetByUsername( username );
-			DateTimeOffset lastLogin = DateTimeOffset.Now;
+			var lastLogin = DateTime.UtcNow;
 
 			// If they don't have a local record, create one
 			if( user == default ) {
 				user = await _userRepository.AddUser(
 					new Id<User>(),
 					authenticationInformation.Username,
+					DateTime.UtcNow,
 					lastLogin
 				);
 			} else {
