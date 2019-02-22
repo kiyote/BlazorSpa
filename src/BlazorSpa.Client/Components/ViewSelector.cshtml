@@ -1,0 +1,31 @@
+﻿@inherits ViewSelectorComponent
+
+<div class="container">
+    <div class="row align-items-start">
+        <div class="col-md-auto">
+            @if( Views.Any() ) {
+                <div class="form-group">
+                    <select class="form-control" id="selectOrganization" onchange=@SelectedViewChanged>
+                        @foreach( var view in Views ) {
+                            <option value=@view.Id.Value>@view.Name</option>
+                        }
+                    </select>
+                </div>
+            } else {
+                <div>None</div>
+            }
+        </div>
+        @if( AllowCreate ) {
+            <div class="col-md-4">
+                @if( CreatingView ) {
+                    <input type="text" id="viewType" placeholder="Organization Name" bind=@_createViewName />
+                    <button type="button" class="btn btn-sm btn-primary @(Busy ? "disabled" : null)" onclick=@CreateView>Create</button>
+                    <button type="button" class="btn btn-sm btn-primary @(Busy ? "disabled" : null)" onclick=@CancelCreateMode>Cancel</button>
+                } else {
+                    <button type="button" class="btn btn-sm btn-primary" onclick=@EnterCreateMode>Create</button>
+                }
+            </div>
+        }
+    </div>
+</div>
+

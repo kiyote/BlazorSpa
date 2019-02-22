@@ -9,58 +9,9 @@
     <div>
         Organizations
     </div>
-    <div class="container">
-        <div class="row align-items-start">
-            <div class="col-md-auto">
-                <div class="form-group">
-                    <select class="form-control" id="selectOrganization" onchange=@OrganizationSelected>
-                        @foreach( var organization in Organizations ) {
-                            <option value=@organization.Id.Value>@organization.Name</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4">
-                @if( CreatingView ) {
-                    <input type="text" id="viewType" placeholder="Organization Name" bind=@_createViewName />
-                    @if( Busy ) {
-                        <i class="fa fa-spinner fa-spin"></i>
-                    } else {
-                        <button type="button" class="btn btn-sm btn-primary" onclick=@CreateOrganization>Create</button>
-                        <button type="button" class="btn btn-sm btn-primary" onclick=@HideCreateView>Cancel</button>
-                    }
-                } else {
-                    <button type="button" class="btn btn-sm btn-primary" onclick=@ShowCreateView>Create</button>
-                }
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-auto">
-                <div class="form-group">
-                    <div class="container">
-                        @foreach( var location in Locations ) {
-                            <div class="row">
-                                <div class="col-md-auto">
-                                    @location.Name
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                @if( CreatingLocation ) {
-                    <input type="text" id="locationType" placeholder="Location Name" bind=@_createLocationName />
-                    @if( Busy ) {
-                        <i class="fa fa-spinner fa-spin"></i>
-                    } else {
-                        <button type="button" class="btn btn-sm btn-primary" onclick=@CreateLocation>Create</button>
-                        <button type="button" class="btn btn-sm btn-primary" onclick=@HideCreateLocation>Cancel</button>
-                    }
-                } else {
-                    <button type="button" class="btn btn-sm btn-primary" onclick=@ShowCreateLocation>Create</button>
-                }
-            </div>
-        </div>
+    <ViewSelector AllowCreate=true ViewType="Organization" ref="ViewSelector" OnSelectionChanged=@SelectedViewChanged />
+    <div>
+        Locations
     </div>
+    <StructureNavigator AllowCreate=true StructureType="Location" ref="StructureNavigator" />
 </p>

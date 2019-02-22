@@ -26,7 +26,8 @@ namespace BlazorSpa.Repository.Model {
 
 		public override int GetHashCode() {
 			unchecked {
-				var result = 31 * Id.GetHashCode();
+				var result = 17;
+				result = ( result * 31 ) + Id.GetHashCode();
 				result = ( result * 31 ) + ViewType.GetHashCode();
 				result = ( result * 31 ) + Name.GetHashCode();
 
