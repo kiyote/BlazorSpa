@@ -175,5 +175,28 @@ namespace BlazorSpa.Repository.DynamoDb {
 
 			return StructureOperationStatus.Success;
 		}
+
+		async Task<Id<Structure>> IStructureRepository.GetParentStructureId( 
+			Id<View> viewId, 
+			Id<Structure> structureId 
+		) {
+			var query = _context.QueryAsync<ViewParentStructureRecord>(
+				ChildStructureRecord.GetKey( viewId.Value, structureId.Value ),
+				QueryOperator.BeginsWith,
+				new List<object>() { StructureRecord.StructureItemType }, 
+				new DynamoDBOperationConfig() {
+					IndexName = "GSI"
+				}
+			);
+
+			var structures = await query.GetRemainingAsync();
+			var parentStructure = structures.FirstOrDefault();
+
+			if (parentStructure == default) {
+				return default;
+			}
+
+			return new Id<Structure>( parentStructure.StructureId );
+		}
 	}
 }

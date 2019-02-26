@@ -58,6 +58,7 @@ namespace BlazorSpa.Client.Components {
 			Busy = true;
 			await _structureService.CreateView( ViewType, _createViewName );
 			await LoadViews();
+			_createViewName = default;
 			CreatingView = false;
 			Busy = false;
 		}

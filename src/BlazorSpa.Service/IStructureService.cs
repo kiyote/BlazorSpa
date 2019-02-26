@@ -18,5 +18,11 @@ namespace BlazorSpa.Service {
 		Task<StructureOperationStatus> AddStructureToView( Id<Structure> structureId, Id<View> viewId, DateTime createdOn );
 
 		Task<View> CreateViewWithUser( Id<User> userId, Id<View> viewId, string viewType, string viewName, DateTime createdOn );
+
+		Task<IEnumerable<Structure>> GetChildStructures( Id<View> viewId, Id<Structure> structureId );
+
+		Task AddChildStructure( Id<View> viewId, Id<Structure> parentStructureId, Id<Structure> structureId, DateTime createdOn );
+
+		Task<Structure> GetParentStructure( Id<View> viewId, Id<Structure> structureId );
 	}
 }

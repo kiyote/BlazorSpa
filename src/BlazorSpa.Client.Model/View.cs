@@ -7,11 +7,11 @@ namespace BlazorSpa.Client.Model {
 
 		[JsonConstructor]
 		public View(
-			string id,
+			Id<View> id,
 			string viewType,
 			string name
 		) {
-			Id = new Id<View>(id);
+			Id = id;
 			ViewType = viewType;
 			Name = name;
 		}

@@ -93,5 +93,35 @@ namespace BlazorSpa.Service {
 
 			return view;
 		}
+
+		async Task<IEnumerable<Structure>> IStructureService.GetChildStructures(Id<View> viewId, Id<Structure> structureId) {
+			var structureIds = await _structureRepository.GetChildStructureIds( viewId, structureId );
+			var structures = await _structureRepository.GetStructures( structureIds );
+
+			return structures;
+		}
+
+		async Task IStructureService.AddChildStructure( 
+			Id<View> viewId, 
+			Id<Structure> parentStructureId, 
+			Id<Structure> structureId, 
+			DateTime createdOn 
+		) {
+			await _structureRepository.AddChildStructure( viewId, parentStructureId, structureId, createdOn.ToUniversalTime() );
+		}
+
+		async Task<Structure> IStructureService.GetParentStructure( Id<View> viewId, Id<Structure> structureId ) {
+			var parentStructureId = await _structureRepository.GetParentStructureId( viewId, structureId );
+
+			if (parentStructureId == default) {
+				return default;
+			}
+
+			var structureIds = new List<Id<Structure>>() {
+				parentStructureId
+			};
+			var structures = await _structureRepository.GetStructures( structureIds );
+			return structures.FirstOrDefault();
+		}
 	}
 }

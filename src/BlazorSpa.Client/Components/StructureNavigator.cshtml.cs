@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
 using BlazorSpa.Client.Services;
@@ -11,6 +12,8 @@ namespace BlazorSpa.Client.Components {
 		[Inject] private IStructureApiService _structureService { get; set; }
 
 		protected View SelectedView { get; set; }
+
+		protected Structure SelectedStructure { get; set; }
 
 		protected string _createStructureName { get; set; }
 
@@ -26,7 +29,7 @@ namespace BlazorSpa.Client.Components {
 
 		public async Task SelectedViewChanged( View view ) {
 			SelectedView = view;
-			await LoadStructures( view.Id );
+			await LoadViewStructures( view.Id );
 			StateHasChanged();
 		}
 
@@ -40,14 +43,45 @@ namespace BlazorSpa.Client.Components {
 
 		protected async Task CreateStructure() {
 			Busy = true;
-			await _structureService.CreateView( StructureType, _createStructureName );
-			await LoadStructures( SelectedView.Id );
+			if (SelectedStructure != default) {
+				await _structureService.CreateChildStructure( SelectedView.Id, SelectedStructure.Id, StructureType, _createStructureName );
+				Structures = await _structureService.GetChildStructures( SelectedView.Id, SelectedStructure.Id );
+			} else {
+				await _structureService.CreateStructureInView( SelectedView.Id, StructureType, _createStructureName );
+				await LoadViewStructures( SelectedView.Id );
+			}
+			_createStructureName = default;
 			CreatingStructure = false;
 			Busy = false;
 		}
 
-		private async Task LoadStructures( Id<View> viewId ) {
+		protected async Task SelectStructure( Id<Structure> structureId ) {
+			Busy = true;
+			SelectedStructure = Structures.First( s => s.Id == structureId );
+			Structures = await _structureService.GetChildStructures( SelectedView.Id, structureId );
+			Busy = false;
+		}
+
+		protected async Task SelectParentStructure(Id<Structure> structureId) {
+			Busy = true;
+			if (structureId == default) {
+				SelectedStructure = default;
+				await LoadViewStructures( SelectedView.Id );
+			} else {
+				SelectedStructure = await _structureService.GetParentStructure( SelectedView.Id, structureId );
+				if( SelectedStructure != default ) {
+					Structures = await _structureService.GetChildStructures( SelectedView.Id, SelectedStructure.Id );
+				} else {
+					Structures = await _structureService.GetViewStructures( SelectedView.Id );
+				}
+			}
+			Busy = false;
+		}
+
+		private async Task LoadViewStructures( Id<View> viewId ) {
+			Busy = true;
 			Structures = await _structureService.GetViewStructures( viewId );
+			Busy = false;
 		}
 	}
 }

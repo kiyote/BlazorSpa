@@ -51,7 +51,7 @@ namespace BlazorSpa.Client.Services {
 				return default;
 			}
 
-			var newView = new View( default, viewType, viewName );
+			var newView = new View( Id<View>.Empty, viewType, viewName );
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view",
@@ -69,7 +69,7 @@ namespace BlazorSpa.Client.Services {
 				return default;
 			}
 
-			var newStructure = new Structure( default, structureType, name );
+			var newStructure = new Structure( Id<Structure>.Empty, structureType, name );
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId.Value}",
 				newStructure,
@@ -79,7 +79,7 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<ApiStructureOperation> IStructureApiService.AddStructureToView(Id<Structure> structureId, Id<View> viewId) {
+		async Task<ApiStructureOperation> IStructureApiService.AddStructureToView( Id<View> viewId, Id<Structure> structureId ) {
 			if (structureId == default 
 				|| viewId == default) {
 				return default;
@@ -94,16 +94,61 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
+		async Task<Structure> IStructureApiService.GetParentStructure( Id<View> viewId, Id<Structure> structureId ) {
+			if( structureId == default
+				|| viewId == default ) {
+				return default;
+			}
+
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
+			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/{structureId}/view/{viewId}",
+				( s ) => { return _json.Deserialize<Structure>( s ); } );
+
+			return response;
+		}
+
 		async Task<IEnumerable<Structure>> IStructureApiService.GetViewStructures(Id<View> viewId) {
 			if (viewId == default) {
 				return default;
 			}
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
-			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId.Value}/structures",
+			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId.Value}/structure",
 				( s ) => { return _json.Deserialize<Structure[]>( s ); } );
 
 			return response;
 		}
+
+		async Task<IEnumerable<Structure>> IStructureApiService.GetChildStructures( Id<View> viewId, Id<Structure> structureId ) {
+			if( structureId == default
+				|| viewId == default ) {
+				return default;
+			}
+
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
+			var response = await _http.GetJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId}/structure/{structureId}",
+				( s ) => { return _json.Deserialize<Structure[]>( s ); } );
+
+			return response;
+		}
+
+		async Task<Structure> IStructureApiService.CreateChildStructure( Id<View> viewId, Id<Structure> structureId, string structureType, string name ) {
+			if( structureId == default
+				|| viewId == default
+				|| string.IsNullOrWhiteSpace(structureType) 
+				|| string.IsNullOrWhiteSpace(name) ) {
+				return default;
+			}
+
+			var structure = new Structure( Id<Structure>.Empty, structureType, name );
+			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
+			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/view/{viewId}/structure/{structureId}",
+				structure,
+				( s ) => { return _json.Serialize( s ); },
+				( r ) => { return _json.Deserialize<Structure>( r ); } );
+
+			return response;
+		}
+
 	}
 }

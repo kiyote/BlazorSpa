@@ -1,4 +1,5 @@
 ﻿using System;
+using BlazorSpa.Shared;
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Model {
@@ -6,7 +7,7 @@ namespace BlazorSpa.Client.Model {
 
 		[JsonConstructor]
 		public Structure(
-			string id,
+			Id<Structure> id,
 			string structureType,
 			string name
 		) {
@@ -15,7 +16,7 @@ namespace BlazorSpa.Client.Model {
 			Name = name;
 		}
 
-		public string Id { get; }
+		public Id<Structure> Id { get; }
 
 		public string StructureType { get; }
 

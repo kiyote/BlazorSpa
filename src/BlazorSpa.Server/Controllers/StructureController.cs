@@ -74,6 +74,38 @@ namespace BlazorSpa.Server.Controllers {
 			return StatusCode( StatusCodes.Status500InternalServerError );
 		}
 
+		[HttpGet( "view/{viewId}/structure/{structureId}" )]
+		public async Task<ActionResult<IEnumerable<Structure>>> GetChildStructures( string viewId, string structureId ) {
+			if( ( string.IsNullOrWhiteSpace( structureId ) )
+				|| string.IsNullOrWhiteSpace( viewId ) ) {
+				return BadRequest();
+			}
+
+
+			return Ok( await _structureManager.GetChildStructures( viewId, structureId ) );
+		}
+
+		[HttpPost( "view/{viewId}/structure/{structureId}" )]
+		public async Task<ActionResult<Structure>> CreateChildStructure( string viewId, string structureId, [FromBody] Structure structure ) {
+			if( ( string.IsNullOrWhiteSpace( structureId ) )
+				|| string.IsNullOrWhiteSpace( viewId )
+				|| structure == default ) {
+				return BadRequest();
+			}
+
+
+			return Ok( await _structureManager.CreateChildStructure( viewId, structureId, structure.StructureType, structure.Name ) );
+		}
+
+		[HttpGet("view/{viewId}/structure")]
+		public async Task<ActionResult<IEnumerable<Structure>>> GetViewStructures(string viewId) {
+			if (string.IsNullOrWhiteSpace(viewId)) {
+				return BadRequest();
+			}
+
+			return Ok( await _structureManager.GetViewRootStructures( viewId ) );
+		}
+
 		[HttpPost( "{structureId}/view/{viewId}" )]
 		public async Task<ActionResult<Structure>> AddStructureToView( string viewId, string structureId ) {
 			if( ( string.IsNullOrWhiteSpace( structureId ) )
@@ -85,13 +117,15 @@ namespace BlazorSpa.Server.Controllers {
 			return Ok();
 		}
 
-		[HttpGet("view/{viewId}/structures")]
-		public async Task<ActionResult<IEnumerable<Structure>>> GetViewStructures(string viewId) {
-			if (string.IsNullOrWhiteSpace(viewId)) {
+		[HttpGet( "{structureId}/view/{viewId}" )]
+		public async Task<ActionResult<Structure>> GetParentStructure( string viewId, string structureId ) {
+			if( ( string.IsNullOrWhiteSpace( structureId ) )
+				|| string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();
 			}
-
-			return Ok( await _structureManager.GetViewRootStructures( viewId ) );
+			
+			return Ok( await _structureManager.GetParentStructure( viewId, structureId ));
 		}
+
 	}
 }

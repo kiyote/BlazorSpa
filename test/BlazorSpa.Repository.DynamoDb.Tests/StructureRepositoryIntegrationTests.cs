@@ -164,6 +164,20 @@ namespace BlazorSpa.Repository.DynamoDb.Tests {
 			CollectionAssert.AreEquivalent( expected, actual );
 		}
 
+		[Test]
+		public async Task GetParentStructureId_OneChild_ParentReturned() {
+			var parent = await CreateStructure( _structureRepository, "Parent", "Parent" );
+			var child = await CreateStructure( _structureRepository, "Child", "Child" );
+			var viewId = new Id<View>();
+			var view = await _structureRepository.AddView( viewId, "view", "view", DateTime.UtcNow );
+			await _structureRepository.AddViewStructure( viewId, parent.Id, DateTime.UtcNow );
+			await _structureRepository.AddChildStructure( viewId, parent.Id, child.Id, DateTime.UtcNow );
+
+			var parentId = await _structureRepository.GetParentStructureId( viewId, child.Id );
+
+			Assert.AreEqual( parent.Id, parentId );
+		}
+
 		private static async Task<Structure> CreateStructure( 
 			IStructureRepository repository, 
 			string structureType,

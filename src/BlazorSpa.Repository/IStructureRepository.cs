@@ -23,5 +23,7 @@ namespace BlazorSpa.Repository {
 		Task<IEnumerable<Id<Structure>>> GetViewStructureIds( Id<View> viewId );
 
 		Task<StructureOperationStatus> AddViewStructure( Id<View> viewId, Id<Structure> structureId, DateTime dateCreated );
+
+		Task<Id<Structure>> GetParentStructureId( Id<View> viewId, Id<Structure> structureId );
 	}
 }

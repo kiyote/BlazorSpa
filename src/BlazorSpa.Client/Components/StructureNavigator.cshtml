@@ -3,20 +3,29 @@
 <div class="container">
     <div class="row">
         <div class="col-md-auto">
-            @if( Structures.Any() ) {
-                <div class="form-group">
-                    <div class="container">
-                        @foreach( var structure in Structures ) {
-                            <div class="row">
-                                <div class="col-md-auto">
-                                    @structure.Name
-                                </div>
-                            </div>
-                        }
+            @if( !Busy ) {
+                @if( SelectedStructure != default ) {
+                    <div>
+                        <button type="button" class="btn btn-link" onclick=@(() => SelectParentStructure(SelectedStructure.Id))>@SelectedStructure.Name</button>
                     </div>
-                </div>
+                }
+                @if( Structures.Any() ) {
+                    <div class="form-group">
+                        <div class="container">
+                            @foreach( var structure in Structures ) {
+                                <div class="row">
+                                    <div class="col-md-auto">
+                                        <button type="button" class="btn btn-link" onclick=@(() => SelectStructure(structure.Id))>@structure.Name</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                } else {
+                    <div>None</div>
+                }
             } else {
-                <div>None</div>
+                    <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
             }
         </div>
         @if( AllowCreate ) {

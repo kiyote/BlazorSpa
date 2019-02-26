@@ -16,6 +16,10 @@ namespace BlazorSpa.Shared {
 		}
 
 		public override object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer ) {
+			if (reader.Value == default) {
+				return Activator.CreateInstance( objectType, new object[] { Guid.Empty.ToString( "N" ) } );
+			}
+
 			return Activator.CreateInstance( objectType, new object[] { reader.Value as string } );
 		}
 	}

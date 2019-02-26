@@ -49,30 +49,57 @@ namespace BlazorSpa.Server.Managers {
 			var structure = await _structureService.CreateStructure( new Id<Structure>(), structureType, name, operationTimestamp );
 			var result = await _structureService.AddStructureToView( structure.Id, new Id<View>( viewId ), operationTimestamp );
 
-			if (result == Repository.StructureOperationStatus.Failure) {
+			if( result == Repository.StructureOperationStatus.Failure ) {
 				return default;
 			}
 
 			return ToApiStructure( structure );
 		}
 
-		public async Task AddStructureToView(string viewId, string structureId ) {
-			await _structureService.AddStructureToView( 
-				new Id<Structure>( structureId ), 
-				new Id<View>( viewId ), 
+		public async Task<IEnumerable<ClientStructure>> GetChildStructures( string viewId, string structureId ) {
+			var structures = await _structureService.GetChildStructures( new Id<View>( viewId ), new Id<Structure>( structureId ) );
+
+			return structures.Select( s => ToApiStructure( s ) );
+		}
+
+		public async Task<ClientStructure> CreateChildStructure( string viewId, string structureId, string structureType, string name ) {
+			var operationTimestamp = DateTime.UtcNow;
+			var newStructure = await _structureService.CreateStructure( new Id<Structure>(), structureType, name, operationTimestamp );
+			await _structureService.AddChildStructure( new Id<View>( viewId ), new Id<Structure>( structureId ), newStructure.Id, operationTimestamp );
+
+			return ToApiStructure( newStructure );
+		}
+
+		public async Task<ClientStructure> GetParentStructure( string viewId, string structureId ) {
+			var structure = await _structureService.GetParentStructure( new Id<View>( viewId ), new Id<Structure>( structureId ) );
+			return ToApiStructure( structure );
+		}
+
+		public async Task AddStructureToView( string viewId, string structureId ) {
+			await _structureService.AddStructureToView(
+				new Id<Structure>( structureId ),
+				new Id<View>( viewId ),
 				DateTime.UtcNow );
 		}
 
 		private ClientView ToApiView( View view ) {
+			if (view == default) {
+				return default;
+			}
+
 			return new ClientView(
-				view.Id.Value,
+				new Id<ClientView>( view.Id.Value ),
 				view.ViewType,
 				view.Name );
 		}
 
 		private ClientStructure ToApiStructure( Structure structure ) {
+			if (structure == default) {
+				return default;
+			}
+
 			return new ClientStructure(
-				structure.Id.Value,
+				new Id<ClientStructure>( structure.Id.Value ),
 				structure.StructureType,
 				structure.Name );
 		}
