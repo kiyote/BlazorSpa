@@ -14,3 +14,15 @@
         });
     }
 };
+
+window.navBar = {
+    alignSelectorTo: function (topBand, selector, element) {
+        var pos = $(element).position();
+        var width = $(element).outerWidth();
+        if (!element) {
+            $(selector).hide();
+        } else {
+            $(selector).css({ visibility: "visible", position: "absolute", top: (pos.top + $(topBand).outerHeight()) + "px", left: pos.left + "px", width: width + "px" }).show();
+        }
+    }
+};

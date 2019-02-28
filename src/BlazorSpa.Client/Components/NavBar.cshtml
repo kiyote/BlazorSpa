@@ -3,9 +3,9 @@
 @using BlazorSpa.Client.Pages.Chat
 @using BlazorSpa.Client.Pages.Admin
 
-<span class="align-top nav-bar-top-band" />
+<span class="align-top nav-bar-top-band" style="width:100%" ref="TopBand" />
 <nav class="navbar navbar-expand-md navbar-light bg-white mb-4 nav-bar-shadow">
-    <a class="navbar-brand" href="/" onclick=@(() => { SetActive( default ); })>BlazorSpa</a>
+    <a class="navbar-brand" href="/" onclick=@(async () => { await SetActive( default ); })>BlazorSpa</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -15,31 +15,32 @@
                 @if( IsAuthenticated ) {
                     <NavBarItem ref="NavItemChat">
                         <a class="nav-link"
-                            href="@ChatComponent.Url"><i class="fa fa-comments" style="font-size:1.5em;padding-right:0.5em"></i>Chat</a>
+                           href="@ChatComponent.Url"><i class="fa fa-comments" style="font-size:1.5em;padding-right:0.5em"></i>Chat</a>
                     </NavBarItem>
                 }
                 <NavBarItem ref="NavItemCounter">
                     <a class="nav-link"
-                        href="/counter"><i class="fa fa-plus" style="font-size:1.5em;padding-right:0.5em"></i>Counter</a>
+                       href="/counter"><i class="fa fa-plus" style="font-size:1.5em;padding-right:0.5em"></i>Counter</a>
                 </NavBarItem>
             </NavBarItemCollection>
             <NavBarItemCollection Layout=@NavBarItemsLayout.Right>
                 @if( !IsAuthenticated ) {
                     <NavBarItem ref="NavItemLogIn">
                         <a class="nav-link"
-                            href="@AuthUrl"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>Log In</a>
+                           href="@AuthUrl"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>Log In</a>
                     </NavBarItem>
                 } else {
                     <NavBarItem ref="NavItemProfile">
                         <a class="nav-link"
-                            href="@ProfileComponent.Url"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>@Username</a>
+                           href="@ProfileComponent.Url"><i class="fa fa-user" style="font-size:1.5em;padding-right:0.5em"></i>@Username</a>
                     </NavBarItem>
                     <NavBarItem ref="NavItemAdmin">
                         <a class="nav-link"
-                            href="@AdminComponent.Url"><i class="fa fa-cog" style="font-size:1.5em;"></i></a>
+                           href="@AdminComponent.Url"><i class="fa fa-cog" style="font-size:1.5em;"></i></a>
                     </NavBarItem>
                 }
             </NavBarItemCollection>
         </div>
     </CascadingValue>
 </nav>
+<span class="align-top nav-bar-top-band" style="transition: left 0.3s ease-out; display: none" ref="Selector" />

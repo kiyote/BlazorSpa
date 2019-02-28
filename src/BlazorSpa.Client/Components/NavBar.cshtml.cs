@@ -1,6 +1,10 @@
+using System.Diagnostics;
+using System.Threading.Tasks;
 using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Pages.Auth;
+using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.JSInterop;
 
 namespace BlazorSpa.Client.Layouts {
 	public class NavBarComponent : BlazorComponent {
@@ -22,7 +26,11 @@ namespace BlazorSpa.Client.Layouts {
 
 		protected NavBarItemComponent NavItemAdmin { get; set; }
 
-		public void SetActive( NavBarItemComponent item ) {
+		protected ElementRef Selector { get; set; }
+
+		protected ElementRef TopBand { get; set; }
+
+		public async Task SetActive( NavBarItemComponent item ) {
 			if( item != _selectedItem ) {
 				if( _selectedItem != default ) {
 					_selectedItem.IsActive = false;
@@ -31,6 +39,7 @@ namespace BlazorSpa.Client.Layouts {
 				if( _selectedItem != default ) {
 					_selectedItem.IsActive = true;
 				}
+				await JSRuntime.Current.InvokeAsync<string>( "navBar.alignSelectorTo", TopBand, Selector, item?.ListItem );
 				StateHasChanged();
 			}
 		}
