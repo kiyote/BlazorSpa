@@ -27,5 +27,9 @@ namespace BlazorSpa.Service {
 		async Task<Image> IImageService.Get(Id<Image> id) {
 			return await _imageRepository.Get( id );
 		}
+
+		async Task IImageService.Remove(Id<Image> id) {
+			await _imageRepository.Remove( id );
+		}
 	}
 }

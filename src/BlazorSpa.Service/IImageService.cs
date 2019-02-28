@@ -9,5 +9,7 @@ namespace BlazorSpa.Service {
 		Task<Image> Update( Id<Image> id, string contentType, string content );
 
 		Task<Image> Get( Id<Image> id );
+
+		Task Remove( Id<Image> id );
 	}
 }
