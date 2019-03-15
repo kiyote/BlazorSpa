@@ -2,12 +2,11 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using BlazorSpa.Client.Services;
-using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace BlazorSpa.Client.Pages.User {
-	public class ProfileComponent : BlazorComponent {
+	public class ProfileComponent : ComponentBase {
 
 		public static string Url = "/user/profile";
 
@@ -16,6 +15,8 @@ namespace BlazorSpa.Client.Pages.User {
 		[Inject] private AppState State { get; set; }
 
 		[Inject] private IUserApiService UserApiService { get; set; }
+
+        [Inject] private IJSRuntime _js { get; set; }
 
 		public ElementRef FileUploadRef { get; set; }
 
@@ -66,7 +67,7 @@ namespace BlazorSpa.Client.Pages.User {
 		}
 
 		public async Task UploadFile() {
-			var data = await JSRuntime.Current.InvokeAsync<string>( "profileFiles.readUploadedFileAsText", FileUploadRef );
+			var data = await _js.InvokeAsync<string>( "profileFiles.readUploadedFileAsText", FileUploadRef );
 			if (!data.StartsWith("data:")) {
 				// No idea what to do here, the browser is behaving strangely...
 				return;

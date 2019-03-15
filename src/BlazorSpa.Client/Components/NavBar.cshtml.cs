@@ -1,13 +1,10 @@
-using System.Diagnostics;
 using System.Threading.Tasks;
-using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Pages.Auth;
-using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace BlazorSpa.Client.Layouts {
-	public class NavBarComponent : BlazorComponent {
+namespace BlazorSpa.Client.Components {
+	public class NavBarComponent : ComponentBase {
 		private NavBarItemComponent _selectedItem;
 
 		[Parameter] protected string Username { get; set; }
@@ -15,6 +12,8 @@ namespace BlazorSpa.Client.Layouts {
 		[Parameter] protected bool IsAuthenticated { get; set; }
 
 		[Inject] private IConfig _config { get; set; }
+
+        [Inject] private IJSRuntime _js { get; set; }
 
 		protected NavBarItemComponent NavItemLogIn { get; set; }
 
@@ -39,7 +38,7 @@ namespace BlazorSpa.Client.Layouts {
 				if( _selectedItem != default ) {
 					_selectedItem.IsActive = true;
 				}
-				await JSRuntime.Current.InvokeAsync<string>( "navBar.alignSelectorTo", TopBand, Selector, item?.ListItem );
+				await _js.InvokeAsync<string>( "navBar.alignSelectorTo", TopBand, Selector, item?.ListItem );
 				StateHasChanged();
 			}
 		}

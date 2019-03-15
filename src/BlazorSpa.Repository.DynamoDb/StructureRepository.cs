@@ -9,7 +9,7 @@ using BlazorSpa.Repository.Model;
 using BlazorSpa.Shared;
 
 namespace BlazorSpa.Repository.DynamoDb {
-	public class StructureRepository : IStructureRepository {
+	public sealed class StructureRepository : IStructureRepository {
 
 		private readonly IDynamoDBContext _context;
 

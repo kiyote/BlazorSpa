@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Model;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorSpa.Client.Pages.Admin {
-	public class OrganizationComponent : BlazorComponent
+	public class OrganizationComponent : ComponentBase
     {
 		public static string Url = "/admin/organization";
 

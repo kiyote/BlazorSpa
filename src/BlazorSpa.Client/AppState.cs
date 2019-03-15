@@ -1,15 +1,20 @@
 ﻿using System;
-using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
+using System.Collections.Generic;
+//using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
 
 namespace BlazorSpa.Client {
 	public class AppState {
 
-		private readonly SessionStorage _storage;
+		private readonly IDictionary<string, string> _storage;
 
-		public AppState( SessionStorage storage ) {
-			_storage = storage;
+		public AppState( ) {
+            _storage = new Dictionary<string, string>();
+            _storage["TokensExpireAt"] = default;
+            _storage["Username"] = default;
+            _storage["AccessToken"] = default;
+            _storage["RefreshToken"] = default;
 
-			if( _storage[ "TokensExpireAt" ] == default ) {
+            if ( _storage[ "TokensExpireAt" ] == default ) {
 				_storage[ "TokensExpireAt" ] = DateTime.MinValue.ToUniversalTime().ToString( "o" );
 			}
 		}

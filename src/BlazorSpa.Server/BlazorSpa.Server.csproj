@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RestoreAdditionalProjectSources>
+      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
+      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
+    </RestoreAdditionalProjectSources>
     <LangVersion>7.3</LangVersion>
-	<RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-	<IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,21 +14,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="credentials.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.6" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.7.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.4" />
-    <PackageReference Include="MimeTypes" Version="1.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0-preview3-19153-02" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.9.0-preview3-19154-02" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Server" Version="3.0.0-preview3-19153-02" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.0.0-preview3-19153-02" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
   </ItemGroup>
 
@@ -34,12 +27,22 @@
     <ProjectReference Include="..\BlazorSpa.Client.Model\BlazorSpa.Client.Model.csproj" />
     <ProjectReference Include="..\BlazorSpa.Client\BlazorSpa.Client.csproj" />
     <ProjectReference Include="..\BlazorSpa.Logging.CloudWatch\BlazorSpa.Logging.CloudWatch.csproj" />
-    <ProjectReference Include="..\BlazorSpa.Shared\BlazorSpa.Shared.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.Cognito\BlazorSpa.Repository.Cognito.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.DynamoDb\BlazorSpa.Repository.DynamoDb.csproj" />
-    <ProjectReference Include="..\BlazorSpa.Repository\BlazorSpa.Repository.csproj" />
     <ProjectReference Include="..\BlazorSpa.Repository.S3\BlazorSpa.Repository.S3.csproj" />
+    <ProjectReference Include="..\BlazorSpa.Repository\BlazorSpa.Repository.csproj" />
     <ProjectReference Include="..\BlazorSpa.Service\BlazorSpa.Service.csproj" />
+    <ProjectReference Include="..\BlazorSpa.Shared\BlazorSpa.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="credentials.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

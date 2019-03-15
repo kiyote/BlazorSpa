@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using BlazorSpa.Client.Model;
 using BlazorSpa.Client.Services;
 using BlazorSpa.Shared;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorSpa.Client.Components {
-	public class StructureNavigatorComponent : BlazorComponent {
+	public class StructureNavigatorComponent : ComponentBase {
 
 		[Inject] private IStructureApiService _structureService { get; set; }
 

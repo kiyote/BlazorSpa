@@ -1,9 +1,9 @@
 ﻿using System;
-using Microsoft.AspNetCore.Blazor.Components;
-using Microsoft.AspNetCore.Blazor.Layouts;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Layouts;
 
 namespace BlazorSpa.Client.Layouts {
-	public class MainLayoutComponent : BlazorLayoutComponent, IDisposable {
+	public class MainLayoutComponent : LayoutComponentBase, IDisposable {
 
 		[Inject] protected AppState AppState { get; set; }
 

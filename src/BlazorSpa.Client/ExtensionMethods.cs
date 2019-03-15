@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Blazor.Services;
+﻿using Microsoft.AspNetCore.Components.Services;
 using Microsoft.AspNetCore.WebUtilities;
+using System;
+using System.Linq;
 
 namespace BlazorSpa.Client {
 	public static class ExtensionMethods {

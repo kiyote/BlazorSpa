@@ -22,12 +22,14 @@ namespace BlazorSpa.Client.Services {
 		}
 
 		async Task<string> IAccessTokenProvider.GetJwtToken() {
+            Console.WriteLine($"Tokens Expires At: {_state.TokensExpireAt}");
 			if (_state.TokensExpireAt < DateTimeOffset.Now) {
 				var tokens = await _tokenService.RefreshToken( _state.AccessToken );
 				if (tokens != default) {
 					SetTokens( tokens.access_token, tokens.refresh_token, DateTime.UtcNow.AddSeconds( tokens.expires_in ) );
 				}
 			}
+            Console.WriteLine($"Access Token: {_state.AccessToken}");
 			return _state.AccessToken;
 		}
 	}

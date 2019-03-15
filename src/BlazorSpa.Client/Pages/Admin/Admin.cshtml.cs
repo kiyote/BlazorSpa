@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorSpa.Client.Pages.Admin {
-	public class AdminComponent : BlazorComponent
+	public class AdminComponent : ComponentBase
     {
 		public static string Url = "/admin";
 

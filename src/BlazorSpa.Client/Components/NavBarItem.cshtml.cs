@@ -1,9 +1,8 @@
 ﻿using BlazorSpa.Client.Layouts;
-using Microsoft.AspNetCore.Blazor;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorSpa.Client.Components {
-	public class NavBarItemComponent : BlazorComponent {
+	public class NavBarItemComponent : ComponentBase {
 
 		[Parameter] protected RenderFragment ChildContent { get; set; }
 

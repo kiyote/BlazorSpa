@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BlazorSignalR;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
 
 namespace BlazorSpa.Client.Services {
 	internal sealed class SignalService : ISignalService {
@@ -10,11 +11,12 @@ namespace BlazorSpa.Client.Services {
 		private HubConnection _connection;
 
 		public SignalService(
-			IAccessTokenProvider accessTokenProvider
+			IAccessTokenProvider accessTokenProvider,
+            IJSRuntime jsRuntime
 		) {
 			HubConnectionBuilder factory = new HubConnectionBuilder();
 
-			factory.WithUrlBlazor( "/signalhub", options: opt => {
+			factory.WithUrlBlazor( "/signalhub", jsRuntime, options: opt => {
 				opt.Transports = HttpTransportType.WebSockets | HttpTransportType.ServerSentEvents | HttpTransportType.LongPolling; 
 				opt.AccessTokenProvider = accessTokenProvider.GetJwtToken;				
 			} );

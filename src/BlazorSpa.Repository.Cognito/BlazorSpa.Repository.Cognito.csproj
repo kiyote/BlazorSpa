@@ -10,8 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.Extensions.CognitoAuthentication" Version="0.9.4" />
-    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.4.51" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

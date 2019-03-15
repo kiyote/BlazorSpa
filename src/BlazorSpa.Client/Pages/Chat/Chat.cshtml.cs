@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blazor.Extensions.Logging;
 using BlazorSpa.Client.Services;
 using BlazorSpa.Model;
-using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorSpa.Client.Pages.Chat {
-	public class ChatComponent : BlazorComponent, IDisposable {
+	public class ChatComponent : ComponentBase, IDisposable {
 
 		public static string Url = "/chat";
 
@@ -56,7 +55,6 @@ namespace BlazorSpa.Client.Pages.Chat {
 		}
 
 		private void Handle( object msg ) {
-			this._logger.LogInformation( msg );
 			this._messages.Add( msg.ToString() );
 			this.StateHasChanged();
 		}
