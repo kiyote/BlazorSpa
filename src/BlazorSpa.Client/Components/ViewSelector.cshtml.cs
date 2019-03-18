@@ -8,7 +8,7 @@ using BlazorSpa.Shared;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorSpa.Client.Components {
-	public class ViewSelectorComponent: ComponentBase {
+	public class ViewSelectorComponent : ComponentBase {
 
 		[Inject] private IStructureApiService _structureService { get; set; }
 
@@ -37,9 +37,9 @@ namespace BlazorSpa.Client.Components {
 			Busy = false;
 		}
 
-		async protected Task SelectedViewChanged( UIChangeEventArgs e) {
-			if (Views != default) {
-				var viewId = new Id<View>(e.Value.ToString());
+		async protected Task SelectedViewChanged( UIChangeEventArgs e ) {
+			if( Views != default ) {
+				var viewId = new Id<View>( e.Value.ToString() );
 				SelectedView = Views.First( v => v.Id == viewId );
 				await OnSelectionChanged.Invoke( SelectedView );
 			}

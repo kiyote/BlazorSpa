@@ -12,7 +12,7 @@ namespace BlazorSpa.Client.Pages.Chat {
 		public static string Url = "/chat";
 
 		[Inject] private ILogger<ChatComponent> _logger { get; set; }
-		[Inject] protected ISignalService SignalService { get; set; }
+		[Inject] private ISignalService _signalService { get; set; }
 
 		internal string _toEverybody { get; set; }
 		internal string _toConnection { get; set; }
@@ -26,9 +26,9 @@ namespace BlazorSpa.Client.Pages.Chat {
 		private IDisposable _demoObjectHandle;
 
 		protected override async Task OnInitAsync() {
-			_sendHandle = SignalService.Register<string>( "Send", HandleTest );
-			_demoObjectHandle = SignalService.Register<DemoData>( "DemoMethodObject", DemoMethodObject );
-			await SignalService.Connect();
+			_sendHandle = _signalService.Register<string>( "Send", HandleTest );
+			_demoObjectHandle = _signalService.Register<DemoData>( "DemoMethodObject", DemoMethodObject );
+			await _signalService.Connect();
 		}
 
 		void IDisposable.Dispose() {
@@ -60,39 +60,39 @@ namespace BlazorSpa.Client.Pages.Chat {
 		}
 
 		internal async Task Broadcast() {
-			await SignalService.Invoke( "Send", _toEverybody );
+			await _signalService.Invoke( "Send", _toEverybody );
 		}
 
 		internal async Task SendToOthers() {
-			await SignalService.Invoke( "SendToOthers", _toEverybody );
+			await _signalService.Invoke( "SendToOthers", _toEverybody );
 		}
 
 		internal async Task SendToConnection() {
-			await SignalService.Invoke( "SendToConnection", _connectionId, _toConnection );
+			await _signalService.Invoke( "SendToConnection", _connectionId, _toConnection );
 		}
 
 		internal async Task SendToMe() {
-			await SignalService.Invoke( "Echo", _toMe );
+			await _signalService.Invoke( "Echo", _toMe );
 		}
 
 		internal async Task SendToGroup() {
-			await SignalService.Invoke( "SendToGroup", _groupName, _toGroup );
+			await _signalService.Invoke( "SendToGroup", _groupName, _toGroup );
 		}
 
 		internal async Task SendToOthersInGroup() {
-			await SignalService.Invoke( "SendToOthersInGroup", _groupName, _toGroup );
+			await _signalService.Invoke( "SendToOthersInGroup", _groupName, _toGroup );
 		}
 
 		internal async Task JoinGroup() {
-			await SignalService.Invoke( "JoinGroup", _groupName );
+			await _signalService.Invoke( "JoinGroup", _groupName );
 		}
 
 		internal async Task LeaveGroup() {
-			await SignalService.Invoke( "LeaveGroup", _groupName );
+			await _signalService.Invoke( "LeaveGroup", _groupName );
 		}
 
 		internal async Task TellHubToDoStuff() {
-			await SignalService.Invoke( "DoSomething", _groupName );
+			await _signalService.Invoke( "DoSomething", _groupName );
 		}
 	}
 }

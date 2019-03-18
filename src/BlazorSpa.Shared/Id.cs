@@ -6,7 +6,7 @@ namespace BlazorSpa.Shared {
 	[JsonConverter( typeof( IdConverter ) )]
 	public sealed class Id<T> : IEquatable<Id<T>> {
 
-		public static readonly Id<T> Empty = new Id<T>( Guid.Empty.ToString("N"), false );
+		public static readonly Id<T> Empty = new Id<T>( Guid.Empty.ToString( "N" ), false );
 
 		public static readonly IEnumerable<Id<T>> EmptyList = new List<Id<T>>();
 

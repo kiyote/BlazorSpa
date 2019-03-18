@@ -22,7 +22,23 @@ window.navBar = {
         if (!element) {
             $(selector).hide();
         } else {
-            $(selector).css({ visibility: "visible", position: "absolute", top: (pos.top + $(topBand).outerHeight()) + "px", left: pos.left + "px", width: width + "px" }).show();
+            $(selector).css({ visibility: "visible", position: "absolute", top: pos.top + $(topBand).outerHeight() + "px", left: pos.left + "px", width: width + "px" }).show();
         }
+    }
+};
+
+window.appState = {
+    setItem: function (key, value) {
+        window.sessionStorage.setItem(key, JSON.stringify(value));
+    },
+
+    getItem: function (key) {
+        const item = window.sessionStorage.getItem(key);
+
+        if (item) {
+            return JSON.parse(item);
+        }
+
+        return null;
     }
 };

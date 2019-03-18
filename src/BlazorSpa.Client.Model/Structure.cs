@@ -3,7 +3,7 @@ using BlazorSpa.Shared;
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Model {
-	public class Structure: IEquatable<Structure> {
+	public class Structure : IEquatable<Structure> {
 
 		[JsonConstructor]
 		public Structure(
@@ -23,11 +23,11 @@ namespace BlazorSpa.Client.Model {
 		public string Name { get; }
 
 		public bool Equals( Structure other ) {
-			if (ReferenceEquals(other, null)) {
+			if( ReferenceEquals( other, null ) ) {
 				return false;
 			}
 
-			if (ReferenceEquals(other, this)) {
+			if( ReferenceEquals( other, this ) ) {
 				return true;
 			}
 

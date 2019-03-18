@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 
 namespace BlazorSpa.Client {
-	public class JsonConverter: IJsonConverter {
+	public class JsonConverter : IJsonConverter {
 
 		private readonly JsonSerializerSettings _settings;
 
@@ -18,7 +18,7 @@ namespace BlazorSpa.Client {
 		}
 
 		string IJsonConverter.Serialize( object value ) {
-			if (value == default) {
+			if( value == default ) {
 				return "{}";
 			}
 			return JsonConvert.SerializeObject( value, _settings );

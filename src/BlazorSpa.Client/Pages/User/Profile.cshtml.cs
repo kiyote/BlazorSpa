@@ -12,11 +12,11 @@ namespace BlazorSpa.Client.Pages.User {
 
 		private Model.User _user;
 
-		[Inject] private AppState State { get; set; }
+		[Inject] private AppState _state { get; set; }
 
-		[Inject] private IUserApiService UserApiService { get; set; }
+		[Inject] private IUserApiService _userService { get; set; }
 
-        [Inject] private IJSRuntime _js { get; set; }
+		[Inject] private IJSRuntime _js { get; set; }
 
 		public ElementRef FileUploadRef { get; set; }
 
@@ -56,7 +56,7 @@ namespace BlazorSpa.Client.Pages.User {
 		}
 
 		private async Task UpdateUserInformation() {
-			var response = await UserApiService.GetUserInformation();
+			var response = await _userService.GetUserInformation();
 			_user = response;
 			AvatarUrl = _user.AvatarUrl;
 		}
@@ -68,16 +68,16 @@ namespace BlazorSpa.Client.Pages.User {
 
 		public async Task UploadFile() {
 			var data = await _js.InvokeAsync<string>( "profileFiles.readUploadedFileAsText", FileUploadRef );
-			if (!data.StartsWith("data:")) {
+			if( !data.StartsWith( "data:" ) ) {
 				// No idea what to do here, the browser is behaving strangely...
 				return;
 			}
 			data = data.Substring( "data:".Length );
 			var parts = data.Split( ',' );
-			var descriptor = parts[ 0 ].Split( ';' );
-			var mimeType = descriptor[ 0 ];
-			var encoding = descriptor[ 1 ];
-			var content = parts[ 1 ];
+			var descriptor = parts[0].Split( ';' );
+			var mimeType = descriptor[0];
+			var encoding = descriptor[1];
+			var content = parts[1];
 
 			/*
 			using( var ms = new System.IO.MemoryStream( 10000 ) ) {
@@ -87,8 +87,8 @@ namespace BlazorSpa.Client.Pages.User {
 				}
 			}
 			*/
-			
-			if (mimeType.StartsWith("image")) {
+
+			if( mimeType.StartsWith( "image" ) ) {
 				// Cheese it down to 64x64 for now
 				//using( var image = Image.Load( Convert.FromBase64String( content ) ) ) {
 				//	content = image.Clone( x => x.Resize( 64, 64 ) ).ToBase64String( ImageFormats.Png ).Split( ',' )[ 1 ];
@@ -96,7 +96,7 @@ namespace BlazorSpa.Client.Pages.User {
 				//}
 				Uploading = true;
 				StateHasChanged();
-				AvatarUrl = await UserApiService.SetAvatar( mimeType, content );
+				AvatarUrl = await _userService.SetAvatar( mimeType, content );
 				Uploading = false;
 				Changing = false;
 				StateHasChanged();

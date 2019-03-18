@@ -43,7 +43,7 @@ namespace BlazorSpa.Client.Components {
 
 		protected async Task CreateStructure() {
 			Busy = true;
-			if (SelectedStructure != default) {
+			if( SelectedStructure != default ) {
 				await _structureService.CreateChildStructure( SelectedView.Id, SelectedStructure.Id, StructureType, _createStructureName );
 				Structures = await _structureService.GetChildStructures( SelectedView.Id, SelectedStructure.Id );
 			} else {
@@ -62,9 +62,9 @@ namespace BlazorSpa.Client.Components {
 			Busy = false;
 		}
 
-		protected async Task SelectParentStructure(Id<Structure> structureId) {
+		protected async Task SelectParentStructure( Id<Structure> structureId ) {
 			Busy = true;
-			if (structureId == default) {
+			if( structureId == default ) {
 				SelectedStructure = default;
 				await LoadViewStructures( SelectedView.Id );
 			} else {

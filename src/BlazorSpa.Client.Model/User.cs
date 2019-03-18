@@ -3,7 +3,7 @@ using BlazorSpa.Shared;
 using Newtonsoft.Json;
 
 namespace BlazorSpa.Client.Model {
-	public class User: IEquatable<User> {
+	public class User : IEquatable<User> {
 
 		[JsonConstructor]
 		public User(
@@ -31,11 +31,11 @@ namespace BlazorSpa.Client.Model {
 		public DateTime? PreviousLogin { get; }
 
 		public bool Equals( User other ) {
-			if (ReferenceEquals(other, null)) {
+			if( ReferenceEquals( other, null ) ) {
 				return false;
 			}
 
-			if (ReferenceEquals(other, this)) {
+			if( ReferenceEquals( other, this ) ) {
 				return true;
 			}
 
@@ -53,7 +53,7 @@ namespace BlazorSpa.Client.Model {
 		public override int GetHashCode() {
 			unchecked {
 				var result = 17;
-				result = ( result * 31 ) * Id.GetHashCode();
+				result = ( result * 31 ) + Id.GetHashCode();
 				result = ( result * 31 ) + Name.GetHashCode();
 				result = ( result * 31 ) + AvatarUrl.GetHashCode();
 				result = ( result * 31 ) + LastLogin.GetHashCode();

@@ -1,15 +1,24 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Layouts;
 
 namespace BlazorSpa.Client.Layouts {
 	public class MainLayoutComponent : LayoutComponentBase, IDisposable {
 
-		[Inject] protected AppState AppState { get; set; }
+		[Inject] private AppState _state { get; set; }
+
+		public string Username { get; set; }
+
+		public bool IsAuthenticated { get; set; }
 
 		protected override void OnInit() {
-			base.OnInit();
-			AppState.OnStateChanged += AppState_OnStateChanged;
+			_state.OnStateChanged += AppState_OnStateChanged;
+		}
+
+		protected override async Task OnInitAsync() {
+			Username = await _state.GetUsername();
+			IsAuthenticated = await _state.GetIsAuthenticated();
 		}
 
 		private void AppState_OnStateChanged( object sender, EventArgs e ) {
@@ -17,7 +26,7 @@ namespace BlazorSpa.Client.Layouts {
 		}
 
 		public void Dispose() {
-			AppState.OnStateChanged -= AppState_OnStateChanged;
+			_state.OnStateChanged -= AppState_OnStateChanged;
 		}
 	}
 }

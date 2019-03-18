@@ -13,7 +13,7 @@ namespace BlazorSpa.Client.Components {
 
 		[Inject] private IConfig _config { get; set; }
 
-        [Inject] private IJSRuntime _js { get; set; }
+		[Inject] private IJSRuntime _js { get; set; }
 
 		protected NavBarItemComponent NavItemLogIn { get; set; }
 

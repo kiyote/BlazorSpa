@@ -42,12 +42,12 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<View> IStructureApiService.CreateView( 
-			string viewType, 
-			string viewName 
+		async Task<View> IStructureApiService.CreateView(
+			string viewType,
+			string viewName
 		) {
-			if (string.IsNullOrWhiteSpace(viewType)
-				|| string.IsNullOrWhiteSpace(viewName)) {
+			if( string.IsNullOrWhiteSpace( viewType )
+				|| string.IsNullOrWhiteSpace( viewName ) ) {
 				return default;
 			}
 
@@ -63,9 +63,9 @@ namespace BlazorSpa.Client.Services {
 		}
 
 		async Task<Structure> IStructureApiService.CreateStructureInView( Id<View> viewId, string structureType, string name ) {
-			if (viewId == default
-				|| string.IsNullOrWhiteSpace(structureType)
-				|| string.IsNullOrWhiteSpace(name)) {
+			if( viewId == default
+				|| string.IsNullOrWhiteSpace( structureType )
+				|| string.IsNullOrWhiteSpace( name ) ) {
 				return default;
 			}
 
@@ -80,15 +80,15 @@ namespace BlazorSpa.Client.Services {
 		}
 
 		async Task<ApiStructureOperation> IStructureApiService.AddStructureToView( Id<View> viewId, Id<Structure> structureId ) {
-			if (structureId == default 
-				|| viewId == default) {
+			if( structureId == default
+				|| viewId == default ) {
 				return default;
 			}
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
 			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/{structureId}/view/{viewId}",
-				default(Structure),
-				( v ) => { return _json.Serialize(default); },
+				default( Structure ),
+				( v ) => { return _json.Serialize( default ); },
 				( s ) => { return _json.Deserialize<ApiStructureOperation>( s ); } );
 
 			return response;
@@ -107,8 +107,8 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<IEnumerable<Structure>> IStructureApiService.GetViewStructures(Id<View> viewId) {
-			if (viewId == default) {
+		async Task<IEnumerable<Structure>> IStructureApiService.GetViewStructures( Id<View> viewId ) {
+			if( viewId == default ) {
 				return default;
 			}
 
@@ -135,8 +135,8 @@ namespace BlazorSpa.Client.Services {
 		async Task<Structure> IStructureApiService.CreateChildStructure( Id<View> viewId, Id<Structure> structureId, string structureType, string name ) {
 			if( structureId == default
 				|| viewId == default
-				|| string.IsNullOrWhiteSpace(structureType) 
-				|| string.IsNullOrWhiteSpace(name) ) {
+				|| string.IsNullOrWhiteSpace( structureType )
+				|| string.IsNullOrWhiteSpace( name ) ) {
 				return default;
 			}
 

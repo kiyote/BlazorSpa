@@ -1,69 +1,61 @@
-﻿using System;
+﻿using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
-//using Cloudcrate.AspNetCore.Blazor.Browser.Storage;
+using System.Threading.Tasks;
 
 namespace BlazorSpa.Client {
 	public class AppState {
 
-		private readonly IDictionary<string, string> _storage;
+		private readonly IJSRuntime _js;
 
-		public AppState( ) {
-            _storage = new Dictionary<string, string>();
-            _storage["TokensExpireAt"] = default;
-            _storage["Username"] = default;
-            _storage["AccessToken"] = default;
-            _storage["RefreshToken"] = default;
-
-            if ( _storage[ "TokensExpireAt" ] == default ) {
-				_storage[ "TokensExpireAt" ] = DateTime.MinValue.ToUniversalTime().ToString( "o" );
-			}
+		public AppState( IJSRuntime jsRuntime ) {
+			_js = jsRuntime;
 		}
 
 		public event EventHandler OnStateChanged;
 
-		public string Username {
-			get {
-				return _storage[ "Username" ];
-			}
-			set {
-				_storage[ "Username" ] = value;
-				OnStateChanged?.Invoke( this, EventArgs.Empty );
-			}
+		public async Task<string> GetUsername() {
+			Console.WriteLine( "Calling appState.getItem" );
+			var value = await _js.InvokeAsync<string>( "appState.getItem", "Username" );
+			return value ?? string.Empty;
 		}
 
-		public string AccessToken {
-			get {
-				return _storage[ "AccessToken" ];
-			}
-			set {
-				_storage[ "AccessToken" ] = value;
-			}
+		public async Task SetUsername( string value ) {
+			await _js.InvokeAsync<string>( "appState.setItem", "Username", value );
 		}
 
-		public string RefreshToken {
-			get {
-				return _storage[ "RefreshToken" ];
-			}
-			set {
-				_storage[ "RefeshToken" ] = value;
-			}
+		public async Task<string> GetAccessToken() {
+			return await _js.InvokeAsync<string>( "appState.getItem", "AccessToken" );
 		}
 
-		public DateTime TokensExpireAt {
-			get {
-				return DateTime.Parse( _storage[ "TokensExpireAt" ] ).ToUniversalTime();
-			}
-			set {
-				_storage[ "TokensExpireAt" ] = value.ToString( "o" );
-				OnStateChanged?.Invoke( this, EventArgs.Empty );
-			}
+		public async Task SetAccessToken( string value ) {
+			await _js.InvokeAsync<string>( "appState.setItem", "AccessToken", value );
 		}
 
-		public bool IsAuthenticated {
-			get {
-				var result = ( TokensExpireAt > DateTime.UtcNow );
-				return result;
+		public async Task<string> GetRefeshToken() {
+			return await _js.InvokeAsync<string>( "appState.getItem", "RefreshToken" );
+		}
+
+		public async Task SetRefreshToken( string value ) {
+			await _js.InvokeAsync<string>( "appState.setItem", "RefreshToken", value );
+		}
+
+		public async Task<DateTime> GetTokensExpireAt() {
+			var value = await _js.InvokeAsync<string>( "appState.getItem", "TokensExpireAt" );
+			if( value != default ) {
+				return DateTime.Parse( value ).ToUniversalTime();
 			}
+
+			return DateTime.MinValue.ToUniversalTime();
+		}
+
+		public async Task SetTokensExpireAt( DateTime value ) {
+			await _js.InvokeAsync<string>( "appState.setItem", "TokensExpireAt", value.ToString( "o" ) );
+		}
+
+		public async Task<bool> GetIsAuthenticated() {
+			var tokensExpireAt = await GetTokensExpireAt();
+			return tokensExpireAt > DateTime.UtcNow;
 		}
 	}
 }

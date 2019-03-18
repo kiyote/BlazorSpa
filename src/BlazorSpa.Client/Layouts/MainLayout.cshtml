@@ -1,9 +1,10 @@
 ﻿@inherits MainLayoutComponent
 
-<NavBar IsAuthenticated=@AppState.IsAuthenticated
-        UserName=@AppState.Username />
+<NavBar IsAuthenticated=@IsAuthenticated
+        UserName=@Username />
 
 <main role="main" class="container main">
     @Body
 </main>
+
 

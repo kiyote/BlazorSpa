@@ -12,13 +12,13 @@ namespace BlazorSpa.Client.Services {
 
 		public SignalService(
 			IAccessTokenProvider accessTokenProvider,
-            IJSRuntime jsRuntime
+			IJSRuntime jsRuntime
 		) {
 			HubConnectionBuilder factory = new HubConnectionBuilder();
 
 			factory.WithUrlBlazor( "/signalhub", jsRuntime, options: opt => {
-				opt.Transports = HttpTransportType.WebSockets | HttpTransportType.ServerSentEvents | HttpTransportType.LongPolling; 
-				opt.AccessTokenProvider = accessTokenProvider.GetJwtToken;				
+				opt.Transports = HttpTransportType.WebSockets | HttpTransportType.ServerSentEvents | HttpTransportType.LongPolling;
+				opt.AccessTokenProvider = accessTokenProvider.GetJwtToken;
 			} );
 
 			_connection = factory.Build();
@@ -29,7 +29,7 @@ namespace BlazorSpa.Client.Services {
 			};
 		}
 
-		IDisposable ISignalService.Register<T>(string name, Action<T> handler ) {
+		IDisposable ISignalService.Register<T>( string name, Action<T> handler ) {
 			return _connection.On( name, handler );
 		}
 
