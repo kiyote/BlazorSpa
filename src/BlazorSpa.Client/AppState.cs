@@ -1,7 +1,6 @@
-﻿using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace BlazorSpa.Client {
 	public class AppState {
@@ -22,6 +21,7 @@ namespace BlazorSpa.Client {
 
 		public async Task SetUsername( string value ) {
 			await _js.InvokeAsync<string>( "appState.setItem", "Username", value );
+			OnStateChanged?.Invoke( this, EventArgs.Empty );
 		}
 
 		public async Task<string> GetAccessToken() {
@@ -51,6 +51,7 @@ namespace BlazorSpa.Client {
 
 		public async Task SetTokensExpireAt( DateTime value ) {
 			await _js.InvokeAsync<string>( "appState.setItem", "TokensExpireAt", value.ToString( "o" ) );
+			OnStateChanged?.Invoke( this, EventArgs.Empty );
 		}
 
 		public async Task<bool> GetIsAuthenticated() {

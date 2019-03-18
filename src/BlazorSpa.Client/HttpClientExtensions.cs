@@ -16,8 +16,14 @@ namespace BlazorSpa.Client {
 		public static Task<S> PostJsonAsync<T, S>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson, Func<string, S> fromJson )
 			=> httpClient.SendJsonAsync<T, S>( HttpMethod.Post, requestUri, content, toJson, fromJson );
 
+		public static Task PostJsonAsync<T>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson )
+			=> httpClient.SendJsonAsync<T, IgnoreResponse>( HttpMethod.Post, requestUri, content, toJson, default );
+
 		public static Task<S> PutJsonAsync<T, S>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson, Func<string, S> fromJson )
 			=> httpClient.SendJsonAsync<T, S>( HttpMethod.Put, requestUri, content, toJson, fromJson );
+
+		public static Task PutJsonAsync<T>( this HttpClient httpClient, string requestUri, T content, Func<T, string> toJson )
+			=> httpClient.SendJsonAsync<T, IgnoreResponse>( HttpMethod.Put, requestUri, content, toJson, default );
 
 
 		public static async Task<S> SendJsonAsync<T, S>( this HttpClient httpClient, HttpMethod method, string requestUri, T content, Func<T, string> toJson, Func<string, S> fromJson ) {
@@ -34,6 +40,6 @@ namespace BlazorSpa.Client {
 			}
 		}
 
-		class IgnoreResponse { }
+		private class IgnoreResponse { }
 	}
 }

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlazorSpa.Server.Controllers {
 	[Authorize]
 	[Route( "api/structure" )]
-	[Produces("application/json")]
+	[Produces( "application/json" )]
 	public sealed class StructureController : Controller {
 
 		private readonly StructureManager _structureManager;
@@ -47,8 +47,8 @@ namespace BlazorSpa.Server.Controllers {
 		public async Task<ActionResult<View>> CreateView( [FromBody] View view ) {
 
 			if( ( view == default )
-				|| ( string.IsNullOrWhiteSpace( view.ViewType ) )
-				|| ( string.IsNullOrWhiteSpace( view.Name ) ) ) {
+				|| string.IsNullOrWhiteSpace( view.ViewType )
+				|| string.IsNullOrWhiteSpace( view.Name ) ) {
 				return BadRequest();
 			}
 			var userId = _contextInformation.UserId;
@@ -59,15 +59,15 @@ namespace BlazorSpa.Server.Controllers {
 
 		[HttpPost( "view/{viewId}" )]
 		public async Task<ActionResult<Structure>> CreateStructureInView( string viewId, [FromBody] Structure structure ) {
-			if ((structure == default)
-				|| (string.IsNullOrWhiteSpace(structure.StructureType))
-				|| string.IsNullOrWhiteSpace(viewId)) {
+			if( ( structure == default )
+				|| string.IsNullOrWhiteSpace( structure.StructureType )
+				|| string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();
 			}
 
 			var result = await _structureManager.CreateStructureInView( viewId, structure.StructureType, structure.Name );
 
-			if (result != default) {
+			if( result != default ) {
 				return Ok( result );
 			}
 
@@ -76,7 +76,7 @@ namespace BlazorSpa.Server.Controllers {
 
 		[HttpGet( "view/{viewId}/structure/{structureId}" )]
 		public async Task<ActionResult<IEnumerable<Structure>>> GetChildStructures( string viewId, string structureId ) {
-			if( ( string.IsNullOrWhiteSpace( structureId ) )
+			if( string.IsNullOrWhiteSpace( structureId )
 				|| string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();
 			}
@@ -87,7 +87,7 @@ namespace BlazorSpa.Server.Controllers {
 
 		[HttpPost( "view/{viewId}/structure/{structureId}" )]
 		public async Task<ActionResult<Structure>> CreateChildStructure( string viewId, string structureId, [FromBody] Structure structure ) {
-			if( ( string.IsNullOrWhiteSpace( structureId ) )
+			if( string.IsNullOrWhiteSpace( structureId )
 				|| string.IsNullOrWhiteSpace( viewId )
 				|| structure == default ) {
 				return BadRequest();
@@ -97,9 +97,9 @@ namespace BlazorSpa.Server.Controllers {
 			return Ok( await _structureManager.CreateChildStructure( viewId, structureId, structure.StructureType, structure.Name ) );
 		}
 
-		[HttpGet("view/{viewId}/structure")]
-		public async Task<ActionResult<IEnumerable<Structure>>> GetViewStructures(string viewId) {
-			if (string.IsNullOrWhiteSpace(viewId)) {
+		[HttpGet( "view/{viewId}/structure" )]
+		public async Task<ActionResult<IEnumerable<Structure>>> GetViewStructures( string viewId ) {
+			if( string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();
 			}
 
@@ -107,8 +107,8 @@ namespace BlazorSpa.Server.Controllers {
 		}
 
 		[HttpPost( "{structureId}/view/{viewId}" )]
-		public async Task<ActionResult<Structure>> AddStructureToView( string viewId, string structureId ) {
-			if( ( string.IsNullOrWhiteSpace( structureId ) )
+		public async Task<ActionResult> AddStructureToView( string viewId, string structureId ) {
+			if( string.IsNullOrWhiteSpace( structureId )
 				|| string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();
 			}
@@ -119,12 +119,12 @@ namespace BlazorSpa.Server.Controllers {
 
 		[HttpGet( "{structureId}/view/{viewId}" )]
 		public async Task<ActionResult<Structure>> GetParentStructure( string viewId, string structureId ) {
-			if( ( string.IsNullOrWhiteSpace( structureId ) )
+			if( string.IsNullOrWhiteSpace( structureId )
 				|| string.IsNullOrWhiteSpace( viewId ) ) {
 				return BadRequest();
 			}
-			
-			return Ok( await _structureManager.GetParentStructure( viewId, structureId ));
+
+			return Ok( await _structureManager.GetParentStructure( viewId, structureId ) );
 		}
 
 	}

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -46,9 +47,12 @@ namespace BlazorSpa.Client.Services {
 			string viewType,
 			string viewName
 		) {
-			if( string.IsNullOrWhiteSpace( viewType )
-				|| string.IsNullOrWhiteSpace( viewName ) ) {
-				return default;
+			if( string.IsNullOrWhiteSpace( viewType ) ) {
+				throw new ArgumentException( nameof( viewType ) );
+			}
+
+			if( string.IsNullOrWhiteSpace( viewName ) ) {
+				throw new ArgumentException( nameof( viewName ) );
 			}
 
 			var newView = new View( Id<View>.Empty, viewType, viewName );
@@ -62,11 +66,21 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<Structure> IStructureApiService.CreateStructureInView( Id<View> viewId, string structureType, string name ) {
-			if( viewId == default
-				|| string.IsNullOrWhiteSpace( structureType )
-				|| string.IsNullOrWhiteSpace( name ) ) {
-				return default;
+		async Task<Structure> IStructureApiService.CreateStructureInView(
+			Id<View> viewId,
+			string structureType,
+			string name
+		) {
+			if( viewId == default ) {
+				throw new ArgumentException( nameof( viewId ) );
+			}
+
+			if( string.IsNullOrWhiteSpace( structureType ) ) {
+				throw new ArgumentException( nameof( structureType ) );
+			}
+
+			if( string.IsNullOrWhiteSpace( name ) ) {
+				throw new ArgumentException( nameof( name ) );
 			}
 
 			var newStructure = new Structure( Id<Structure>.Empty, structureType, name );
@@ -79,25 +93,34 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<ApiStructureOperation> IStructureApiService.AddStructureToView( Id<View> viewId, Id<Structure> structureId ) {
-			if( structureId == default
-				|| viewId == default ) {
-				return default;
+		async Task IStructureApiService.AddStructureToView(
+			Id<View> viewId,
+			Id<Structure> structureId
+		) {
+			if( viewId == default ) {
+				throw new ArgumentException( nameof( viewId ) );
+			}
+
+			if( structureId == default ) {
+				throw new ArgumentException( nameof( structureId ) );
 			}
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
-			var response = await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/{structureId}/view/{viewId}",
+			await _http.PostJsonAsync( $@"{_config.Host}{StructureApiUrl}/{structureId}/view/{viewId}",
 				default( Structure ),
-				( v ) => { return _json.Serialize( default ); },
-				( s ) => { return _json.Deserialize<ApiStructureOperation>( s ); } );
-
-			return response;
+				( v ) => { return _json.Serialize( default ); });
 		}
 
-		async Task<Structure> IStructureApiService.GetParentStructure( Id<View> viewId, Id<Structure> structureId ) {
-			if( structureId == default
-				|| viewId == default ) {
-				return default;
+		async Task<Structure> IStructureApiService.GetParentStructure(
+			Id<View> viewId,
+			Id<Structure> structureId
+		) {
+			if( viewId == default ) {
+				throw new ArgumentException( nameof( viewId ) );
+			}
+
+			if( structureId == default ) {
+				throw new ArgumentException( nameof( structureId ) );
 			}
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
@@ -107,9 +130,11 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<IEnumerable<Structure>> IStructureApiService.GetViewStructures( Id<View> viewId ) {
+		async Task<IEnumerable<Structure>> IStructureApiService.GetViewStructures(
+			Id<View> viewId
+		) {
 			if( viewId == default ) {
-				return default;
+				throw new ArgumentException( nameof( viewId ) );
 			}
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
@@ -119,10 +144,16 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<IEnumerable<Structure>> IStructureApiService.GetChildStructures( Id<View> viewId, Id<Structure> structureId ) {
-			if( structureId == default
-				|| viewId == default ) {
-				return default;
+		async Task<IEnumerable<Structure>> IStructureApiService.GetChildStructures(
+			Id<View> viewId,
+			Id<Structure> structureId
+		) {
+			if( viewId == default ) {
+				throw new ArgumentException( nameof( viewId ) );
+			}
+
+			if( structureId == default ) {
+				throw new ArgumentException( nameof( structureId ) );
 			}
 
 			_http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue( "Bearer", await _accessTokenProvider.GetJwtToken() );
@@ -132,12 +163,26 @@ namespace BlazorSpa.Client.Services {
 			return response;
 		}
 
-		async Task<Structure> IStructureApiService.CreateChildStructure( Id<View> viewId, Id<Structure> structureId, string structureType, string name ) {
-			if( structureId == default
-				|| viewId == default
-				|| string.IsNullOrWhiteSpace( structureType )
-				|| string.IsNullOrWhiteSpace( name ) ) {
-				return default;
+		async Task<Structure> IStructureApiService.CreateChildStructure(
+			Id<View> viewId,
+			Id<Structure> structureId,
+			string structureType,
+			string name
+		) {
+			if( structureId == default ) {
+				throw new ArgumentException( nameof( structureId ) );
+			}
+
+			if( viewId == default ) {
+				throw new ArgumentException( nameof( viewId ) );
+			}
+
+			if( string.IsNullOrWhiteSpace( structureType ) ) {
+				throw new ArgumentException( nameof( structureType ) );
+			}
+
+			if( string.IsNullOrWhiteSpace( name ) ) {
+				throw new ArgumentException( nameof( name ) );
 			}
 
 			var structure = new Structure( Id<Structure>.Empty, structureType, name );

@@ -14,7 +14,7 @@ namespace BlazorSpa.Client.Services {
 
 		Task<Structure> CreateStructureInView( Id<View> viewId, string structureType, string name );
 
-		Task<ApiStructureOperation> AddStructureToView( Id<View> viewId, Id<Structure> structureId );
+		Task AddStructureToView( Id<View> viewId, Id<Structure> structureId );
 
 		Task<IEnumerable<Structure>> GetViewStructures( Id<View> viewId );
 
