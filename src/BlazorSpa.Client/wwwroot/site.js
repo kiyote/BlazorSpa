@@ -42,3 +42,40 @@ window.appState = {
         return null;
     }
 };
+
+window.dragDrop = {
+
+    registerDraggable: function (id, csElement) {
+        $("#" + id).on("dragstart", function (e) {
+            var ev = e.originalEvent;
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+            ev.dataTransfer.dropEffect = "move";
+            csElement.invokeMethodAsync("OnDragStarted");
+        });
+        $("#" + id).on("dragend", function (e) {
+            csElement.invokeMethodAsync("OnDragEnded");
+        });
+    },
+
+    unregisterDraggable: function (id) {
+        $("#" + id).off("dragstart");
+        $("#" + id).off("dragend");
+    },
+
+    registerDroppable: function (id, csElement) {
+        $("#" + id).on("dragover", function (e) {
+            e.preventDefault();
+        });
+        $("#" + id).on("drop", function (e) {
+            var ev = e.originalEvent;
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text/plain");
+            csElement.invokeMethodAsync("OnDropped", data);
+        });
+    },
+
+    unregisterDroppable: function (id) {
+        $("#" + id).off("dragover");
+        $("#" + id).off("drop");
+    }
+};

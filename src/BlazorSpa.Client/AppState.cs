@@ -14,7 +14,6 @@ namespace BlazorSpa.Client {
 		public event EventHandler OnStateChanged;
 
 		public async Task<string> GetUsername() {
-			Console.WriteLine( "Calling appState.getItem" );
 			var value = await _js.InvokeAsync<string>( "appState.getItem", "Username" );
 			return value ?? string.Empty;
 		}
