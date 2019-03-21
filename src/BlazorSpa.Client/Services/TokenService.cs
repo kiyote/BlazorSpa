@@ -5,7 +5,7 @@ using BlazorSpa.Client.Model;
 using BlazorSpa.Client.Pages.Auth;
 
 namespace BlazorSpa.Client.Services {
-	public class TokenService : ITokenService {
+	internal sealed class TokenService : ITokenService {
 
 		private readonly HttpClient _http;
 		private readonly IConfig _config;

@@ -15,7 +15,7 @@ namespace BlazorSpa.Client.Pages.Auth {
 
 		[Inject] private IUserApiService _userApiService { get; set; }
 
-		[Inject] private AppState _state { get; set; }
+		[Inject] private IAppState _state { get; set; }
 
 		[Inject] private ITokenService _tokenService { get; set; }
 

@@ -3,7 +3,7 @@ using BlazorSpa.Client.Pages.Auth;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
-namespace BlazorSpa.Client.Components {
+namespace BlazorSpa.Client.Pages.Components.NavBar {
 	public class NavBarComponent : ComponentBase {
 		private NavBarItemComponent _selectedItem;
 

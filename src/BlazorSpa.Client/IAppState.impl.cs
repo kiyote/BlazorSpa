@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
 namespace BlazorSpa.Client {
-	public class AppState {
+	internal sealed class AppState : IAppState {
 
 		private readonly IJSRuntime _js;
 

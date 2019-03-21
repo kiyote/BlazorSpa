@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Layouts;
 
-namespace BlazorSpa.Client.Layouts {
+namespace BlazorSpa.Client.Pages {
 	public class MainLayoutComponent : LayoutComponentBase, IDisposable {
 
-		[Inject] private AppState _state { get; set; }
+		[Inject] private IAppState _state { get; set; }
 
 		public string Username { get; set; }
 

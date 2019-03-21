@@ -6,7 +6,7 @@ using BlazorSpa.Client.Services;
 using BlazorSpa.Shared;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorSpa.Client.Components {
+namespace BlazorSpa.Client.Pages.Admin.Components {
 	public class StructureNavigatorComponent : ComponentBase {
 
 		[Inject] private IStructureApiService _structureService { get; set; }

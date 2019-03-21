@@ -1,5 +1,5 @@
 ﻿namespace BlazorSpa.Client {
-	public class Config : IConfig {
+	internal sealed class Config : IConfig {
 #if DEBUG
 		private readonly string _host = "http://localhost:50738";
 #else

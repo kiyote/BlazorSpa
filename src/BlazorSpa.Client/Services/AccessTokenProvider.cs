@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 namespace BlazorSpa.Client.Services {
 	internal sealed class AccessTokenProvider : IAccessTokenProvider {
 
-		private readonly AppState _state;
+		private readonly IAppState _state;
 		private readonly ITokenService _tokenService;
 
 		public AccessTokenProvider(
-			AppState state,
+			IAppState state,
 			ITokenService tokenService
 		) {
 			_state = state;

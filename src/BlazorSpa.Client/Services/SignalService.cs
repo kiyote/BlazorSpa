@@ -8,7 +8,7 @@ using Microsoft.JSInterop;
 namespace BlazorSpa.Client.Services {
 	internal sealed class SignalService : ISignalService {
 
-		private HubConnection _connection;
+		private readonly HubConnection _connection;
 
 		public SignalService(
 			IAccessTokenProvider accessTokenProvider,

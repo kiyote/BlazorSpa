@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorSpa.Client {
-	public class Startup {
+	public sealed class Startup {
 		public void ConfigureServices( IServiceCollection services ) {
 			services.AddLogging( builder => builder
 				 .SetMinimumLevel( LogLevel.Trace )
@@ -13,7 +13,7 @@ namespace BlazorSpa.Client {
 			services.AddSingleton<IJsonConverter, JsonConverter>();
 			services.AddSingleton<IConfig, Config>();
 
-			services.AddScoped<AppState>();
+			services.AddScoped<IAppState, AppState>();
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<IAccessTokenProvider, AccessTokenProvider>();
 			services.AddScoped<ISignalService, SignalService>();

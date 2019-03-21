@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using BlazorSpa.Client.Components;
 using BlazorSpa.Client.Model;
 using Microsoft.AspNetCore.Components;
+using BlazorSpa.Client.Pages.Admin.Components;
 
 namespace BlazorSpa.Client.Pages.Admin {
 	public class OrganizationComponent : ComponentBase {

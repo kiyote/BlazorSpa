@@ -12,7 +12,7 @@ namespace BlazorSpa.Client.Pages.User {
 
 		private Model.User _user;
 
-		[Inject] private AppState _state { get; set; }
+		[Inject] private IAppState _state { get; set; }
 
 		[Inject] private IUserApiService _userService { get; set; }
 

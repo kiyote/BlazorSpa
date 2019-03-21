@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorSpa.Client.Components {
+namespace BlazorSpa.Client.Pages.Components.NavBar {
 	public class NavBarItemCollectionComponent : ComponentBase {
 
 		[Parameter]
