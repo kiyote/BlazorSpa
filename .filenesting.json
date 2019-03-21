@@ -1,12 +1,15 @@
 {
   "help": "https://go.microsoft.com/fwlink/?linkid=866610",
-  "root": true,
+  "root": false,
 
   "dependentFileProviders": {
     "add": {
       "extensionToExtension": {
         "add": {
           ".impl.cs": [
+            ".cs"
+          ],
+          ".cshtml.cs": [
             ".cs"
           ]
         }
